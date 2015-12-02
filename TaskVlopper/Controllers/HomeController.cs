@@ -10,11 +10,18 @@ namespace TaskVlopper.Controllers
     {
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                return RedirectToAction("Index", "Dashboard");
+                if (User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                return View();
             }
-            return View();
+            catch
+            {
+                return View("Error");
+            }
         }
     }
 }
