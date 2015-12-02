@@ -9,7 +9,7 @@ using TaskVlopper.Base.Base;
 
 namespace TaskVlopper.Base.Model
 {
-    public class Projects : IBaseModel
+    public class Project : IBaseModel
     {
         [Key]
         [Index(IsUnique = true)]

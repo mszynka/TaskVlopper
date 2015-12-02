@@ -7,13 +7,23 @@ using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Models
 {
-    public class ProjectViewModel
+    public class ProjectsViewModel
     {
-        public ProjectViewModel(IList<Projects> projects)
+        public ProjectsViewModel(IList<Project> projects)
         {
             Projects = projects;
         }
 
-        public IList<Projects> Projects { get; private set; }
+        public IList<Project> Projects { get; private set; }
+    }
+
+    public class ProjectViewModel
+    {
+        public ProjectViewModel(Project project)
+        {
+            Project = project;
+        }
+
+        public Project Project { get; private set; }
     }
 }
