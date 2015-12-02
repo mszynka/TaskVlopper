@@ -41,7 +41,7 @@
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Test>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Meeting>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Projects>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Project>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Tasks>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Worklog>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<MeetingParticipants>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

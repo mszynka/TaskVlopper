@@ -6,15 +6,17 @@ using System.Web.Mvc;
 
 namespace TaskVlopper.Controllers
 {
-    public class HomeController : Controller
+    public class DashboardController : Controller
     {
+        // GET: Dashboard
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Manage");
             }
-            return View();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
