@@ -1,0 +1,10 @@
+Project minimum standards:
+- Function or method names should be enough to describe the actions standing behind that function or method,
+- More complicated code should be explained in comments, 
+- Obey Service Locator pattern standards,
+- Every Repository and View should be Unit tested, Logic and Controllers are optional,
+- We commit code that is without build errors, and unit tests pass,
+- Check in bugs using Issues GitHub option, bug description is mandatory, images are optional,
+- Commits should be commented, comments must explain what work have been done, and what changes have been made,
+- Do not commit anything directly into master branch, work on your local branch, to merge it to local do Pull Request,
+- TO BE CONTINUED.
