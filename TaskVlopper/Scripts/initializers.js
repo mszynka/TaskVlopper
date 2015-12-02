@@ -3,8 +3,7 @@
         escapeClose: true,
         clickClose: true,
         showClose: false,
-        fadeDuration: 250,
-        fadeDelay: 0.80
+        fadeDuration: 250
     });
   return false;
 });
