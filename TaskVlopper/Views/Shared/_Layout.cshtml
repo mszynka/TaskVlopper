@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - TaskVlopper</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jquery.modal.css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -24,6 +25,9 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.modal.js")
+    @Scripts.Render("~/Scripts/initializers.js")
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
 </body>
 </html>

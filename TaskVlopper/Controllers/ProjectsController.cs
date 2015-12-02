@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskVlopper.Helpers;
 
 namespace TaskVlopper.Controllers
 {
     public class ProjectsController : Controller
     {
         // GET: Projects
+        [HttpGet]
         public ActionResult Index()
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return Json(JsonErrorHelpers.HttpError(HttpErrorCode.ImATeapot), JsonRequestBehavior.AllowGet);
+            }
+            Response.StatusCode = 403;
+            return View("Error");
         }
 
         // GET: Projects/Details/5
