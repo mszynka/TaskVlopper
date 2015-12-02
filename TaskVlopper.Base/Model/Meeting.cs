@@ -16,6 +16,9 @@ namespace TaskVlopper.Base.Model
         [Column(Order = 1)]
         public int ID { get; set; }
 
+        public int ProjectID { get; set; }
+        public int? TaskID { get; set; }
+
         public DateTime DateAndTime { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Title can't be emepty.")]
