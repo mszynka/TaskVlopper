@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TaskVlopper.Helpers;
+using TaskVlopper.Base.Logic;
+using TaskVlopper.Base.Repository;
+using TaskVlopper.Models;
+using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Controllers
 {
@@ -15,7 +20,13 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return Json(JsonErrorHelpers.HttpError(HttpErrorCode.ImATeapot), JsonRequestBehavior.AllowGet);
+                using(IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IProjectsRepository>();
+                    var viewModel = new ProjectViewModel(repository.GetAll().ToList());
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
             }
             Response.StatusCode = 403;
             return View("Error");
@@ -39,8 +50,6 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -61,8 +70,6 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -83,8 +90,6 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
             }
             catch
