@@ -10,9 +10,9 @@ using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Models
 {
-    public class TestViewModels
+    public class TestsViewModel
     {
-        public TestViewModels(IList<Test> tests, double averageResult)
+        public TestsViewModel(IList<Test> tests, double averageResult)
         {
             Tests = tests;
             AverageResult = averageResult;

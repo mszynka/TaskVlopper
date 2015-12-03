@@ -288,13 +288,14 @@
     <Content Include="Views\Shared\Partials\Projects\_List.cshtml" />
     <Content Include="Views\Shared\Partials\Projects\_Create.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
+    <Content Include="Views\Meeting\Index.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Task\Index.cshtml" />
+    <Content Include="Views\Worklog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Dashboard\" />
-    <Folder Include="Views\Meeting\" />
-    <Folder Include="Views\Task\" />
-    <Folder Include="Views\Worklog\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
