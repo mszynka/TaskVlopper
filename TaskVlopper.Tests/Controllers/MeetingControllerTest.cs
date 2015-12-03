@@ -4,57 +4,134 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Moq;
+using System.Web.Mvc;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
     public class MeetingControllerTest
     {
+        MeetingController CreateControllerAs(string userName, bool isUserLoggedIn)
+        {
+            var mock = new Mock<ControllerContext>();
+            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
+            mock.SetupGet(p => p.HttpContext.User.Identity.IsAuthenticated).Returns(isUserLoggedIn);
+            // other possibility of mocking user is:
+            // mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
+
+            var controller = new MeetingController();
+            controller.ControllerContext = mock.Object;
+
+            return controller;
+        }
+
         [TestMethod()]
-        public void IndexTest()
+        public void IndexLoggedUserTest()
+        {
+            // Arrange
+            MeetingController controller = CreateControllerAs("LoggedUser", isUserLoggedIn: true);
+
+            // Act
+            JsonResult action = controller.Index() as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(action);
+        }
+
+        [TestMethod()]
+        public void IndexNotLoggedUserTest()
+        {
+            // Arrange
+            MeetingController controller = CreateControllerAs("NotLoggedUser", isUserLoggedIn: false);
+
+            // Act
+            // TODO: Use Moq to get ResponseCode
+
+            // Assert
+            // TODO: Assert ResponseCode is equal to 403
+        }
+
+        [TestMethod()]
+        public void DetailsLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void DetailsTest()
+        public void DetailsNotLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void CreateGetLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void CreateTest1()
+        public void CreateGetNotLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void EditTest()
+        public void CreatePostLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void EditTest1()
+        public void CreatePostNotLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public void EditGetLoggedUserTest()
         {
 
         }
 
         [TestMethod()]
-        public void DeleteTest1()
+        public void EditGetNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void EditPostLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void EditPostNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void DeleteGetLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void DeleteGetNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void DeletePostLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod()]
+        public void DeletePostNotLoggedUserTest()
         {
 
         }

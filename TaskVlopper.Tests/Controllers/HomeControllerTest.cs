@@ -15,9 +15,8 @@ namespace TaskVlopper.Tests.Controllers
     [TestClass]
     public class HomeControllerTest
     {
-        HomeController CreateHomeControllerAs(string userName, bool isUserLoggedIn)
+        HomeController CreateControllerAs(string userName, bool isUserLoggedIn)
         {
-
             var mock = new Mock<ControllerContext>();
             mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
             mock.SetupGet(p => p.HttpContext.User.Identity.IsAuthenticated).Returns(isUserLoggedIn);
@@ -34,7 +33,7 @@ namespace TaskVlopper.Tests.Controllers
         public void IndexLoggedUser()
         {
             // Arrange
-            HomeController controller = CreateHomeControllerAs("LoggedUser", isUserLoggedIn: true);
+            HomeController controller = CreateControllerAs("LoggedUser", isUserLoggedIn: true);
 
             // Act
             RedirectToRouteResult action = controller.Index() as RedirectToRouteResult;
@@ -47,7 +46,7 @@ namespace TaskVlopper.Tests.Controllers
         public void IndexNotLoggedUser()
         {
             // Arrange
-            HomeController controller = CreateHomeControllerAs("NotLoggedUser", isUserLoggedIn: false);
+            HomeController controller = CreateControllerAs("NotLoggedUser", isUserLoggedIn: false);
 
             // Act
             ViewResult viewResult = controller.Index() as ViewResult;
