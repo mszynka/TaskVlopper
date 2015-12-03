@@ -206,8 +206,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\HttpErrorCode.cs" />
-    <Compile Include="Helpers\JsonErrorHelpers.cs" />
+    <Compile Include="Helpers\HttpCode.cs" />
+    <Compile Include="Helpers\JsonHelpers.cs" />
     <Compile Include="Identity\ApplicationDbContext.cs" />
     <Compile Include="Identity\ApplicationSignInManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -284,8 +284,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
-    <Content Include="Views\Project\Single.cshtml" />
-    <Content Include="Views\Project\List.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Meeting\Index.cshtml" />
@@ -297,6 +295,8 @@
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
     <Content Include="Views\Task\ModelEditor.cshtml" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Project\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

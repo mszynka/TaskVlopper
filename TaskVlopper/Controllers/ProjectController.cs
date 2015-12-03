@@ -9,6 +9,7 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Controllers
 {
@@ -28,7 +29,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -45,7 +46,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -54,9 +55,9 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return PartialView("ModelEditor");
+                return View();
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -66,11 +67,33 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IProjectRepository>();
+
+                        Project p = new Project();
+                        p.Name = Request.Form["Name"];
+                        p.Description = Request.Form["Description"];
+                        if (!string.IsNullOrWhiteSpace(Request.Form["StartDate"]))
+                            p.StartDate = DateTime.Parse(Request.Form["StartDate"]);
+                        if (!string.IsNullOrWhiteSpace(Request.Form["Deadline"]))
+                            p.Deadline = DateTime.Parse(Request.Form["Deadline"]);
+                        p.EstimatedTimeInHours = int.Parse(Request.Form["EstimatedTimeInHours"]);
+
+                        repository.Add(p);
+                    }
+
+                    return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
 
@@ -82,12 +105,12 @@ namespace TaskVlopper.Controllers
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
                     var repository = container.Resolve<IProjectRepository>();
-                    var viewModel = new ProjectViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                    return View("ModelEditor", viewModel);
+                    return PartialView("Edit", model);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
 
         }
@@ -98,11 +121,41 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IProjectRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        if (Request.Form["Name"] != model.Name)
+                            model.Name = Request.Form["Name"];
+                        if (Request.Form["Description"] != model.Description)
+                            model.Description = Request.Form["Description"];
+                        if (!string.IsNullOrWhiteSpace(Request.Form["StartDate"]))
+                        {
+                            if (DateTime.Parse(Request.Form["StartDate"]) != model.StartDate)
+                                model.StartDate = DateTime.Parse(Request.Form["StartDate"]);
+                        }
+                        if (!string.IsNullOrWhiteSpace(Request.Form["Deadline"]))
+                        {
+                            if (DateTime.Parse(Request.Form["Deadline"]) != model.Deadline)
+                                model.Deadline = DateTime.Parse(Request.Form["Deadline"]);
+                        }
+                        if (int.Parse(Request.Form["EstimatedTimeInHours"]) != model.EstimatedTimeInHours)
+                            model.EstimatedTimeInHours = int.Parse(Request.Form["EstimatedTimeInHours"]);
+
+                        repository.Update(model);
+                    }
+
+                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                Response.StatusCode = (int)HttpErrorCode.InternalServerError;
+                Response.StatusCode = (int)HttpCode.InternalServerError;
                 return View("Error");
             }
         }
@@ -110,7 +163,18 @@ namespace TaskVlopper.Controllers
         // GET: Project/Delete/5
         public ActionResult Delete(int id)
         {
-            return Details(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IProjectRepository>();
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                    return View(model);
+                }
+            }
+            Response.StatusCode = (int)HttpCode.Forbidden;
+            return View("Error");
         }
 
         // POST: Project/Delete/5
@@ -119,11 +183,25 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IProjectRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        repository.Remove(model);
+
+                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
     }

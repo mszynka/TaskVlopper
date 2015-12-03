@@ -1,3 +1,44 @@
 ﻿@model TaskVlopper.Base.Model.Project
 
-<h5>Test</h5>
+<h5>Model editor</h5>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(p => p.Name, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Name, new { @class = "form-control", placeholder = "Name" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Description, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextAreaFor(p => p.Description, new { @class = "form-control", placeholder = "Description" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.StartDate, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.StartDate, new { @class = "form-control", placeholder = "Start date" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Deadline, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Deadline, new { @class = "form-control", placeholder = "Due date" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.EstimatedTimeInHours, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.EstimatedTimeInHours, new { @class = "form-control", placeholder = "Estimated hours", type = "number", min = "0" })
+        </div>
+    </div>
+
+    <div class="col-sm-8 col-sm-push-4">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</div>

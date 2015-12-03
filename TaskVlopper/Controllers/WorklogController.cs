@@ -26,7 +26,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -43,7 +43,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -54,7 +54,7 @@ namespace TaskVlopper.Controllers
             {
                 return PartialView("ModelEditor");
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 
@@ -85,7 +85,7 @@ namespace TaskVlopper.Controllers
                     return PartialView("ModelEditor", viewModel);
                 }
             }
-            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
         }
 

@@ -8,12 +8,12 @@ using System.Text;
 namespace TaskVlopper.Helpers.Tests
 {
     [TestClass()]
-    public class JsonErrorHelpersTests
+    public class JsonHelpersTests
     {
         [TestMethod()]
         public void HttpErrorTest()
         {
-            Assert.IsNotNull(JsonErrorHelpers.HttpError());
+            Assert.IsNotNull(JsonHelpers.HttpMessage());
         }
     }
 }

@@ -123,7 +123,7 @@
     <Compile Include="Controllers\ProjectControllerTest.cs" />
     <Compile Include="Controllers\TaskControllerTest.cs" />
     <Compile Include="Controllers\WorklogControllerTest.cs" />
-    <Compile Include="Helpers\JsonErrorHelpersTests.cs" />
+    <Compile Include="Helpers\JsonHelpersTests.cs" />
     <Compile Include="ProjectSetupTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
