@@ -56,8 +56,8 @@
     <Compile Include="Logic\ITestLogic.cs" />
     <Compile Include="Model\Meeting.cs" />
     <Compile Include="Model\MeetingParticipants.cs" />
-    <Compile Include="Model\Projects.cs" />
-    <Compile Include="Model\Tasks.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\Task.cs" />
     <Compile Include="Model\Test.cs" />
     <Compile Include="Model\UserProjectAssignment.cs" />
     <Compile Include="Model\UserTaskAssignment.cs" />

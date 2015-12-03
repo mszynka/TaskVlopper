@@ -8,7 +8,7 @@ using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Base.Repository
 {
-    public interface ITasksRepository: IBaseRepository<Tasks>
+    public interface ITaskRepository: IBaseRepository<Model.Task>
     {
     }
 }

@@ -10,7 +10,7 @@ using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Repository
 {
-    public class TasksRepository : BaseRepository<Tasks>, ITasksRepository
+    public class TaskRepository : BaseRepository<TaskVlopper.Base.Model.Task>, ITaskRepository
     {
     }
 }

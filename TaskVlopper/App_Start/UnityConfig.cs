@@ -51,8 +51,8 @@ namespace TaskVlopper.ServiceLocator
 
             //Repository
             container.RegisterType<ITestRepository, TestRepository>();
-            container.RegisterType<IProjectsRepository, ProjectsRepository>();
-            container.RegisterType<ITasksRepository, TasksRepository>();
+            container.RegisterType<IProjectRepository, ProjectRepository>();
+            container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<IWorklogRepository, WorklogRepository>();
             container.RegisterType<IUserTaskAssignmentRepository, UserTaskAssignmentRepository>();
             container.RegisterType<IUserProjectAssignmentRepository, UserProjectAssignmentRepository>();

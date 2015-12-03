@@ -91,9 +91,9 @@
     <Compile Include="Base\TaskVlopperDatabase.cs" />
     <Compile Include="MeetingParticipantsRepository.cs" />
     <Compile Include="MeetingRepository.cs" />
-    <Compile Include="ProjectsRepository.cs" />
+    <Compile Include="ProjectRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TasksRepository.cs" />
+    <Compile Include="TaskRepository.cs" />
     <Compile Include="TestRepository.cs" />
     <Compile Include="UserProjectAssignmentRepository.cs" />
     <Compile Include="UserTaskAssignmentRepository.cs" />

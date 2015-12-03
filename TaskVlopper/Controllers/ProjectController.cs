@@ -20,9 +20,9 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                using(IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var repository = container.Resolve<IProjectsRepository>();
+                    var repository = container.Resolve<IProjectRepository>();
                     var viewModel = new ProjectsViewModel(repository.GetAll().ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
@@ -39,7 +39,7 @@ namespace TaskVlopper.Controllers
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var repository = container.Resolve<IProjectsRepository>();
+                    var repository = container.Resolve<IProjectRepository>();
                     var viewModel = new ProjectViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
@@ -52,7 +52,12 @@ namespace TaskVlopper.Controllers
         // GET: Project/Create
         public ActionResult Create()
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("ModelEditor");
+            }
+            Response.StatusCode = 403;
+            return View("Error");
         }
 
         // POST: Project/Create
@@ -72,7 +77,19 @@ namespace TaskVlopper.Controllers
         // GET: Project/Edit/5
         public ActionResult Edit(int id)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IProjectRepository>();
+                    var viewModel = new ProjectViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+
+                    return View("ModelEditor", viewModel);
+                }
+            }
+            Response.StatusCode = 403;
+            return View("Error");
+
         }
 
         // POST: Project/Edit/5
@@ -92,7 +109,19 @@ namespace TaskVlopper.Controllers
         // GET: Project/Delete/5
         public ActionResult Delete(int id)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IProjectRepository>();
+                    repository.Remove(repository.GetAll().ToList().Find(p => p.ID == id));
+
+                    Response.StatusCode = 200;
+                    return RedirectToAction("Index");
+                }
+            }
+            Response.StatusCode = 403;
+            return View("Error");
         }
 
         // POST: Project/Delete/5

@@ -21,7 +21,7 @@ namespace TaskVlopper.Controllers
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var repository = container.Resolve<ITasksRepository>();
+                    var repository = container.Resolve<ITaskRepository>();
                     var viewModel = new TasksViewModel(repository.GetAll().ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
@@ -38,7 +38,7 @@ namespace TaskVlopper.Controllers
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var repository = container.Resolve<ITasksRepository>();
+                    var repository = container.Resolve<ITaskRepository>();
                     var viewModel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
