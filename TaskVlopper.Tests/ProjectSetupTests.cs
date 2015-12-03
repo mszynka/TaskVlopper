@@ -229,8 +229,8 @@ namespace TaskVlopper.Tests
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var projectRepo = container.Resolve<IProjectsRepository>();
-                    var taskRepo = container.Resolve<ITasksRepository>();
+                    var projectRepo = container.Resolve<IProjectRepository>();
+                    var taskRepo = container.Resolve<ITaskRepository>();
                     var workRepo = container.Resolve<IWorklogRepository>();
                     var userTaskAssignmentRepo = container.Resolve<IUserTaskAssignmentRepository>();
                     var userProjectAssignmentRepo = container.Resolve<IUserProjectAssignmentRepository>();

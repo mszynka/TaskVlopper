@@ -9,7 +9,7 @@ using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Repository
 {
-    public class ProjectsRepository : BaseRepository<Project>, IProjectsRepository
+    public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
     }
 }

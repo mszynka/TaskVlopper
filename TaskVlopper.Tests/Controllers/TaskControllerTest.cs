@@ -9,54 +9,54 @@ using System.Threading.Tasks;
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class ProjectControllerTest
+    public class TaskControllerTest
     {
         [TestMethod()]
         public void IndexTest()
         {
-            
+
         }
 
         [TestMethod()]
         public void DetailsTest()
         {
-             
+
         }
 
         [TestMethod()]
         public void CreateTest()
         {
-             
+
         }
 
         [TestMethod()]
         public void CreateTest1()
         {
-             
+
         }
 
         [TestMethod()]
         public void EditTest()
         {
-             
+
         }
 
         [TestMethod()]
         public void EditTest1()
         {
-             
+
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-             
+
         }
 
         [TestMethod()]
         public void DeleteTest1()
         {
-             
+
         }
     }
 }

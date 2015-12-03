@@ -10,7 +10,7 @@ using TaskVlopper.Base.Enums;
 
 namespace TaskVlopper.Base.Model
 {
-    public class Tasks : IBaseModel
+    public class Task : IBaseModel
     {
         [Key]
         [Index(IsUnique = true)]

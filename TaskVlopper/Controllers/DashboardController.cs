@@ -13,7 +13,7 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Manage");
+                return View();
             }
 
             return RedirectToAction("Index", "Home");

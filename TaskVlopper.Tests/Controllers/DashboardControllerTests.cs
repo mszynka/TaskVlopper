@@ -1,17 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TaskVlopper.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskVlopper.Tests.Controllers
+namespace TaskVlopper.Controllers.Tests
 {
-    [TestClass]
-    class TasksControllerTest
+    [TestClass()]
+    public class DashboardControllerTests
     {
-        [TestMethod]
-        public void Index()
+        [TestMethod()]
+        public void IndexTest()
         {
 
         }
