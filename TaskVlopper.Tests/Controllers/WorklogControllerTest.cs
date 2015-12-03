@@ -46,7 +46,7 @@ namespace TaskVlopper.Controllers.Tests
             WorklogController controller = CreateControllerAs("NotLoggedUser", isUserLoggedIn: false);
 
             // Act
-            // TODO: Use Moq to get ResponseCode
+            // TODO: Use Moq to get ResponseCode 
 
             // Assert
             // TODO: Assert ResponseCode is equal to 403
