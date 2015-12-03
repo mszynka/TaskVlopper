@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Helpers;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 
@@ -25,7 +26,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
         }
 
@@ -42,14 +43,19 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
         }
 
         // GET: Worklog/Create
         public ActionResult Create()
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return PartialView("ModelEditor");
+            }
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            return View("Error");
         }
 
         // POST: Worklog/Create
@@ -69,7 +75,18 @@ namespace TaskVlopper.Controllers
         // GET: Worklog/Edit/5
         public ActionResult Edit(int id)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IWorklogRepository>();
+                    var viewModel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+
+                    return PartialView("ModelEditor", viewModel);
+                }
+            }
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
+            return View("Error");
         }
 
         // POST: Worklog/Edit/5
@@ -89,7 +106,7 @@ namespace TaskVlopper.Controllers
         // GET: Worklog/Delete/5
         public ActionResult Delete(int id)
         {
-            return Json(HttpNotFound());
+            return Details(id);
         }
 
         // POST: Worklog/Delete/5

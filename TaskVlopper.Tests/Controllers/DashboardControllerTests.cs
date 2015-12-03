@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Moq;
+using System.Web.Mvc;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
     public class DashboardControllerTests
     {
-        [TestMethod()]
+
+        [TestMethod, Ignore]
         public void IndexTest()
         {
 

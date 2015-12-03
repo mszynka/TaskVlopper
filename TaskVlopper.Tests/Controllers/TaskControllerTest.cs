@@ -4,57 +4,123 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Web.Mvc;
+using Moq;
+using TaskVlopper.Tests.Mocks;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
     public class TaskControllerTest
     {
+        
+
         [TestMethod()]
-        public void IndexTest()
+        public void IndexLoggedUserTest()
+        {
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsLoggedUser<TaskController>();
+
+            // Act
+            JsonResult action = controller.Index() as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(action);
+        }
+
+        [TestMethod()]
+        public void IndexNotLoggedUserTest()
+        {
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsNotLoggedUser<TaskController>();
+
+            // Act
+            JsonResult action = controller.Index() as JsonResult;
+
+            // Assert
+            Assert.IsNull(action);
+        }
+
+        [TestMethod, Ignore]
+        public void DetailsLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void DetailsTest()
+        [TestMethod, Ignore]
+        public void DetailsNotLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void CreateTest()
+        [TestMethod, Ignore]
+        public void CreateGetLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void CreateTest1()
+        [TestMethod, Ignore]
+        public void CreateGetNotLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void EditTest()
+        [TestMethod, Ignore]
+        public void CreatePostLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void EditTest1()
+        [TestMethod, Ignore]
+        public void CreatePostNotLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void DeleteTest()
+        [TestMethod, Ignore]
+        public void EditGetLoggedUserTest()
         {
 
         }
 
-        [TestMethod()]
-        public void DeleteTest1()
+        [TestMethod, Ignore]
+        public void EditGetNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void EditPostLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void EditPostNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void DeleteGetLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void DeleteGetNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void DeletePostLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void DeletePostNotLoggedUserTest()
         {
 
         }

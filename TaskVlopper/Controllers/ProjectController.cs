@@ -28,7 +28,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
         }
 
@@ -45,7 +45,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
         }
 
@@ -54,9 +54,9 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View("ModelEditor");
+                return PartialView("ModelEditor");
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
         }
 
@@ -87,7 +87,7 @@ namespace TaskVlopper.Controllers
                     return View("ModelEditor", viewModel);
                 }
             }
-            Response.StatusCode = 403;
+            Response.StatusCode = (int)HttpErrorCode.Forbidden;
             return View("Error");
 
         }
@@ -102,26 +102,15 @@ namespace TaskVlopper.Controllers
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpErrorCode.InternalServerError;
+                return View("Error");
             }
         }
 
         // GET: Project/Delete/5
         public ActionResult Delete(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    var repository = container.Resolve<IProjectRepository>();
-                    repository.Remove(repository.GetAll().ToList().Find(p => p.ID == id));
-
-                    Response.StatusCode = 200;
-                    return RedirectToAction("Index");
-                }
-            }
-            Response.StatusCode = 403;
-            return View("Error");
+            return Details(id);
         }
 
         // POST: Project/Delete/5
