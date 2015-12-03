@@ -23,7 +23,7 @@ namespace TaskVlopper.Controllers
                 var testLogic = container.Resolve<ITestLogic>();
                 var testRepository = container.Resolve<ITestRepository>();
 
-                var testViewModel = new TestViewModel(testRepository.GetAll().ToList(), testLogic.GetAverageResult());
+                var testViewModel = new TestsViewModel(testRepository.GetAll().ToList(), testLogic.GetAverageResult());
 
                 return View("Test", testViewModel);
             }

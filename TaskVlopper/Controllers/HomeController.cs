@@ -8,20 +8,17 @@ namespace TaskVlopper.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
-            try
+
+            if (User.Identity.IsAuthenticated)
             {
-                if (User.Identity.IsAuthenticated)
-                {
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                return View();
+                return RedirectToAction("Index", "Dashboard");
             }
-            catch
-            {
-                return View("Error");
-            }
+
+            return View();
+
         }
     }
 }
