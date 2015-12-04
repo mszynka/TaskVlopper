@@ -25,7 +25,7 @@ namespace TaskVlopper.Base.Model
 
         public int EstimatedTimeInHours { get; set; }
         public TaskStatusEnum Status { get; set; }
-        public int ExecutiveUser { get; set; }
+        public int ExecutiveUserID { get; set; }
         public int Storypoints { get; set; }
 
 
