@@ -2,39 +2,46 @@
 
 <h5>Model editor</h5>
 
+@Html.ValidationSummary(true)
+
 <div class="form-horizontal">
     <div class="form-group">
-        @Html.LabelFor(p => p.Name, new { @class = "col-sm-4 control-label" })
+        @Html.LabelFor(p => p.Project.Name, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Name, new { @class = "form-control", placeholder = "Name" })
+            @Html.TextBoxFor(p => p.Project.Name, new { @class = "form-control", placeholder = "Name" })
+            @Html.ValidationMessageFor(p => p.Project.Name)
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(p => p.Description, new { @class = "col-sm-4 control-label" })
+        @Html.LabelFor(p => p.Project.Description, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextAreaFor(p => p.Description, new { @class = "form-control", placeholder = "Description" })
+            @Html.TextAreaFor(p => p.Project.Description, new { @class = "form-control", placeholder = "Description" })
+            @Html.ValidationMessageFor(p => p.Project.Description)
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(p => p.StartDate, new { @class = "col-sm-4 control-label" })
+        @Html.LabelFor(p => p.Project.StartDate, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.StartDate, new { @class = "form-control", placeholder = "Start date" })
+            @Html.TextBoxFor(p => p.Project.StartDate, new { @class = "form-control", placeholder = "Start date" })
+            @Html.ValidationMessageFor(p => p.Project.StartDate)
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(p => p.Deadline, new { @class = "col-sm-4 control-label" })
+        @Html.LabelFor(p => p.Project.Deadline, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Deadline, new { @class = "form-control", placeholder = "Due date" })
+            @Html.TextBoxFor(p => p.Project.Deadline, new { @class = "form-control", placeholder = "Due date" })
+            @Html.ValidationMessageFor(p => p.Project.Deadline)
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(p => p.EstimatedTimeInHours, new { @class = "col-sm-4 control-label" })
+        @Html.LabelFor(p => p.Project.EstimatedTimeInHours, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.EstimatedTimeInHours, new { @class = "form-control", placeholder = "Estimated hours", type = "number", min = "0" })
+            @Html.TextBoxFor(p => p.Project.EstimatedTimeInHours, new { @class = "form-control", placeholder = "Estimated hours", type = "number", min = "0" })
+            @Html.ValidationMessageFor(p => p.Project.EstimatedTimeInHours)
         </div>
     </div>
 
