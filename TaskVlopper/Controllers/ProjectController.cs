@@ -73,16 +73,10 @@ namespace TaskVlopper.Controllers
                     {
                         var repository = container.Resolve<IProjectRepository>();
 
-                        Project p = new Project();
-                        p.Name = Request.Form["Name"];
-                        p.Description = Request.Form["Description"];
-                        if (!string.IsNullOrWhiteSpace(Request.Form["StartDate"]))
-                            p.StartDate = DateTime.Parse(Request.Form["StartDate"]);
-                        if (!string.IsNullOrWhiteSpace(Request.Form["Deadline"]))
-                            p.Deadline = DateTime.Parse(Request.Form["Deadline"]);
-                        p.EstimatedTimeInHours = int.Parse(Request.Form["EstimatedTimeInHours"]);
+                        ProjectSerializer serializer = new ProjectSerializer();
+                        Project model = serializer.Serialize(Request.Form);
 
-                        repository.Add(p);
+                        repository.Add(model);
                     }
 
                     return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
@@ -107,7 +101,7 @@ namespace TaskVlopper.Controllers
                     var repository = container.Resolve<IProjectRepository>();
                     var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                    return PartialView("Edit", model);
+                    return PartialView(model);
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
@@ -128,23 +122,9 @@ namespace TaskVlopper.Controllers
                         var repository = container.Resolve<IProjectRepository>();
                         var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                        if (Request.Form["Name"] != model.Name)
-                            model.Name = Request.Form["Name"];
-                        if (Request.Form["Description"] != model.Description)
-                            model.Description = Request.Form["Description"];
-                        if (!string.IsNullOrWhiteSpace(Request.Form["StartDate"]))
-                        {
-                            if (DateTime.Parse(Request.Form["StartDate"]) != model.StartDate)
-                                model.StartDate = DateTime.Parse(Request.Form["StartDate"]);
-                        }
-                        if (!string.IsNullOrWhiteSpace(Request.Form["Deadline"]))
-                        {
-                            if (DateTime.Parse(Request.Form["Deadline"]) != model.Deadline)
-                                model.Deadline = DateTime.Parse(Request.Form["Deadline"]);
-                        }
-                        if (int.Parse(Request.Form["EstimatedTimeInHours"]) != model.EstimatedTimeInHours)
-                            model.EstimatedTimeInHours = int.Parse(Request.Form["EstimatedTimeInHours"]);
-
+                        ProjectSerializer serializer = new ProjectSerializer();
+                        serializer.Edit(model, Request.Form);
+                        
                         repository.Update(model);
                     }
 

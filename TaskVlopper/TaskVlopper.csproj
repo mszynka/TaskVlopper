@@ -206,8 +206,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IBaseSerializer.cs" />
+    <Compile Include="Helpers\MeetingSerializer.cs" />
+    <Compile Include="Helpers\ProjectSerializer.cs" />
     <Compile Include="Helpers\HttpCode.cs" />
     <Compile Include="Helpers\JsonHelpers.cs" />
+    <Compile Include="Helpers\TaskSerializer.cs" />
+    <Compile Include="Helpers\WorklogSerializer.cs" />
     <Compile Include="Identity\ApplicationDbContext.cs" />
     <Compile Include="Identity\ApplicationSignInManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -297,6 +302,15 @@
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Delete.cshtml" />
+    <Content Include="Views\Meeting\Create.cshtml" />
+    <Content Include="Views\Meeting\Delete.cshtml" />
+    <Content Include="Views\Meeting\Edit.cshtml" />
+    <Content Include="Views\Task\Create.cshtml" />
+    <Content Include="Views\Task\Delete.cshtml" />
+    <Content Include="Views\Task\Edit.cshtml" />
+    <Content Include="Views\Worklog\Create.cshtml" />
+    <Content Include="Views\Worklog\Delete.cshtml" />
+    <Content Include="Views\Worklog\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

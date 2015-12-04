@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Helpers;
 using TaskVlopper.Models;
@@ -52,7 +53,7 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return PartialView("ModelEditor");
+                return View();
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
             return View("Error");
@@ -64,11 +65,25 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IMeetingRepository>();
+
+                        MeetingSerializer serializer = new MeetingSerializer();
+                        Meeting model = serializer.Serialize(Request.Form);
+
+                        repository.Add(model);
+                    }
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
 
@@ -80,9 +95,9 @@ namespace TaskVlopper.Controllers
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
                     var repository = container.Resolve<IMeetingRepository>();
-                    var viewModel = new MeetingViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                    return View("ModelEditor", viewModel);
+                    return PartialView(model);
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
@@ -95,18 +110,46 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using(IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IMeetingRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        MeetingSerializer serializer = new MeetingSerializer();
+                        serializer.Edit(model, Request.Form);
+
+                        repository.Update(model);
+                    }
+
+                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Meeting successfully updated!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
 
         // GET: Meeting/Delete/5
         public ActionResult Delete(int id)
         {
-            return Details(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<IMeetingRepository>();
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                    return View(model);
+                }
+            }
+            Response.StatusCode = (int)HttpCode.Forbidden;
+            return View("Error");
         }
 
         // POST: Meeting/Delete/5
@@ -115,11 +158,25 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IMeetingRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        repository.Remove(model);
+
+                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Meeting successfully removed!"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
     }

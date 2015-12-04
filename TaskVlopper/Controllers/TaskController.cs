@@ -9,6 +9,7 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Controllers
 {
@@ -55,7 +56,7 @@ namespace TaskVlopper.Controllers
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    return PartialView("ModelEditor");
+                    return View();
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
@@ -68,11 +69,27 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<ITaskRepository>();
+
+                        TaskSerializer serializer = new TaskSerializer();
+                        Task model = serializer.Serialize(Request.Form);
+
+                        repository.Add(model);
+                    }
+
+                    return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Task successfully created!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
 
@@ -84,9 +101,9 @@ namespace TaskVlopper.Controllers
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
                     var repository = container.Resolve<ITaskRepository>();
-                    var viewModel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                    return PartialView("ModelEditor", viewModel);
+                    return PartialView(model);
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
@@ -99,18 +116,46 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<ITaskRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        TaskSerializer serializer = new TaskSerializer();
+                        serializer.Edit(model, Request.Form);
+
+                        repository.Update(model);
+                    }
+
+                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Task successfully updated!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
 
         // GET: Task/Delete/5
         public ActionResult Delete(int id)
         {
-            return Details(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                {
+                    var repository = container.Resolve<ITaskRepository>();
+                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                    return View(model);
+                }
+            }
+            Response.StatusCode = (int)HttpCode.Forbidden;
+            return View("Error");
         }
 
         // POST: Task/Delete/5
@@ -119,11 +164,25 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<ITaskRepository>();
+                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+
+                        repository.Remove(model);
+
+                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                Response.StatusCode = (int)HttpCode.Forbidden;
+                return View("Error");
             }
             catch
             {
-                return Json(HttpNotFound());
+                Response.StatusCode = (int)HttpCode.InternalServerError;
+                return View("Error");
             }
         }
     }
