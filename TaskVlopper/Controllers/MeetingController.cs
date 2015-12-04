@@ -95,9 +95,9 @@ namespace TaskVlopper.Controllers
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
                     var repository = container.Resolve<IMeetingRepository>();
-                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
+                    var viewmodel = new MeetingViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
 
-                    return PartialView(model);
+                    return PartialView(viewmodel);
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
@@ -143,9 +143,9 @@ namespace TaskVlopper.Controllers
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
                     var repository = container.Resolve<IMeetingRepository>();
-                    var model = repository.GetAll().ToList().Find(p => p.ID == id);
+                    var viewmodel = new MeetingViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
 
-                    return View(model);
+                    return View(viewmodel);
                 }
             }
             Response.StatusCode = (int)HttpCode.Forbidden;
