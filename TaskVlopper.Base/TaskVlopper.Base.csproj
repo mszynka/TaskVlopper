@@ -57,8 +57,8 @@
     <Compile Include="Enums\TestTypeEnum.cs" />
     <Compile Include="Logic\IMeetingLogic.cs" />
     <Compile Include="Logic\IMeetingParticipantsLogic.cs" />
-    <Compile Include="Logic\IProjectsLogic.cs" />
-    <Compile Include="Logic\ITasksLogic.cs" />
+    <Compile Include="Logic\IProjectLogic.cs" />
+    <Compile Include="Logic\ITaskLogic.cs" />
     <Compile Include="Logic\ITestLogic.cs" />
     <Compile Include="Logic\IWorklogLogic.cs" />
     <Compile Include="Model\Meeting.cs" />

@@ -14,7 +14,7 @@ namespace TaskVlopper.Repository
     public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
 
-        public Project GetByProjectId(int id)
+        public Project GetProjectById(int id)
         {
             return this.GetAll().Where(x => x.ID == id).Single();
         }

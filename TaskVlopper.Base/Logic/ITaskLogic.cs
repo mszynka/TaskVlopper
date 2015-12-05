@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskVlopper.Base.Logic
 {
-    public interface ITasksLogic
+    public interface ITaskLogic
     {
     }
 }

@@ -7,7 +7,7 @@ using TaskVlopper.Base.Logic;
 
 namespace TaskVlopper.Logic
 {
-    public class TasksLogic : ITasksLogic 
+    public class TasksLogic : ITaskLogic 
     {
     }
 }

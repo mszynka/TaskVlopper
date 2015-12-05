@@ -9,5 +9,8 @@ namespace TaskVlopper.Base.Repository
 {
     public interface IUserProjectAssignmentRepository : IBaseRepository<UserProjectAssignment>
     {
+        IEnumerable<UserProjectAssignment> GetProjectAssignmentByUserId(string userId);
+        IEnumerable<UserProjectAssignment> GetProjectAssignmentByProjectId(int projectId);
+        UserProjectAssignment GetProjectAssignmentByUserIdAndProjectId(string userId, int projectId);
     }
 }

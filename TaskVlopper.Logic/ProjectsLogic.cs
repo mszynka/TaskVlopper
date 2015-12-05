@@ -7,19 +7,22 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base;
+using TaskVlopper.Base.Repository.Serialize;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace TaskVlopper.Logic
 {
-    public class ProjectsLogic : IProjectsLogic
+    public class ProjectsLogic : IProjectLogic
     {
         private readonly IProjectRepository ProjectRepository;
 
         private readonly IUserProjectAssignmentRepository UserProjectAssignmentRepository;
 
-        private readonly IBaseSerializer<Project> Serializer;
+        private readonly IProjectSerialize Serializer;
 
         public ProjectsLogic(IProjectRepository projectRepository, IUserProjectAssignmentRepository userProjectAssignmentRepository,
-            IBaseSerializer<Project> serializer)
+            IProjectSerialize serializer)
         {
             ProjectRepository = projectRepository;
             UserProjectAssignmentRepository = userProjectAssignmentRepository;
@@ -39,26 +42,41 @@ namespace TaskVlopper.Logic
             return projectsForCurrentUser.AsEnumerable();
         }
 
-        public void HandleProjectEdit(Project project)
+        public void HandleProjectEdit(NameValueCollection form, int projectId)
         {
+            Project project = Serializer.Serialize(form);
+            project.ID = projectId;
+
             ProjectRepository.Update(project);
         }
 
-        public void HandleProjectDelete(Project project)
+        public void HandleProjectDelete(int projectId, string userId)
         {
-            ProjectRepository.Remove(project);
-            //UserProjectAssignmentRepository.Remove()
+            
+            ProjectRepository.Remove(ProjectRepository.GetProjectById(projectId));
+
+            UserProjectAssignment userProjectAssignment = UserProjectAssignmentRepository.
+                GetProjectAssignmentByUserIdAndProjectId(userId, projectId);
+            userProjectAssignment.UserID = userId;
+            userProjectAssignment.ProjectID = projectId;
+            UserProjectAssignmentRepository.Remove(userProjectAssignment);
         }
 
-        public void HandleProjectAdd(Project project)
+        public void HandleProjectAdd(NameValueCollection form, string userId)
         {
+            Project project = Serializer.Serialize(form);
             ProjectRepository.Add(project);
-            ///UserProjectAssignmentRepository.Add()
+
+            UserProjectAssignment userProjectAssignment = new UserProjectAssignment();
+            userProjectAssignment.UserID = userId;
+            userProjectAssignment.ProjectID = project.ID;
+
+            UserProjectAssignmentRepository.Add(userProjectAssignment);
         }
 
-        public void HandleProjectGet(int id)
+        public Project HandleProjectGet(int id)
         {
-            ProjectRepository.GetByProjectId(id);
+            return ProjectRepository.GetProjectById(id);
         }
 
     }
