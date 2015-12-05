@@ -8,7 +8,53 @@
 </div>
 <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
-        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("All", "Index", "Project")</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Details", "Details", "Project", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Create", "Create", "Project")</li>
+                <li>@Html.ActionLink("Edit", "Edit", "Project", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Delete", "Delete", "Project", new { id = 1 }, new { })</li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Task <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("All", "Index", "Task")</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Details", "Details", "Task", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Create", "Create", "Task")</li>
+                <li>@Html.ActionLink("Edit", "Edit", "Task", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Delete", "Delete", "Task", new { id = 1 }, new { })</li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meeting <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("All", "Index", "Meeting")</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Details", "Details", "Meeting", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Create", "Create", "Meeting")</li>
+                <li>@Html.ActionLink("Edit", "Edit", "Meeting", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Delete", "Delete", "Meeting", new { id = 1 }, new { })</li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Worklog <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("All", "Index", "Worklog")</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Details", "Details", "Worklog", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Create", "Create", "Worklog")</li>
+                <li>@Html.ActionLink("Edit", "Edit", "Worklog", new { id = 1 }, new { })</li>
+                <li>@Html.ActionLink("Delete", "Delete", "Worklog", new { id = 1 }, new { })</li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <li role="separator" class="divider"></li>
     </ul>
     @Html.Partial("_Login")
 </div>
