@@ -10,6 +10,6 @@ namespace TaskVlopper.Base.Repository
     public interface IProjectRepository : IBaseRepository<Project>
     {
        
-        void GetByProjectId(int id);
+        Project GetByProjectId(int id);
     }
 }
