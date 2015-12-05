@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TaskVlopper.Helpers
 {
-    public enum HttpCode
+    public enum HttpCodeEnum
     {
         OK = 200,
         Created = 201,

@@ -8,6 +8,7 @@ using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Helpers;
 using TaskVlopper.Models;
+using TaskVlopper.Repository.Base;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Controllers
@@ -27,7 +28,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -44,7 +45,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -55,7 +56,7 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -71,20 +72,21 @@ namespace TaskVlopper.Controllers
                     {
                         var repository = container.Resolve<IWorklogRepository>();
 
-                        WorklogSerializer serializer = new WorklogSerializer();
-                        Worklog model = serializer.Serialize(Request.Form);
+                        BaseSerializer<Worklog> serializer = new BaseSerializer<Worklog>();
+                        var model = serializer.Serialize(Request.Form);
 
                         repository.Add(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -102,7 +104,7 @@ namespace TaskVlopper.Controllers
                     return PartialView(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -119,20 +121,21 @@ namespace TaskVlopper.Controllers
                         var repository = container.Resolve<IWorklogRepository>();
                         var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                        WorklogSerializer serializer = new WorklogSerializer();
+                        BaseSerializer<Worklog> serializer = new BaseSerializer<Worklog>();
                         serializer.Edit(model, Request.Form);
 
                         repository.Update(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -150,7 +153,7 @@ namespace TaskVlopper.Controllers
                     return View(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -169,15 +172,16 @@ namespace TaskVlopper.Controllers
 
                         repository.Remove(model);
 
-                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
+                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
                     }
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
