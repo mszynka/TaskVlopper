@@ -51,9 +51,16 @@
   <ItemGroup>
     <Compile Include="Base\IBaseModel.cs" />
     <Compile Include="Base\IBaseRepository.cs" />
+    <Compile Include="Base\IBaseSerializer.cs" />
+    <Compile Include="Enums\HttpCodeEnum.cs" />
     <Compile Include="Enums\TaskStatusEnum.cs" />
     <Compile Include="Enums\TestTypeEnum.cs" />
+    <Compile Include="Logic\IMeetingLogic.cs" />
+    <Compile Include="Logic\IMeetingParticipantsLogic.cs" />
+    <Compile Include="Logic\IProjectsLogic.cs" />
+    <Compile Include="Logic\ITasksLogic.cs" />
     <Compile Include="Logic\ITestLogic.cs" />
+    <Compile Include="Logic\IWorklogLogic.cs" />
     <Compile Include="Model\Meeting.cs" />
     <Compile Include="Model\MeetingParticipants.cs" />
     <Compile Include="Model\Project.cs" />
@@ -71,6 +78,11 @@
     <Compile Include="Repository\IUserProjectAssignmentRepository.cs" />
     <Compile Include="Repository\IUserTaskAssignmentRepository.cs" />
     <Compile Include="Repository\IWorklogRepository.cs" />
+    <Compile Include="Repository\Serialize\IMeetingParticipantsSerialize.cs" />
+    <Compile Include="Repository\Serialize\IMeetingSerialize.cs" />
+    <Compile Include="Repository\Serialize\IProjectsSerialize.cs" />
+    <Compile Include="Repository\Serialize\ITasksSerialize.cs" />
+    <Compile Include="Repository\Serialize\IWorklogSerialize.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

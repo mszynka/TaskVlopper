@@ -7,7 +7,7 @@ namespace TaskVlopper.Helpers
 {
     public static class JsonHelpers
     {
-        public static object HttpMessage(HttpCode errorCode = HttpCode.UnknownError, string message = null)
+        public static object HttpMessage(HttpCodeEnum errorCode = HttpCodeEnum.UnknownError, string message = null)
         {
             return new { StatusCode = (int)errorCode, StatusDescription = message };
         }

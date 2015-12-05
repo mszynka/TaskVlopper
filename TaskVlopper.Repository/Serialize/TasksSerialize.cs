@@ -5,11 +5,11 @@ using System.Text;
 using TaskVlopper.Base;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
-using TaskVlopper.Repository.Base;
+using TaskVlopper.Base.Repository.Serialize;
 
-namespace TaskVlopper.Repository
+namespace TaskVlopper.Repository.Base.Serialize
 {
-    public class TaskRepository : BaseRepository<TaskVlopper.Base.Model.Task>, ITaskRepository
+    public class TaskSerialize: BaseSerializer<TaskVlopper.Base.Model.Task>, ITaskSerialize
     {
     }
 }

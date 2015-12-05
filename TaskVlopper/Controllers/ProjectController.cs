@@ -10,6 +10,7 @@ using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Model;
+using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Controllers
 {
@@ -19,18 +20,28 @@ namespace TaskVlopper.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IProjectRepository>();
-                    var viewModel = new ProjectsViewModel(repository.GetAll().ToList());
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var logic = container.Resolve<IProjectsLogic>();
+                        var model = logic.GetAllProjectsForCurrentUser(User.Identity.Name);
+                        var viewModel = new ProjectsViewModel(model.ToList());
 
-                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                        return Json(viewModel, JsonRequestBehavior.AllowGet);
+                    }
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // GET: Project/Details/5
@@ -46,7 +57,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -57,7 +68,7 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -71,22 +82,20 @@ namespace TaskVlopper.Controllers
                 {
                     using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                     {
-                        var repository = container.Resolve<IProjectRepository>();
-
-                        ProjectSerializer serializer = new ProjectSerializer();
-                        Project model = serializer.Serialize(Request.Form);
-
-                        repository.Add(model);
+                        var logic = container.Resolve<IProjectsLogic>();
+                        logic.GetAllProjectsForCurrentUser(User.Identity.Name);
+                        //repository.Add(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch (Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -104,7 +113,7 @@ namespace TaskVlopper.Controllers
                     return PartialView(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
 
         }
@@ -122,20 +131,21 @@ namespace TaskVlopper.Controllers
                         var repository = container.Resolve<IProjectRepository>();
                         var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                        ProjectSerializer serializer = new ProjectSerializer();
-                        serializer.Edit(model, Request.Form);
-                        
+                        //ProjectSerializer serializer = new ProjectSerializer();
+                        //serializer.Edit(model, Request.Form);
+
                         repository.Update(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch (Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -153,7 +163,7 @@ namespace TaskVlopper.Controllers
                     return View(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -172,15 +182,16 @@ namespace TaskVlopper.Controllers
 
                         repository.Remove(model);
 
-                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
+                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
                     }
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch (Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }

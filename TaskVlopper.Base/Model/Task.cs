@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 using TaskVlopper.Base.Enums;
 
 namespace TaskVlopper.Base.Model

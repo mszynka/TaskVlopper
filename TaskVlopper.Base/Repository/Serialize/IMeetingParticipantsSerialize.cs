@@ -5,9 +5,9 @@ using System.Text;
 using TaskVlopper.Base;
 using TaskVlopper.Base.Model;
 
-namespace TaskVlopper.Base.Repository
+namespace TaskVlopper.Base.Repository.Serialize
 {
-    public interface ITaskRepository: IBaseRepository<Model.Task>
+    public interface IMeetingParticipantsSerialize : IBaseSerializer<MeetingParticipants>
     {
     }
 }

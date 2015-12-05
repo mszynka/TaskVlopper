@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 
-namespace TaskVlopper.Helpers
+namespace TaskVlopper.Base
 {
     public interface IBaseSerializer<T> where T : IBaseModel
     {

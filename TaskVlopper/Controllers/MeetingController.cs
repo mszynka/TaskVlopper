@@ -8,6 +8,7 @@ using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Helpers;
 using TaskVlopper.Models;
+using TaskVlopper.Repository.Base;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Controllers
@@ -27,7 +28,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -44,7 +45,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -55,7 +56,7 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -70,19 +71,19 @@ namespace TaskVlopper.Controllers
                     using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                     {
                         var repository = container.Resolve<IMeetingRepository>();
-
-                        MeetingSerializer serializer = new MeetingSerializer();
-                        Meeting model = serializer.Serialize(Request.Form);
+                        BaseSerializer<Meeting> serialize = new BaseSerializer<Meeting>();
+                        var model = serialize.Serialize(Request.Form);
 
                         repository.Add(model);
                     }
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -100,7 +101,7 @@ namespace TaskVlopper.Controllers
                     return PartialView(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -117,20 +118,21 @@ namespace TaskVlopper.Controllers
                         var repository = container.Resolve<IMeetingRepository>();
                         var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                        MeetingSerializer serializer = new MeetingSerializer();
-                        serializer.Edit(model, Request.Form);
+                        BaseSerializer<Meeting> serialize = new BaseSerializer<Meeting>();
+                        serialize.Edit(model, Request.Form);
 
                         repository.Update(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Meeting successfully updated!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Meeting successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -148,7 +150,7 @@ namespace TaskVlopper.Controllers
                     return View(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -167,15 +169,16 @@ namespace TaskVlopper.Controllers
 
                         repository.Remove(model);
 
-                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Meeting successfully removed!"), JsonRequestBehavior.AllowGet);
+                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Meeting successfully removed!"), JsonRequestBehavior.AllowGet);
                     }
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }

@@ -10,6 +10,7 @@ using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Model;
+using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Controllers
 {
@@ -28,7 +29,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -45,7 +46,7 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -59,7 +60,7 @@ namespace TaskVlopper.Controllers
                     return View();
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -75,20 +76,22 @@ namespace TaskVlopper.Controllers
                     {
                         var repository = container.Resolve<ITaskRepository>();
 
-                        TaskSerializer serializer = new TaskSerializer();
-                        Task model = serializer.Serialize(Request.Form);
+                        BaseSerializer<Task> serializer = new BaseSerializer<Task>();
+                        var model = serializer.Serialize(Request.Form);
+
 
                         repository.Add(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Created, "Task successfully created!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Task successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -106,7 +109,7 @@ namespace TaskVlopper.Controllers
                     return PartialView(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -123,20 +126,21 @@ namespace TaskVlopper.Controllers
                         var repository = container.Resolve<ITaskRepository>();
                         var model = repository.GetAll().ToList().Find(p => p.ID == id);
 
-                        TaskSerializer serializer = new TaskSerializer();
+                        BaseSerializer<Task> serializer = new BaseSerializer<Task>();
                         serializer.Edit(model, Request.Form);
 
                         repository.Update(model);
                     }
 
-                    return Json(JsonHelpers.HttpMessage(HttpCode.Accepted, "Task successfully updated!"), JsonRequestBehavior.AllowGet);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Task successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
@@ -154,7 +158,7 @@ namespace TaskVlopper.Controllers
                     return View(viewmodel);
                 }
             }
-            Response.StatusCode = (int)HttpCode.Forbidden;
+            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
         }
 
@@ -173,15 +177,16 @@ namespace TaskVlopper.Controllers
 
                         repository.Remove(model);
 
-                        return Json(JsonHelpers.HttpMessage(HttpCode.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
+                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
                     }
                 }
-                Response.StatusCode = (int)HttpCode.Forbidden;
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch
+            catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpCode.InternalServerError;
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
                 return View("Error");
             }
         }
