@@ -24,7 +24,12 @@
     <div class="form-group">
         @Html.LabelFor(p => p.Meeting.DateAndTime, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Meeting.DateAndTime, new { @class = "form-control", placeholder = "Date and time" })
+            <div class='input-group date hasDatepicker'>
+                @Html.TextBoxFor(p => p.Meeting.DateAndTime, new { @class = "form-control", placeholder = "Date and time" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
             @Html.ValidationMessageFor(p => p.Meeting.DateAndTime)
         </div>
     </div>
