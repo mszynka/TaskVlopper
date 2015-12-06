@@ -15,9 +15,14 @@ namespace TaskVlopper.Repository
     public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
 
-        public Project GetProjectById(int id)
+        public Project GetProjectByIdWithoutTracking(int id)
         {
             return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
+        }
+
+        public Project GetProjectByIdWithTracking(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id).Single();
         }
     }
 }

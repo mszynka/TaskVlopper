@@ -149,7 +149,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    var viewmodel = logic.HandleProjectGet(id);
+                    var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return View(viewmodel);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;

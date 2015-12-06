@@ -204,7 +204,7 @@ namespace TaskVlopper.Controllers.Tests
 
                 // Assert
                 Assert.AreEqual(ModelsMocks.ProjectModelFirst.Name,
-                    repository.GetProjectById(ModelsMocks.ProjectModelSecond.ID).Name);
+                    repository.GetProjectByIdWithoutTracking(ModelsMocks.ProjectModelSecond.ID).Name);
 
             }
         }
@@ -263,14 +263,15 @@ namespace TaskVlopper.Controllers.Tests
             {
                 var repository = container.Resolve<IProjectRepository>();
                 repository.RemoveAll();
-                repository.Add(ModelsMocks.ProjectModelFirst);
+                
 
 
                 // Arrange
                 ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
 
+                JsonResult actionCreate = controller.Create(ModelsMocks.Form) as JsonResult;
                 // Act
-                JsonResult action = controller.Delete(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.Form) as JsonResult;
+                JsonResult actionDelete = controller.Delete(repository.GetAll().First().ID, ModelsMocks.Form) as JsonResult;
 
                 // Assert
                 Assert.AreEqual(0, repository.GetAll().Count());
