@@ -9,5 +9,6 @@ namespace TaskVlopper.Base.Repository
 {
     public interface IMeetingRepository : IBaseRepository<Meeting>
     {
+        Meeting GetMeetingById(int id);
     }
 }
