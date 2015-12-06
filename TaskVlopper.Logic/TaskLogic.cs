@@ -9,7 +9,7 @@ using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Logic
 {
-    public class TasksLogic : ITaskLogic
+    public class TaskLogic : ITaskLogic
     {
         public IEnumerable<Base.Model.Task> GetAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
         {

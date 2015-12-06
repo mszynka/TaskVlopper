@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Helpers;
@@ -15,38 +16,49 @@ namespace TaskVlopper.Controllers
 {
     public class WorklogController : Controller
     {
-        [HttpGet]
-        public ActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewModel = new WorklogsViewModel(repository.GetAll().ToList());
+        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        static IWorklogLogic logic = container.Resolve<IWorklogLogic>();
 
+        [HttpGet]
+        public ActionResult Index(int projectId, int taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // GET: Worklog/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int projectId, int taskId, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewModel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
+                    var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // GET: Worklog/Create
@@ -62,28 +74,19 @@ namespace TaskVlopper.Controllers
 
         // POST: Worklog/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, int projectId, int taskId)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                    {
-                        var repository = container.Resolve<IWorklogRepository>();
-
-                        BaseSerializer<Worklog> serializer = new BaseSerializer<Worklog>();
-                        var model = serializer.Serialize(Request.Form);
-
-                        repository.Add(model);
-                    }
-
+                    logic.HandleWorklogAdd(collection, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
@@ -92,47 +95,42 @@ namespace TaskVlopper.Controllers
         }
 
         // GET: Worklog/Edit/5
-        public ActionResult Edit(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewmodel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
-                    return PartialView(viewmodel);
-                }
-            }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
-        }
-
-        // POST: Worklog/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int projectId, int taskId, int id)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                    {
-                        var repository = container.Resolve<IWorklogRepository>();
-                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+                    var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
+                    return PartialView(viewmodel);
+                }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
 
-                        BaseSerializer<Worklog> serializer = new BaseSerializer<Worklog>();
-                        serializer.Edit(model, Request.Form);
+        }
 
-                        repository.Update(model);
-                    }
-
+        // POST: Worklog/Edit/5
+        [HttpPost]
+        public ActionResult Edit(FormCollection collection, int id, int projectId, int taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    logic.HandleWorklogEdit(collection, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
@@ -143,42 +141,43 @@ namespace TaskVlopper.Controllers
         // GET: Worklog/Delete/5
         public ActionResult Delete(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewmodel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
-                    return View(viewmodel);
-                }
-            }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
-        }
-
-        // POST: Worklog/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
+            try {
                 if (User.Identity.IsAuthenticated)
                 {
                     using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                     {
                         var repository = container.Resolve<IWorklogRepository>();
-                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
+                        var viewmodel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
 
-                        repository.Remove(model);
-
-                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
+                        return View(viewmodel);
                     }
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
+        }
+
+        // POST: Worklog/Delete/5
+        [HttpPost]
+        public ActionResult Delete(FormCollection collection, int projectId, int taskId, int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    logic.HandleWorklogDelete(projectId, taskId, id, User.Identity.Name);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
+            }
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;

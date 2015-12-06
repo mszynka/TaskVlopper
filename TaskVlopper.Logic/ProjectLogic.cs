@@ -13,7 +13,7 @@ using System.Collections.Specialized;
 
 namespace TaskVlopper.Logic
 {
-    public class ProjectsLogic : IProjectLogic
+    public class ProjectLogic : IProjectLogic
     {
         private readonly IProjectRepository ProjectRepository;
 
@@ -21,7 +21,7 @@ namespace TaskVlopper.Logic
 
         private readonly IProjectSerialize Serializer;
 
-        public ProjectsLogic(IProjectRepository projectRepository, IUserProjectAssignmentRepository userProjectAssignmentRepository,
+        public ProjectLogic(IProjectRepository projectRepository, IUserProjectAssignmentRepository userProjectAssignmentRepository,
             IProjectSerialize serializer)
         {
             ProjectRepository = projectRepository;

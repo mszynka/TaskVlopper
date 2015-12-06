@@ -52,8 +52,8 @@ namespace TaskVlopper.ServiceLocator
 
             //Logic
             container.RegisterType<ITestLogic, TestLogic>();
-            container.RegisterType<IProjectLogic, ProjectsLogic>();
-            container.RegisterType<ITaskLogic, TasksLogic>();
+            container.RegisterType<IProjectLogic, ProjectLogic>();
+            container.RegisterType<ITaskLogic, TaskLogic>();
             container.RegisterType<IWorklogLogic, WorklogLogic>();
             container.RegisterType<IMeetingLogic, MeetingLogic>();
             container.RegisterType<IMeetingParticipantsLogic, MeetingParticipantsLogic>();

@@ -11,5 +11,9 @@ namespace TaskVlopper.Repository
 {
     public class WorklogRepository : BaseRepository<Worklog>, IWorklogRepository
     {
+        public Worklog GetWorklogById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
