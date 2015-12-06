@@ -9,7 +9,7 @@ namespace TaskVlopper.Base.Repository
 {
     public interface IProjectRepository : IBaseRepository<Project>
     {
-       
-        Project GetProjectById(int id);
+        Project GetProjectByIdWithTracking(int id);
+        Project GetProjectByIdWithoutTracking(int id);
     }
 }

@@ -52,8 +52,8 @@ namespace TaskVlopper.Logic
 
         public void HandleProjectDelete(int projectId, string userId)
         {
-            
-            ProjectRepository.Remove(ProjectRepository.GetProjectById(projectId));
+            Project proj = ProjectRepository.GetProjectByIdWithTracking(projectId);
+            ProjectRepository.Remove(proj);
 
             UserProjectAssignment userProjectAssignment = UserProjectAssignmentRepository.
                 GetProjectAssignmentByUserIdAndProjectId(userId, projectId);
@@ -76,7 +76,7 @@ namespace TaskVlopper.Logic
 
         public Project HandleProjectGet(int id)
         {
-            return ProjectRepository.GetProjectById(id);
+            return ProjectRepository.GetProjectByIdWithoutTracking(id);
         }
 
     }

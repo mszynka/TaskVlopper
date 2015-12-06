@@ -144,7 +144,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    var viewmodel = logic.HandleProjectGet(id);
+                    var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return View(viewmodel);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
