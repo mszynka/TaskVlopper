@@ -7,3 +7,7 @@
     });
   return false;
 });
+
+$(".hasDatepicker").datetimepicker({
+    format: "DD/MM/YYYY"
+});

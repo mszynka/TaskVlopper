@@ -32,7 +32,12 @@
     <div class="form-group">
         @Html.LabelFor(p => p.Task.StartDate, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Task.StartDate, new { @class = "form-control", placeholder = "Start date" })
+            <div class='input-group date hasDatepicker'>
+                @Html.TextBoxFor(p => p.Task.StartDate, new { @class = "form-control", placeholder = "Start date" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
             @Html.ValidationMessageFor(p => p.Task.StartDate)
         </div>
     </div>
@@ -40,7 +45,12 @@
     <div class="form-group">
         @Html.LabelFor(p => p.Task.EndDate, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Task.EndDate, new { @class = "form-control", placeholder = "Due date" })
+            <div class='input-group date hasDatepicker'>
+                @Html.TextBoxFor(p => p.Task.EndDate, new { @class = "form-control", placeholder = "Due date" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
             @Html.ValidationMessageFor(p => p.Task.EndDate)
         </div>
     </div>
@@ -54,7 +64,7 @@
     </div>
 
     @* TODO: Create crazy select enumeration *@
-        @*<div class="form-group">
+    @*<div class="form-group">
             @Html.LabelFor(p => p.Task.Status, new { @class = "col-sm-4 control-label" })
             <div class="col-sm-8">
                 @Html.TextBoxFor(p => p.Task.Status, new { @class = "form-control", placeholder = "Status" })
