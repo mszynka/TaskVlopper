@@ -29,14 +29,13 @@ namespace TaskVlopper.Controllers
                     var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -50,14 +49,13 @@ namespace TaskVlopper.Controllers
                     var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -68,8 +66,8 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            return View("Error", handler.handleError());
         }
 
         // POST: Worklog/Create
@@ -83,14 +81,13 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogAdd(collection, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -104,14 +101,13 @@ namespace TaskVlopper.Controllers
                     var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
                     return PartialView(viewmodel);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
 
         }
@@ -127,14 +123,13 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogEdit(collection, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -152,14 +147,13 @@ namespace TaskVlopper.Controllers
                         return View(viewmodel);
                     }
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -174,14 +168,13 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogDelete(projectId, taskId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
     }
