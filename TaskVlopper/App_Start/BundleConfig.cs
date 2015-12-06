@@ -9,10 +9,10 @@ namespace TaskVlopper
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Scripts/jquery-{version}.js"));
+                .Include("~/Scripts/jquery/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval")
-                .Include("~/Scripts/jquery.validate*"));
+                .Include("~/Scripts/jquery/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/plugins")
                 .IncludeDirectory("~/Scripts/plugins", "*.js", true)
@@ -26,9 +26,19 @@ namespace TaskVlopper
             bundles.Add(new ScriptBundle("~/bundles/bootstrap")
                 .Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
-                      "~/Scripts/moment.js"
+                      "~/Scripts/respond/*.js",
+                      "~/Scripts/moment/*.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/angular")
+                .Include(
+                "~/Scripts/angular/angular.js",
+                "~/Scripts/angular/angular-animate.js",
+                "~/Scripts/angular/angular-mocks.js",
+                "~/Scripts/angular/angular-ui-router.js",
+                "~/Scripts/angular-ui/ui-bootstrap.js",
+                "~/Scripts/angular-ui/ui-bootstrapm-tpls.js"
+                ));
         }
     }
 }
