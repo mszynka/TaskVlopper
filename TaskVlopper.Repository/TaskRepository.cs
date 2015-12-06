@@ -11,5 +11,9 @@ namespace TaskVlopper.Repository
 {
     public class TaskRepository : BaseRepository<TaskVlopper.Base.Model.Task>, ITaskRepository
     {
+        public Task GetTaskById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

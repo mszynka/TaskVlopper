@@ -72,8 +72,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IMeetingParticipantsRepository.cs" />
     <Compile Include="Repository\IMeetingRepository.cs" />
-    <Compile Include="Repository\IProjectsRepository.cs" />
-    <Compile Include="Repository\ITasksRepository.cs" />
+    <Compile Include="Repository\IProjectRepository.cs" />
+    <Compile Include="Repository\ITaskRepository.cs" />
     <Compile Include="Repository\ITestRepository.cs" />
     <Compile Include="Repository\IUserProjectAssignmentRepository.cs" />
     <Compile Include="Repository\IUserTaskAssignmentRepository.cs" />

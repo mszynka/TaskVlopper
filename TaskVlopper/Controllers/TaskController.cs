@@ -16,49 +16,59 @@ namespace TaskVlopper.Controllers
 {
     public class TaskController : Controller
     {
+        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        static ITaskLogic logic = container.Resolve<ITaskLogic>();
+
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int projectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITaskRepository>();
-                    var viewModel = new TasksViewModel(repository.GetAll().ToList());
+                    var model = logic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name);
+                    var viewModel = new TasksViewModel(model.ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // GET: Task/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int projectId, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITaskRepository>();
-                    var viewModel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
+                    var viewModel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // GET: Task/Create
-        public ActionResult Create()
+        public ActionResult Create(int projectId)
         {
             if (User.Identity.IsAuthenticated)
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    return View();
-                }
+                return View();
             }
             Response.StatusCode = (int)HttpCodeEnum.Forbidden;
             return View("Error");
@@ -66,29 +76,19 @@ namespace TaskVlopper.Controllers
 
         // POST: Task/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(int projectId, FormCollection collection)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                    {
-                        var repository = container.Resolve<ITaskRepository>();
-
-                        BaseSerializer<Task> serializer = new BaseSerializer<Task>();
-                        var model = serializer.Serialize(Request.Form);
-
-
-                        repository.Add(model);
-                    }
-
+                    logic.HandleTaskAdd(collection, projectId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Task successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
@@ -97,47 +97,41 @@ namespace TaskVlopper.Controllers
         }
 
         // GET: Task/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int projectId, int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            try {
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITaskRepository>();
-                    var viewmodel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
+                    var viewmodel = logic.HandleTaskGet(projectId, id);
                     return PartialView(viewmodel);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // POST: Task/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int projectId, int id, FormCollection collection)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                    {
-                        var repository = container.Resolve<ITaskRepository>();
-                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
-
-                        BaseSerializer<Task> serializer = new BaseSerializer<Task>();
-                        serializer.Edit(model, Request.Form);
-
-                        repository.Update(model);
-                    }
+                    logic.HandleTaskEdit(collection, projectId, id);
 
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Task successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
@@ -146,44 +140,40 @@ namespace TaskVlopper.Controllers
         }
 
         // GET: Task/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int projectId, int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            try {
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITaskRepository>();
-                    var viewmodel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
+                    var viewmodel = logic.HandleTaskGet(projectId, id);
                     return View(viewmodel);
                 }
+                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
+                return View("Error");
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex.Message);
+                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
+                return View("Error");
+            }
         }
 
         // POST: Task/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int projectId, int id, FormCollection collection)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                    {
-                        var repository = container.Resolve<ITaskRepository>();
-                        var model = repository.GetAll().ToList().Find(p => p.ID == id);
-
-                        repository.Remove(model);
-
-                        return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
-                    }
+                    logic.HandleTaskDelete(projectId, id, User.Identity.Name);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
                 Response.StatusCode = (int)HttpCodeEnum.Forbidden;
                 return View("Error");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogException(ex.Message);
                 Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
