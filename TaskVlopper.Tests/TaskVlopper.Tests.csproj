@@ -125,6 +125,7 @@
     <Compile Include="Controllers\WorklogControllerTest.cs" />
     <Compile Include="Helpers\JsonHelpersTests.cs" />
     <Compile Include="Mocks\ControllersMocks.cs" />
+    <Compile Include="Mocks\ModelsMocks.cs" />
     <Compile Include="ProjectSetupTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

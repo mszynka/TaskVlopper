@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using TaskVlopper.Base;
@@ -16,7 +17,7 @@ namespace TaskVlopper.Repository
 
         public Project GetProjectById(int id)
         {
-            return this.GetAll().Where(x => x.ID == id).Single();
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
         }
     }
 }
