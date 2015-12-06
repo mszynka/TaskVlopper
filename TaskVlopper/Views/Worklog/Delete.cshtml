@@ -1,0 +1,7 @@
+﻿@model TaskVlopper.Models.WorklogViewModel
+
+@using (Html.BeginForm("Delete", "Worklog"))
+{
+    <h5>Are you sure to delete worklog?</h5>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+}

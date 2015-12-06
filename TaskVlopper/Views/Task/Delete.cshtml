@@ -1,0 +1,7 @@
+﻿@model TaskVlopper.Models.TaskViewModel
+
+@using (Html.BeginForm("Delete", "Task"))
+{
+    <h5>Are you sure to delete task?</h5>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+}

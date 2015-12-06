@@ -16,6 +16,7 @@ namespace TaskVlopper.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        
         private readonly ApplicationUserManager userManager;
         private readonly ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;

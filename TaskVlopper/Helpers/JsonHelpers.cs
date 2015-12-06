@@ -5,9 +5,9 @@ using System.Web;
 
 namespace TaskVlopper.Helpers
 {
-    public static class JsonErrorHelpers
+    public static class JsonHelpers
     {
-        public static object HttpError(HttpErrorCode errorCode = HttpErrorCode.UnknownError, string message = null)
+        public static object HttpMessage(HttpCodeEnum errorCode = HttpCodeEnum.UnknownError, string message = null)
         {
             return new { StatusCode = (int)errorCode, StatusDescription = message };
         }

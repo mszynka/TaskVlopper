@@ -1,1 +1,6 @@
-﻿@Html.Partial("ModelEditor")
+﻿@model TaskVlopper.Models.ProjectViewModel
+
+@using (Html.BeginForm("Create", "Project"))
+{
+    @Html.Partial("../Project/ModelEditor")
+}

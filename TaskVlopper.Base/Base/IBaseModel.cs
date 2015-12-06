@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace TaskVlopper.Base.Base
+namespace TaskVlopper.Base
 {
     public interface IBaseModel
     {

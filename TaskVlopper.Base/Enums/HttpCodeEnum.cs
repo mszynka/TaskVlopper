@@ -5,8 +5,15 @@ using System.Web;
 
 namespace TaskVlopper.Helpers
 {
-    public enum HttpErrorCode
+    public enum HttpCodeEnum
     {
+        OK = 200,
+        Created = 201,
+        Accepted = 202,
+        NoContent = 204,
+        ResetContent = 205,
+        PartialContent = 206,
+
         BadRequest = 400,
         Unauthorized = 401,
         Forbidden = 403,

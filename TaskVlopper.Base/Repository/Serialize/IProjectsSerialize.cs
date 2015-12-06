@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 using TaskVlopper.Base.Model;
 
-namespace TaskVlopper.Base.Repository
+namespace TaskVlopper.Base.Repository.Serialize
 {
-    public interface IProjectRepository : IBaseRepository<Project>
+    public interface IProjectSerialize : IBaseSerializer<Project>
     {
         
     }
