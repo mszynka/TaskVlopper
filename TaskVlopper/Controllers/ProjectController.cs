@@ -33,14 +33,13 @@ namespace TaskVlopper.Controllers
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -54,14 +53,13 @@ namespace TaskVlopper.Controllers
                     var viewModel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -72,8 +70,8 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-            return View("Error");
+            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            return View("Error", handler.handleError());
         }
 
         // POST: Project/Create
@@ -88,14 +86,13 @@ namespace TaskVlopper.Controllers
 
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -109,14 +106,13 @@ namespace TaskVlopper.Controllers
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return PartialView(viewmodel);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -131,14 +127,13 @@ namespace TaskVlopper.Controllers
                     logic.HandleProjectEdit(collection, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -152,14 +147,13 @@ namespace TaskVlopper.Controllers
                     var viewmodel = logic.HandleProjectGet(id);
                     return View(viewmodel);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
@@ -174,14 +168,13 @@ namespace TaskVlopper.Controllers
                     logic.HandleProjectDelete(id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
-                Response.StatusCode = (int)HttpCodeEnum.Forbidden;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex.Message);
-                Response.StatusCode = (int)HttpCodeEnum.InternalServerError;
-                return View("Error");
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
     }
