@@ -238,6 +238,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-app\app.js" />
+    <Content Include="Scripts\angular-app\controllers\dashboard.ctrl.js" />
+    <Content Include="Scripts\angular-app\services\project.service.js" />
     <Content Include="Scripts\angular\angular-animate.js" />
     <Content Include="Scripts\angular\angular-animate.min.js" />
     <Content Include="Scripts\angular\angular-mocks.js" />
@@ -346,6 +349,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\angular-app\models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

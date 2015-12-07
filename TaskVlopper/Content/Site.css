@@ -22,3 +22,10 @@
 textarea {
     resize: vertical;
 }
+
+/* Fix for form-horizontal clearfix bug */
+.form-horizontal:after {
+    clear: both;
+    display: block;
+    content: "";
+}
