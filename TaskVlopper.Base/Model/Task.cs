@@ -33,7 +33,7 @@ namespace TaskVlopper.Base.Model
         public TaskStatusEnum Status { get; set; }
         
         [DisplayName("Executive user")]
-        public int ExecutiveUserID { get; set; }
+        public string ExecutiveUserID { get; set; }
         public int Storypoints { get; set; }
 
 

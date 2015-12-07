@@ -15,7 +15,7 @@ namespace TaskVlopper.Base.Model
         [Column(Order = 1)]
         public int ID { get; set; }
 
-        public int UserID {get; set;}
+        public string UserID {get; set;}
 
         public int TaskID { get; set; }
     }
