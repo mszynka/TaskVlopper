@@ -44,6 +44,11 @@ namespace TaskVlopper.Repository.Base
         {
             try
             {
+                if (!Directory.Exists(HttpContext.Current.Server.MapPath("~\\Logger")))
+                {
+                    Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~\\Logger"));
+                }
+
                 using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(HttpContext.Current.Server.MapPath("~\\Logger\\" + DateTime.Now.ToShortDateString().ToString().Replace("/", "_") + ".txt"), true))
                 {
