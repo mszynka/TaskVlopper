@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -50,12 +51,27 @@ namespace TaskVlopper.Repository.Base
                     || info.PropertyType == typeof(Nullable<Int32>))
                     info.SetValue(model, Int32.Parse(buf));
 
-                else if (info.PropertyType == typeof(double))
-                    info.SetValue(model, double.Parse(buf));
+                else if (info.PropertyType == typeof(double)
+                    || info.PropertyType == typeof(Nullable<double>))
+                {
+                    try
+                    {
+                        info.SetValue(model, double.Parse(buf));
+                    }
+                    catch (Exception ex)
+                    {
+                        //Invariant country needed
+                        info.SetValue(model, double.Parse(buf, CultureInfo.InvariantCulture));
+                    }
+                }
 
-                else if (info.PropertyType == typeof(TaskStatusEnum) 
-                    || info.PropertyType == typeof(Nullable<TaskStatusEnum>))
-                    info.SetValue(model, new TaskStatusEnum().Parse(buf)); 
+                else if (info.PropertyType.IsEnum)
+                    info.SetValue(model, Enum.Parse(info.PropertyType, buf));
+
+                else if (TypeExtension.IsNullableEnum(info.PropertyType))
+                {
+                    info.SetValue(model, Enum.Parse(Nullable.GetUnderlyingType(info.PropertyType), buf));
+                }
 
 
             }
@@ -66,6 +82,15 @@ namespace TaskVlopper.Repository.Base
         public T Serialize(NameValueCollection parameters)
         {
             return Edit(new T(), parameters);
+        }
+    }
+
+    public static class TypeExtension
+    {
+        public static bool IsNullableEnum(this Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+            return (u != null) && u.IsEnum;
         }
     }
 }

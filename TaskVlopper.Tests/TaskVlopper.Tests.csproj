@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseSerializerTests.cs" />
     <Compile Include="Controllers\DashboardControllerTests.cs" />
     <Compile Include="Controllers\MeetingControllerTest.cs" />
     <Compile Include="Controllers\ProjectControllerTest.cs" />
