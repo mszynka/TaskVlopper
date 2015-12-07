@@ -36,7 +36,7 @@ namespace TaskVlopper.Repository.Base
             {
                 var buf = parameters[model.GetType().Name + "." + info.Name];
 
-                if (buf == null)
+                if (string.IsNullOrWhiteSpace(buf))
                     continue;
 
                 else if (info.PropertyType == typeof(string))
