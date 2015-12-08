@@ -4,39 +4,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div ng-controller="DashboardController as dashboard">
+<div ng-controller="DashboardController as dashboard" class="container-fluid">
 
     <div class="form-horizontal">
         <div class="form-group">
             <h2 class="pull-left">@ViewBag.Title</h2>
 
             <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
-                <input type="text" placeholder="Search projects..." class="form-control" ng-model="dashboard.projectSearchInput"/>
+                <input type="text" placeholder="Search by project name..." class="form-control" ng-model="dashboard.projectSearchInput" />
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-search"></span>
+                </div>
+                <button type="button" class="btn btn-primary pull-right" ng-hide="showAddPanel" ng-click="showAddPanel=true" ng-init="showAddPanel=false">
+                    <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-hide="(projects | filter: { Name: dashboard.projectSearchInput }).length > 0 || dashboard.projectSearchInput != null" ng-show="showAddPanel">
+        @Html.Partial("../Project/Create")
+    </div>
+
+    <div class="form-horizontal ng-hide" ng-hide="showAddPanel || (projects | filter: { Name: dashboard.projectSearchInput }).length == 0">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="project in projects | filter: { Name: dashboard.projectSearchInput }">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <strong>{{project.Name}}</strong>
+                    </div>
+                    <div class="panel-footer">
+                        <label class="control-label">Description:</label> <div class="well well-sm"> {{project.Description}}</div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div ng-hide="hasProjects">
-        @Html.Partial("../Project/Create")
-    </div>
-
-    <div class="form-horizontal" ng-show="hasProjects">
-        <div class="panel panel-default col-lg-3 col-md-4 col-sm-6" ng-repeat="project in projects | filter:dashboard.projectSearchInput">
-            <div class="panel-body">
-                {{project.Name}}
-            </div>
-            <div class="panel-footer">
-                <label class="control-label">Description</label> {{project.Description}} <br />
-                <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }} <br />
-                <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
-            </div>
-        </div>
-        <div class="alert alert-warning" ng-show="(projects | filter:dashboard.projectSearchInput).length == 0">No project satisfying the current query</div>
-    </div>
-
+    <div class="alert alert-warning" ng-show="(projects | filter: { Name: dashboard.projectSearchInput }).length == 0">No project satisfying the current query</div>
 </div>
 
 
