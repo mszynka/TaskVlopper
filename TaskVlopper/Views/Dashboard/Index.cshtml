@@ -22,44 +22,24 @@
         </div>
     </div>
 
-    <div ng-hide="(projects | filter: { Name: dashboard.projectSearchInput }).length > 0 || dashboard.projectSearchInput != null" ng-show="showAddPanel">
+    <div class="alert alert-info" ng-show="projects.length == 0 && !showAddPanel">
+        Currently no projects available. Add a project.
+    </div>
+
+    <div ng-show="showAddPanel">
         @Html.Partial("../Project/Create")
     </div>
 
     <div class="form-horizontal ng-hide" ng-hide="showAddPanel || (projects | filter: { Name: dashboard.projectSearchInput }).length == 0">
         <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="project in projects | filter: { Name: dashboard.projectSearchInput }">
-                <div class="panel panel-default">
-
-                    <div class="panel-body">
-                        <strong>{{project.Name}}</strong>
-
-                        <div class="pull-right" style="font-size: .85em;">
-                            <span class="glyphicon glyphicon-pencil icon-button"></span>
-                            <span class="glyphicon glyphicon-trash icon-button alert-danger" ng-click="handleProjectDelete(project.ID)"></span>
-                        </div>
-
-                    </div>
-
-                    <div class="panel-footer">
-                        <span ng-show="project.Description.length > 0">
-                            <label class="control-label">Description:</label> <div class="well well-sm"> {{project.Description}}</div>
-                        </span>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                @Html.Partial("../Project/ngViewer")
             </div>
         </div>
     </div>
-    <div class="alert alert-warning" ng-show="(projects | filter: { Name: dashboard.projectSearchInput }).length == 0">No project satisfying the current query</div>
+    <div class="alert alert-warning" ng-show="
+         (projects | filter: { Name: dashboard.projectSearchInput }).length == 0 && projects.length > 0
+         ">No project satisfying the current query.</div>
 </div>
 
 

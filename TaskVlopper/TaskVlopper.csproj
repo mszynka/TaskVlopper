@@ -346,6 +346,7 @@
     <Content Include="Views\Worklog\Create.cshtml" />
     <Content Include="Views\Worklog\Delete.cshtml" />
     <Content Include="Views\Worklog\Edit.cshtml" />
+    <Content Include="Views\Project\ngViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
