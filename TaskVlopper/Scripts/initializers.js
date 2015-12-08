@@ -9,5 +9,5 @@
 });
 
 $(".hasDatepicker").datetimepicker({
-    format: "DD/MM/YYYY"
+    format: "MM/DD/YYYY",
 });
