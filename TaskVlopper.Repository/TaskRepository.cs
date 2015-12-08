@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using TaskVlopper.Base;
@@ -11,9 +12,14 @@ namespace TaskVlopper.Repository
 {
     public class TaskRepository : BaseRepository<TaskVlopper.Base.Model.Task>, ITaskRepository
     {
-        public Task GetTaskById(int id)
+        public Task GetTaskByIdWithoutTracking(int id)
         {
-            throw new NotImplementedException();
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
+        }
+
+        public Task GetTaskByIdWithTracking(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id).Single();
         }
     }
 }

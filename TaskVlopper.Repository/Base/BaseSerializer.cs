@@ -61,6 +61,7 @@ namespace TaskVlopper.Repository.Base
                     catch (Exception ex)
                     {
                         //Invariant country needed
+                        string debuggerPreview = ex.Message;
                         info.SetValue(model, double.Parse(buf, CultureInfo.InvariantCulture));
                     }
                 }

@@ -6,11 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
+using TaskVlopper.Base.Repository;
+using TaskVlopper.Base.Repository.Serialize;
 
 namespace TaskVlopper.Logic
 {
     public class TaskLogic : ITaskLogic
     {
+
+        private readonly ITaskRepository TaskRepository;
+
+        private readonly IUserTaskAssignmentRepository UserTaskAssignmentRepository;
+
+        private readonly IProjectSerialize Serializer;
+
+        public TaskLogic(ITaskRepository taskRepository, IUserTaskAssignmentRepository userTaskAssignmentRepository,
+            IProjectSerialize serializer)
+        {
+            TaskRepository = taskRepository;
+            UserTaskAssignmentRepository = userTaskAssignmentRepository;
+            Serializer = serializer;
+        }
+
+
         public IEnumerable<Base.Model.Task> GetAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
         {
             throw new NotImplementedException();
