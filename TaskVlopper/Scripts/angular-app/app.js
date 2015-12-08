@@ -1,4 +1,4 @@
-﻿var app = angular.module('TaskVlopperApp', []);
+﻿var app = angular.module('taskVlopperApp', []);
 
 app.filter("aspDate", function () {
     return function (item) {

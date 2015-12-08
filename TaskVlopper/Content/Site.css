@@ -29,3 +29,10 @@ textarea {
     display: block;
     content: "";
 }
+
+/* Addon for icons as action buttons */
+.icon-button {
+    padding: 0 .2em;
+    cursor: pointer;
+    background: none !important;
+}
