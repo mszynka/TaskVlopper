@@ -27,7 +27,9 @@
     </div>
 
     <div ng-show="showAddPanel">
-        @Html.Partial("../Project/Create")
+        <form name="modelEditorForm" ng-submit="handleProjectCreate()">
+            @Html.Partial("../Project/ModelEditor")
+        </form>
     </div>
 
     <div class="form-horizontal ng-hide" ng-hide="showAddPanel || (projects | filter: { Name: dashboard.projectSearchInput }).length == 0">

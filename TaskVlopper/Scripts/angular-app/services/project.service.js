@@ -6,6 +6,16 @@
         return $http.get('/Project');
     };
 
+    ProjectService.createProject = function (model) {
+        model = JSON.stringify(model);
+        return $http({
+            method: 'POST',
+            url: '/Project/Create',
+            accept: 'application/json',
+            data: model
+        });
+    };
+
     ProjectService.deleteProject = function (projectId) {
         if (projectId !== undefined || !isNaN(projectId))
             return $http.post('/Project/Delete/' + projectId)

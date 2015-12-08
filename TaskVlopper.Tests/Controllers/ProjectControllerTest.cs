@@ -123,7 +123,7 @@ namespace TaskVlopper.Controllers.Tests
 
 
                 // Act
-                JsonResult action = controller.Create(ModelsMocks.Form) as JsonResult;
+                JsonResult action = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
 
                 // Assert
                 Assert.AreEqual(repository.GetAll().
@@ -143,7 +143,7 @@ namespace TaskVlopper.Controllers.Tests
             ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
 
             // Act
-            JsonResult action = controller.Create(ModelsMocks.Form) as JsonResult;
+            JsonResult action = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
 
             // Assert
             Assert.IsNull(action);
@@ -269,7 +269,7 @@ namespace TaskVlopper.Controllers.Tests
                 // Arrange
                 ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
 
-                JsonResult actionCreate = controller.Create(ModelsMocks.Form) as JsonResult;
+                JsonResult actionCreate = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
                 // Act
                 JsonResult actionDelete = controller.Delete(repository.GetAll().First().ID, ModelsMocks.Form) as JsonResult;
 

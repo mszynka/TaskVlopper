@@ -62,9 +62,9 @@ namespace TaskVlopper.Logic
             UserProjectAssignmentRepository.Remove(userProjectAssignment);
         }
 
-        public void HandleProjectAdd(NameValueCollection form, string userId)
+        public void HandleProjectAdd(Project project, string userId)
         {
-            Project project = Serializer.Serialize(form);
+            //Project project = Serializer.Serialize(form);
             ProjectRepository.Add(project);
 
             UserProjectAssignment userProjectAssignment = new UserProjectAssignment();

@@ -76,7 +76,7 @@ namespace TaskVlopper.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Project collection)
         {
             try
             {
@@ -87,12 +87,12 @@ namespace TaskVlopper.Controllers
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 

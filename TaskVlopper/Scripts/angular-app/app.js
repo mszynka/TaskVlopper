@@ -1,4 +1,4 @@
-﻿var app = angular.module('taskVlopperApp', []);
+﻿var app = angular.module('taskVlopperApp', ['ui.bootstrap', 'ui.bootstrap.datepicker']);
 
 app.filter("aspDate", function () {
     return function (item) {

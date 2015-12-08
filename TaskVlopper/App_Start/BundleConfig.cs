@@ -47,7 +47,7 @@ namespace TaskVlopper
                 "~/Scripts/angular/angular-mocks.js",
                 "~/Scripts/angular/angular-ui-router.js",
                 "~/Scripts/angular-ui/ui-bootstrap.js",
-                "~/Scripts/angular-ui/ui-bootstrapm-tpls.js"
+                "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
                 ));
         }
     }

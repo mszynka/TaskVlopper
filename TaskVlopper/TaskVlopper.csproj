@@ -256,6 +256,9 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular\angular.min.js.map" />
     <Content Include="Scripts\angular\angular-animate.min.js.map" />
+    <Content Include="Scripts\jcs-auto-validate.js" />
+    <Content Include="Scripts\jcs-auto-validate.min.js" />
+    <Content Include="Scripts\jcs-auto-validate.min.js.map" />
     <None Include="Scripts\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.min.js" />
@@ -347,6 +350,12 @@
     <Content Include="Views\Worklog\Delete.cshtml" />
     <Content Include="Views\Worklog\Edit.cshtml" />
     <Content Include="Views\Project\ngViewer.cshtml" />
+    <Content Include="Scripts\lang\jcs-auto-validate_ru-ru.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_it-it.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_fr-fr.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_en-us.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_en-gb.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_de-de.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

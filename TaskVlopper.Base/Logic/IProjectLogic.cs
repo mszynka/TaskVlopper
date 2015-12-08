@@ -13,7 +13,7 @@ namespace TaskVlopper.Base.Logic
         IEnumerable<Project> GetAllProjectsForCurrentUser(string userId);
         void HandleProjectEdit(NameValueCollection form, int projectId);
         void HandleProjectDelete(int projectId, string userId);
-        void HandleProjectAdd(NameValueCollection form, string userId);
+        void HandleProjectAdd(Project project, string userId);
         Project HandleProjectGet(int id);
     }
 }
