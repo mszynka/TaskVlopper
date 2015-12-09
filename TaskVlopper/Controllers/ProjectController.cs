@@ -16,8 +16,7 @@ namespace TaskVlopper.Controllers
 {
     public class ProjectController : Controller
     {
-        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
-        static IProjectLogic logic = container.Resolve<IProjectLogic>();
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
 
         // GET: Project
         [HttpGet]
@@ -27,7 +26,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var model = logic.GetAllProjectsForCurrentUser(User.Identity.Name);
                     var viewModel = new ProjectsViewModel(model.ToList());
 
@@ -50,6 +49,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewModel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -82,6 +82,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectAdd(collection, User.Identity.Name);
 
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
@@ -103,6 +104,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return PartialView(viewmodel);
                 }
@@ -124,6 +126,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectEdit(collection, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
@@ -144,6 +147,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return View(viewmodel);
                 }
@@ -165,6 +169,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectDelete(id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
