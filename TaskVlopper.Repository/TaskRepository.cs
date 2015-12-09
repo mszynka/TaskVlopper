@@ -21,5 +21,10 @@ namespace TaskVlopper.Repository
         {
             return this.GetAll().Where(x => x.ID == id).Single();
         }
+
+        public IEnumerable<Task> GetTasksForGivenProjectId(int projectId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId);
+        }
     }
 }

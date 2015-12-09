@@ -11,5 +11,6 @@ namespace TaskVlopper.Base.Repository
     {
         Task GetTaskByIdWithoutTracking(int id);
         Task GetTaskByIdWithTracking(int id);
+        IEnumerable<Task> GetTasksForGivenProjectId(int projectId);
     }
 }

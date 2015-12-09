@@ -20,9 +20,9 @@ namespace TaskVlopper.Repository
             return this.GetAll().Where(x => x.UserID == userId);
         }
 
-        public UserTaskAssignment GetTaskAssignmentByUserIdAndTaskId(string userId, int taskId)
+        public IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndTaskId(string userId, int taskId)
         {
-            return this.GetAll().Where(x => x.TaskID == taskId && x.UserID == userId).Single();
+            return this.GetAll().Where(x => x.TaskID == taskId && x.UserID == userId);
         }
     }
 }
