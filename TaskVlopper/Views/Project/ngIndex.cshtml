@@ -1,0 +1,41 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">@ViewBag.Title</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <input type="text" placeholder="Search by project name..." class="form-control" ng-model="dashboard.projectSearchInput" />
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <button type="button" class="btn btn-primary pull-right" ng-click="handlers.action.addProject()" ng-init="openModelEditor=false">
+                <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" ng-hide="projects.length > 0 || openModelEditor">
+    Currently no projects available. Add a project.
+</div>
+
+<div ng-show="openModelEditor">
+    <form name="modelEditorForm">
+        <!-- ng-submit="handlers.createProject()" -->
+        @Html.Partial("../Project/ngModelEditor")
+    </form>
+</div>
+
+<div class="form-horizontal" ng-hide="openModelEditor || (projects | filter: { Name: dashboard.projectSearchInput }).length == 0">
+    <div class="row project-row">
+        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default project-panel"
+             ng-repeat="project in projects | filter: { Name: dashboard.projectSearchInput }">
+            @Html.Partial("../Project/ngViewer")
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning" ng-show="
+         (projects | filter: { Name: dashboard.projectSearchInput }).length == 0 && projects.length > 0
+         ">
+    No project satisfying the current query.
+</div>

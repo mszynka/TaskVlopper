@@ -35,4 +35,21 @@ textarea {
     padding: 0 .2em;
     cursor: pointer;
     background: none !important;
+    border: none;
+}
+
+.icon-button:disabled {
+    cursor: not-allowed;
+    text-decoration: none;
+    color: rgba(30,30,30,.3);
+}
+
+/* Fix for row and panel */
+.project-panel {
+    padding: 0;
+}
+
+/* Flat design styles */
+.panel, .alert, .btn, input, .form-control, .input-group, .input-group-addon {
+    border-radius: 0 !important;
 }

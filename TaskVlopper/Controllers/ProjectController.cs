@@ -34,12 +34,12 @@ namespace TaskVlopper.Controllers
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -128,12 +128,12 @@ namespace TaskVlopper.Controllers
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -169,12 +169,12 @@ namespace TaskVlopper.Controllers
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

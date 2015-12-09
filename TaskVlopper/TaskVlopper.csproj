@@ -327,19 +327,16 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
-    <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Meeting\Index.cshtml" />
-    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\ngIndex.cshtml" />
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Worklog\Index.cshtml" />
-    <Content Include="Views\Project\ModelEditor.cshtml" />
+    <Content Include="Views\Project\ngModelEditor.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
     <Content Include="Views\Task\ModelEditor.cshtml" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
-    <Content Include="Views\Project\Edit.cshtml" />
-    <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Meeting\Create.cshtml" />
     <Content Include="Views\Meeting\Delete.cshtml" />
     <Content Include="Views\Meeting\Edit.cshtml" />
@@ -359,7 +356,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\angular-app\models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

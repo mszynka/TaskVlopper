@@ -11,7 +11,7 @@ namespace TaskVlopper
             bundles.Add(new StyleBundle("~/bundles/styles")
                 .Include(
                     "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-theme.css",
+                      //"~/Content/bootstrap-theme.css",
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/jquery.modal.css",
                       "~/Content/ui-bootstrap-csp.css",
