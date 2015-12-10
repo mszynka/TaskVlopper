@@ -9,6 +9,8 @@ namespace TaskVlopper.Base.Repository
 {
     public interface ITaskRepository: IBaseRepository<Model.Task>
     {
-        Task GetTaskById(int id);
+        Task GetTaskByIdWithoutTracking(int id);
+        Task GetTaskByIdWithTracking(int id);
+        IEnumerable<Task> GetTasksForGivenProjectId(int projectId);
     }
 }
