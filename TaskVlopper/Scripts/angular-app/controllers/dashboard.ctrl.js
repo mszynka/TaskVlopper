@@ -89,9 +89,20 @@
     };
 
     $scope.handlers.editProject = function (project) {
-        $scope.model = project;
-
-        $scope.handlers.openModelEditor();
+        var temp_model = project;
+        delete temp_model['$$hashkey'];
+        console.log(temp_model);
+        ProjectService.update(temp_model)
+        .success(function (response) {
+            if (response.HttpCode != undefined) {
+                console.log(response.HttpCode + " " + response.Message);
+            }
+            $scope.handlers.getProjects();
+        })
+        .error(function (error) {
+            $scope.status = '[ProjectService.deleteProject] Unable to load data: ' + error.message;
+            console.log($scope.status);
+        });
     };
 
     $scope.handlers.deleteProject = function (projectId) {
@@ -121,7 +132,9 @@
     $scope.handlers.action = {};
     $scope.handlers.action.formSubmit = function () {
         if ($scope.status.modelEditorStatus.edit) {
-
+            $scope.status.modelEditorStatus.edit = false;
+            $scope.currentProject = null;
+            $scope.handlers.editProject($scope.model);
         }
         else if ($scope.status.modelEditorStatus.create) {
             $scope.status.modelEditorStatus.create = false;
@@ -144,8 +157,11 @@
         $scope.status.modelEditorStatus.create = true;
     };
 
-    $scope.handlers.action.editProject = function () {
-
+    $scope.handlers.action.editProject = function (project) {
+        $scope.handlers.openModelEditor();
+        $scope.model = project;
+        $scope.currentProject = project;
+        $scope.status.modelEditorStatus.edit = true;
     };
 
     $scope.handlers.action.deleteProject = function (projectId) {

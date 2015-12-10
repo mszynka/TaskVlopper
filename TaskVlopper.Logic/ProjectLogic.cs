@@ -42,12 +42,12 @@ namespace TaskVlopper.Logic
             return projectsForCurrentUser.AsEnumerable();
         }
 
-        public void HandleProjectEdit(NameValueCollection form, int projectId)
+        public void HandleProjectEdit(Project form, int projectId)
         {
-            Project project = Serializer.Serialize(form);
-            project.ID = projectId;
+            //Project project = Serializer.Serialize(form);
+            form.ID = projectId;
 
-            ProjectRepository.Update(project);
+            ProjectRepository.Update(form);
         }
 
         public void HandleProjectDelete(int projectId, string userId)
