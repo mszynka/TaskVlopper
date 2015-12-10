@@ -5,12 +5,32 @@
 }
 
 <div ng-controller="DashboardController as dashboard" class="container-fluid">
-    @Html.Partial("../Project/ngIndex")
+    <div ng-show="projectMode">
+        @Html.Partial("../Project/ngIndex")
+    </div>
+
+    <div ng-show="taskMode">
+        <div class="alert alert-info" ng-hide="tasks.length > 0">
+            Currently no projects available. Add a project.
+        </div>
+        <div ng-repeat="task in tasks">
+            @Html.Partial("../Task/ngViewer")
+        </div>
+    </div>
 </div>
 
 
 @section scripts{
+    <script src="~/Scripts/angular-app/lib/class.js"></script>
+
     <script src="~/Scripts/angular-app/app.js"></script>
+    <script src="~/Scripts/angular-app/config.js"></script>
+
+    <script src="~/Scripts/angular-app/filters/date.filter.js"></script>
+
     <script src="~/Scripts/angular-app/services/project.service.js"></script>
+    <script src="~/Scripts/angular-app/services/task.service.js"></script>
+
+    <script src="~/Scripts/angular-app/controllers/ibase.ctrl.js"></script>
     <script src="~/Scripts/angular-app/controllers/dashboard.ctrl.js"></script>
 }

@@ -1,98 +1,70 @@
-﻿@model TaskVlopper.Models.ProjectViewModel
-
-@*@Html.ValidationSummary(true)*@
-
-<div class="form-horizontal col-md-4 col-sm-6">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <input type="text" placeholder="Name" class="form-control" ng-model="model.Name" ng-required="true" />
-            @*@Html.TextBoxFor(p => p.Project.Name, new { @class = "form-control", placeholder = "Name" })
-            @Html.ValidationMessageFor(p => p.Project.Name)*@
-        </div>
-
-        <div class="panel-footer">
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <textarea class="form-control" placeholder="Description" rows="3" ng-model="model.Description"></textarea>
-                    @*@Html.TextAreaFor(p => p.Project.Description, new { @class = "form-control", placeholder = "Description" })
-                    @Html.ValidationMessageFor(p => p.Project.Description)*@
-                </div>
+﻿<form name="modelEditorForm">
+    <div class="form-horizontal col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input type="text" placeholder="Name" class="form-control" ng-model="model.Name" ng-required="true" />
             </div>
 
-            <div class="form-group">
-                <div class="col-xs-6">
-                    <p class="input-group">
-                        <input type="text" class="form-control" 
-                               ng-model="model.StartDate" 
-                               is-open="status.opened" 
-                               show-button-bar="false" 
-                               max-date="model.Deadline" 
-                               uib-datepicker-popup />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                    </p>
-                    @*<div class='input-group date hasDatepicker'>
-                        <input type="text" placeholder="Start date" class="form-control" ng-model="model.StartDate"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>*@
-                    @*@Html.ValidationMessageFor(p => p.Project.StartDate)*@
-                </div>
-
-                <div class="col-xs-6">
-                    <p class="input-group">
-                        <input type="text" class="form-control"
-                               ng-model="model.Deadline"
-                               is-open="status.opened"
-                               show-button-bar="false"
-                               min-date="model.StartDate" />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
-                    </p>
-                    @*<div class='input-group date hasDatepicker'>
-                        <input type="text" placeholder="Due date" class="form-control" 
-                               ng-model="model.Deadline"/>
-                        @@Html.TextBoxFor(p => p.Project.Deadline, new { @class = "form-control", placeholder = "Due date", title = "Due date" })
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>*@
-                    @*@Html.ValidationMessageFor(p => p.Project.Deadline)*@
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(p => p.Project.EstimatedTimeInHours, new { @class = "col-xs-3 control-label" })
-                <div class="col-xs-9">
-                    <div class="input-group">
-                        <input type="number" min="0" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control" 
-                               ng-model="model.EstimatedTimeInHours" 
-                               ng-required="true"/>
-                        @*@Html.TextBoxFor(p => p.Project.EstimatedTimeInHours, new
-                   {
-                       @class = "form-control",
-                       placeholder = "Estimated hours",
-                       type = "number",
-                       min = "0"
-                   })*@
-                        <span class="input-group-addon">h</span>
+            <div class="panel-footer">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <textarea class="form-control" placeholder="Description" rows="3" ng-model="model.Description"></textarea>
                     </div>
-                    @*@Html.ValidationMessageFor(p => p.Project.EstimatedTimeInHours)*@
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-8 col-xs-push-3">
-                    <button class="btn btn-primary" 
-                            ng-click="handlers.action.formSubmit()" 
-                            ng-disabled="modelEditorForm.$invalid" 
-                            onclick="return false">Save</button>
-                    <button class="btn btn-danger" ng-click="handlers.action.formCancel()" onclick="return false">Cancel</button>
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <p class="input-group">
+                            <input type="text" class="form-control"
+                                   ng-model="model.StartDate"
+                                   is-open="status.opened"
+                                   show-button-bar="false"
+                                   max-date="model.Deadline"
+                                   uib-datepicker-popup />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <p class="input-group">
+                            <input type="text" class="form-control"
+                                   ng-model="model.Deadline"
+                                   is-open="status.opened"
+                                   show-button-bar="false"
+                                   min-date="model.StartDate" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">Estimated time: </label>
+                    <div class="col-xs-9">
+                        <div class="input-group">
+                            <input type="number" min="0" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                                   ng-model="model.EstimatedTimeInHours"
+                                   ng-required="true" />
+                            <span class="input-group-addon">h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8 col-xs-push-3">
+                        <button class="btn btn-primary"
+                                ng-click="handlers.action.formSubmit()"
+                                ng-disabled="modelEditorForm.$invalid"
+                                onclick="return false">
+                            Save
+                        </button>
+                        <button class="btn btn-danger" ng-click="handlers.action.formCancel()" onclick="return false">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>

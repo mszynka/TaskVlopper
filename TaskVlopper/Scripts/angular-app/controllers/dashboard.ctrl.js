@@ -1,4 +1,4 @@
-﻿angular.module('taskVlopperApp').controller('DashboardController', function ($scope, ProjectService) {
+﻿angular.module('taskVlopperApp').controller('DashboardController', function ($scope, ProjectService, TaskService) {
 
     // Datepicker section
     $scope.today = function () {
@@ -35,10 +35,14 @@
         edit: false
     };
 
+    $scope.projectMode = true;
+    $scope.taskMode = false;
+    $scope.currentProject = [];
+
     $scope.handlers = {};
     // Project handlers
     $scope.handlers.getProjects = function () {
-        ProjectService.getProjects()
+        ProjectService.getAll()
             .success(function (response) {
                 if (response.HttpCode != undefined) {
                     console.log(response.HttpCode + " " + response.Message);
@@ -49,14 +53,14 @@
                 $scope.projects = response.Projects;
             })
         .error(function (error) {
-            $scope.status = '[ProjectService.getProjects] Unable to load data: ' + error.message;
+            $scope.status = '[ProjectService.getAll] Unable to load data: ' + error.message;
             console.log($scope.status);
         });
     }
     $scope.handlers.getProjects();
 
     $scope.handlers.getProject = function (projectId) {
-        ProjectService.getProject(projectId)
+        ProjectService.get(projectId)
         .success(function (response) {
             if (response.HttpCode != undefined) {
                 console.log(response.HttpCode + " " + response.Message);
@@ -64,21 +68,22 @@
             $scope.model = response.Projects;
         })
         .error(function (error) {
-            $scope.status = '[ProjectService.getProject] Unable to load data: ' + error.message;
+            $scope.status = '[ProjectService.get] Unable to load data: ' + error.message;
             console.log($scope.status);
         });
     };
 
     $scope.handlers.createProject = function () {
-        ProjectService.createProject($scope.model)
+        ProjectService.create($scope.model)
         .success(function (response) {
             if (response.HttpCode != undefined) {
                 console.log(response.HttpCode + " " + response.Message);
             }
             console.log(response);
+            $scope.handlers.getProjects();
         })
         .error(function (error) {
-            $scope.status = '[ProjecService.createProject] Unable to load data: ' + error.message;
+            $scope.status = '[ProjecService.create] Unable to load data: ' + error.message;
             console.log($scope.status);
         });
     };
@@ -90,11 +95,13 @@
     };
 
     $scope.handlers.deleteProject = function (projectId) {
-        ProjectService.deleteProject(projectId)
+        ProjectService.delete(projectId)
         .success(function (response) {
             if (response.HttpCode != undefined) {
                 console.log(response.HttpCode + " " + response.Message);
             }
+            $scope.model = null;
+            $scope.handlers.getProjects();
         })
         .error(function (error) {
             $scope.status = '[ProjectService.deleteProject] Unable to load data: ' + error.message;
@@ -102,7 +109,6 @@
         });
     }
 
-    // Handlers
     $scope.handlers.openModelEditor = function () {
         $scope.openModelEditor = true;
     };
@@ -125,7 +131,6 @@
             throw new Error("[handlers.action.formSubmit] Cannot specify ModelEditorStatus");
         }
         $scope.handlers.closeModelEditor();
-        $scope.handlers.getProjects();
     };
 
     $scope.handlers.action.formCancel = function () {
@@ -145,8 +150,29 @@
 
     $scope.handlers.action.deleteProject = function (projectId) {
         $scope.handlers.deleteProject(projectId);
-        $scope.model = null;
-        $scope.handlers.getProjects();
     }
 
+    $scope.handlers.action.taskMode = function (project) {
+        $scope.taskMode = true;
+        $scope.projectMode = false;
+        $scope.currentProject = project;
+        TaskService.getAll(project.ID)
+        .success(function (response) {
+            if (response.HttpCode != undefined) {
+                console.log(response.HttpCode + " " + response.Message);
+            }
+            $scope.tasks = response.Tasks;
+        })
+        .error(function (error) {
+            $scope.status = '[TaskService.getAll] Unable to load data: ' + error.message;
+            console.log($scope.status);
+            $scope.tasks = [];
+        });
+    }
+
+    $scope.handlers.action.projectMode = function() {
+        $scope.projectMode = true;
+        $scope.taskMode = false;
+        $scope.currentProject = null;
+    }
 });

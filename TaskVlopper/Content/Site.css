@@ -2,6 +2,7 @@
     padding-top: 50px;
     padding-bottom: 20px;
     height: 100vh;
+    font-size: 12px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -36,20 +37,41 @@ textarea {
     cursor: pointer;
     background: none !important;
     border: none;
+    letter-spacing: 3px;
 }
 
-.icon-button:disabled {
-    cursor: not-allowed;
-    text-decoration: none;
-    color: rgba(30,30,30,.3);
-}
+    .icon-button:disabled {
+        cursor: not-allowed;
+        text-decoration: none;
+        color: rgba(30,30,30,.3);
+    }
 
 /* Fix for row and panel */
 .project-panel {
     padding: 0;
+    margin: .5em;
+    width: 18em;
+}
+
+    .project-panel .panel-body {
+        padding: 10px 5px 10px 15px;
+    }
+
+.project-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
 }
 
 /* Flat design styles */
 .panel, .alert, .btn, input, .form-control, .input-group, .input-group-addon {
     border-radius: 0 !important;
+}
+
+/* Glyphicon font size fix */
+.glyphicon {
+    font-size: .85em;
 }

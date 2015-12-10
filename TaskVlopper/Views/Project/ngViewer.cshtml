@@ -1,7 +1,7 @@
 ﻿<div class="panel-body">
     <strong>{{project.Name}}</strong>
 
-    <div class="pull-right" style="font-size: .85em;">
+    <div class="pull-right">
         <button class="glyphicon glyphicon-pencil icon-button" ng-click="handlers.action.editProject(project)" disabled></button>
         <button class="glyphicon glyphicon-trash icon-button alert-danger" ng-click="handlers.action.deleteProject(project.ID)"></button>
     </div>
@@ -13,11 +13,18 @@
         <label class="control-label">Description:</label> <div class="well well-sm" style="background: white"> {{project.Description}}</div>
     </div>
     <div class="row">
+        <div class="col-xs-12">
+            <button class="glyphicon glyphicon-check icon-button" ng-click="handlers.action.taskMode(project)">0</button><!--{{project.taskCount}}-->
+            <button class="glyphicon glyphicon-user icon-button" disabled>1</button><!--{{project.boundUsers}}-->
+        </div>
+    </div>
+    @*<div class="row">
         <div class="col-sm-6">
             <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
         </div>
         <div class="col-sm-6">
             <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
         </div>
-    </div>
+    </div>*@
+
 </div>
