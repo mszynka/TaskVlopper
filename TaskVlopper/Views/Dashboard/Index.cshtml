@@ -4,14 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div ng-controller="DashboardController as dashboard" class="container-fluid">
+<div ng-controller="DashboardController as dashboard" class="container-fluid" ng-cloak>
     <div ng-show="projectMode">
         @Html.Partial("../Project/ngIndex")
     </div>
 
     <div ng-show="taskMode">
         <div class="alert alert-info" ng-hide="tasks.length > 0">
-            Currently no projects available. Add a project.
+            Currently no tasks available. Add a <a href="~/Task/Create?projectId={{currentProject.ID}}">task</a>.
         </div>
         <div ng-repeat="task in tasks">
             @Html.Partial("../Task/ngViewer")
