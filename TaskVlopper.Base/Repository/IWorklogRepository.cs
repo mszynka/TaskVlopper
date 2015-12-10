@@ -9,6 +9,7 @@ namespace TaskVlopper.Base.Repository
 {
     public interface IWorklogRepository : IBaseRepository<Worklog>
     {
-        Worklog GetWorklogById(int id);
+        Worklog GetWorklogByIdWithoutTracking(int id);
+        Worklog GetWorklogByIdWithTracking(int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using TaskVlopper.Base;
@@ -11,9 +12,13 @@ namespace TaskVlopper.Repository
 {
     public class WorklogRepository : BaseRepository<Worklog>, IWorklogRepository
     {
-        public Worklog GetWorklogById(int id)
+        public Worklog GetWorklogByIdWithoutTracking(int id)
         {
-            throw new NotImplementedException();
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
+        }
+        public Worklog GetWorklogByIdWithTracking(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id).Single();
         }
     }
 }
