@@ -16,8 +16,7 @@ namespace TaskVlopper.Controllers
 {
     public class ProjectController : Controller
     {
-        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
-        static IProjectLogic logic = container.Resolve<IProjectLogic>();
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
 
         // GET: Project
         [HttpGet]
@@ -27,19 +26,19 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var model = logic.GetAllProjectsForCurrentUser(User.Identity.Name);
                     var viewModel = new ProjectsViewModel(model.ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -50,6 +49,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewModel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -76,23 +76,24 @@ namespace TaskVlopper.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Project collection)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectAdd(collection, User.Identity.Name);
 
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -103,6 +104,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return PartialView(viewmodel);
                 }
@@ -118,22 +120,23 @@ namespace TaskVlopper.Controllers
 
         // POST: Project/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Project collection)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectEdit(collection, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -144,6 +147,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
                     return View(viewmodel);
                 }
@@ -165,16 +169,17 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectDelete(id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

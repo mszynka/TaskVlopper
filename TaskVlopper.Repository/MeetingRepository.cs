@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using TaskVlopper.Base.Model;
@@ -10,9 +11,24 @@ namespace TaskVlopper.Repository
 {
     public class MeetingRepository : BaseRepository<Meeting>, IMeetingRepository
     {
-        public Meeting GetMeetingById(int id)
+        public Meeting GetMeetingByIdWithTracking(int id)
         {
-            throw new NotImplementedException();
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
         }
+
+        public Meeting GetMeetingByIdWithoutTracking(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id).Single();
+        }
+        public IEnumerable<Meeting> GetMeetingByProjectId(int projectId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId);
+        }
+
+        public IEnumerable<Meeting> GetMeetingByProjectIdAndTaskId(int projectId, int taskId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId);
+        }
+
     }
 }

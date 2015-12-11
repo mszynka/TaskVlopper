@@ -16,8 +16,8 @@ namespace TaskVlopper.Controllers
 {
     public class WorklogController : Controller
     {
-        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
-        static IWorklogLogic logic = container.Resolve<IWorklogLogic>();
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        
 
         [HttpGet]
         public ActionResult Index(int projectId, int taskId)
@@ -26,6 +26,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
                     var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -46,6 +47,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
                     var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -72,13 +74,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Worklog/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection, int projectId, int taskId)
+        public ActionResult Create(Worklog worklog, int projectId, int taskId)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleWorklogAdd(collection, projectId, taskId, User.Identity.Name);
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
+                    logic.HandleWorklogAdd(worklog, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -98,6 +101,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
                     var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
                     return PartialView(viewmodel);
                 }
@@ -114,13 +118,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Worklog/Edit/5
         [HttpPost]
-        public ActionResult Edit(FormCollection collection, int id, int projectId, int taskId)
+        public ActionResult Edit(Worklog worklog,int projectId, int taskId, int id)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleWorklogEdit(collection, projectId, taskId, id);
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
+                    logic.HandleWorklogEdit(worklog, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -134,15 +139,15 @@ namespace TaskVlopper.Controllers
         }
 
         // GET: Worklog/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int projectId, int taskId, int id)
         {
             try {
                 if (User.Identity.IsAuthenticated)
                 {
                     using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                     {
-                        var repository = container.Resolve<IWorklogRepository>();
-                        var viewmodel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                        IWorklogLogic logic = container.Resolve<IWorklogLogic>();
+                        var viewmodel = new WorklogViewModel(logic.HandleWorklogGet(projectId, taskId, id));
 
                         return View(viewmodel);
                     }
@@ -159,12 +164,13 @@ namespace TaskVlopper.Controllers
 
         // POST: Worklog/Delete/5
         [HttpPost]
-        public ActionResult Delete(FormCollection collection, int projectId, int taskId, int id)
+        public ActionResult Delete(Worklog worklog, int projectId, int taskId, int id)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IWorklogLogic logic = container.Resolve<IWorklogLogic>();
                     logic.HandleWorklogDelete(projectId, taskId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
                 }

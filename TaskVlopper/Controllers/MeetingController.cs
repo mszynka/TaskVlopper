@@ -16,8 +16,8 @@ namespace TaskVlopper.Controllers
 {
     public class MeetingController : Controller
     {
-        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
-        static IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        
 
         [HttpGet]
         public ActionResult Index(int projectId, int? taskId)
@@ -26,6 +26,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     var viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -46,6 +47,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     var viewModel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -72,13 +74,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Meeting/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection, int projectId, int? taskId)
+        public ActionResult Create(Meeting meeting, int projectId, int? taskId)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleMeetingAdd(collection, projectId, taskId, User.Identity.Name);
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.HandleMeetingAdd(meeting, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Meeting successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -96,6 +99,7 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                 var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
                 return PartialView(viewmodel);
             }
@@ -105,13 +109,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Meeting/Edit/5
         [HttpPost]
-        public ActionResult Edit(FormCollection collection, int projectId, int? taskId, int id)
+        public ActionResult Edit(Meeting meeting, int projectId, int? taskId, int id)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleMeetingEdit(collection, projectId, taskId, id);
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.HandleMeetingEdit(meeting, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Meeting successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -131,6 +136,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
                     return View(viewmodel);
                 }
@@ -146,12 +152,13 @@ namespace TaskVlopper.Controllers
 
         // POST: Meeting/Delete/5
         [HttpPost]
-        public ActionResult Delete(FormCollection collection, int projectId, int? taskId, int id)
+        public ActionResult Delete(Meeting meeting, int projectId, int? taskId, int id)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     logic.HandleMeetingDelete(projectId, taskId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Meeting successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
