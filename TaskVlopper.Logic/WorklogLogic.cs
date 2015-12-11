@@ -13,36 +13,43 @@ namespace TaskVlopper.Logic
     
     public class WorklogLogic : IWorklogLogic
     {
-        private IWorklogRepository WorklogicRepository { get; }
+        private readonly IProjectRepository ProjectRepository;
+        private readonly ITaskRepository TaskRepository;
+        private readonly IWorklogRepository WorklogRepository;
+
+        public WorklogLogic(IProjectRepository projectRepository, ITaskRepository taskRepository, IWorklogRepository worklogRepository)
+        {
+            ProjectRepository = projectRepository;
+            TaskRepository = taskRepository;
+            WorklogRepository = worklogRepository;
+        }
 
         public IEnumerable<Worklog> GetAllWorklogForGivenProjectAndTaskAndUser(int projectId, int taskId, string userId)
         {
-            throw new NotImplementedException();
+            return WorklogRepository.GetAll().Where(x => x.TaskID == taskId && x.UserID == userId);
         }
 
-        public IEnumerable<Worklog> GetAllWorklogForGivenProjectAndUser(int projectId, string userId)
+        public void HandleWorklogAdd(Worklog worklog, int projectId, int taskId, string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public void HandleWorklogAdd(NameValueCollection form, int projectId, int taskId, string userId)
-        {
-            throw new NotImplementedException();
+            worklog.TaskID = taskId;
+            worklog.UserID = userId;
+            WorklogRepository.Add(worklog);
         }
 
         public Worklog HandleWorklogGet(int projectId, int taskId, int id)
         {
-            throw new NotImplementedException();
+            return WorklogRepository.GetWorklogByIdWithoutTracking(id);
         }
 
         public void HandleWorklogDelete(int projectId, int taskId, int id, string userId)
         {
-            throw new NotImplementedException();
+            var worklog = WorklogRepository.GetWorklogByIdWithoutTracking(id);
+            WorklogRepository.Remove(worklog);
         }
 
-        public void HandleWorklogEdit(NameValueCollection form, int projectId, int taskId, int id)
+        public void HandleWorklogEdit(Worklog worklog, int projectId, int taskId, int id)
         {
-            throw new NotImplementedException();
+            WorklogRepository.Update(worklog);
         }
     }
 }

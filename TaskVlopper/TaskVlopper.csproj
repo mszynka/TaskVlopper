@@ -238,6 +238,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-app\app.js" />
+    <Content Include="Scripts\angular-app\config.js" />
+    <Content Include="Scripts\angular-app\controllers\dashboard.ctrl.js" />
+    <Content Include="Scripts\angular-app\filters\date.filter.js" />
+    <Content Include="Scripts\angular-app\lib\class.js" />
+    <Content Include="Scripts\angular-app\services\project.service.js" />
+    <Content Include="Scripts\angular-app\services\task.service.js" />
     <Content Include="Scripts\angular\angular-animate.js" />
     <Content Include="Scripts\angular\angular-animate.min.js" />
     <Content Include="Scripts\angular\angular-mocks.js" />
@@ -253,6 +260,10 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular\angular.min.js.map" />
     <Content Include="Scripts\angular\angular-animate.min.js.map" />
+    <Content Include="Scripts\jcs-auto-validate.js" />
+    <Content Include="Scripts\jcs-auto-validate.min.js" />
+    <Content Include="Scripts\jcs-auto-validate.min.js.map" />
+    <Content Include="Scripts\angular-app\controllers\ibase.ctrl.js" />
     <None Include="Scripts\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.min.js" />
@@ -321,19 +332,16 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
-    <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Meeting\Index.cshtml" />
-    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\ngIndex.cshtml" />
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Worklog\Index.cshtml" />
-    <Content Include="Views\Project\ModelEditor.cshtml" />
+    <Content Include="Views\Project\ngModelEditor.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
     <Content Include="Views\Task\ModelEditor.cshtml" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
-    <Content Include="Views\Project\Edit.cshtml" />
-    <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Meeting\Create.cshtml" />
     <Content Include="Views\Meeting\Delete.cshtml" />
     <Content Include="Views\Meeting\Edit.cshtml" />
@@ -343,6 +351,14 @@
     <Content Include="Views\Worklog\Create.cshtml" />
     <Content Include="Views\Worklog\Delete.cshtml" />
     <Content Include="Views\Worklog\Edit.cshtml" />
+    <Content Include="Views\Project\ngViewer.cshtml" />
+    <Content Include="Scripts\lang\jcs-auto-validate_ru-ru.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_it-it.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_fr-fr.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_en-us.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_en-gb.json" />
+    <Content Include="Scripts\lang\jcs-auto-validate_de-de.json" />
+    <Content Include="Views\Task\ngViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,16 @@ namespace TaskVlopper
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new StyleBundle("~/bundles/styles")
+                .Include(
+                    "~/Content/bootstrap.css",
+                      //"~/Content/bootstrap-theme.css",
+                      "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/jquery.modal.css",
+                      "~/Content/ui-bootstrap-csp.css",
+                      "~/Content/Site.css"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery")
                 .Include("~/Scripts/jquery/jquery-{version}.js"));
 
@@ -37,7 +47,7 @@ namespace TaskVlopper
                 "~/Scripts/angular/angular-mocks.js",
                 "~/Scripts/angular/angular-ui-router.js",
                 "~/Scripts/angular-ui/ui-bootstrap.js",
-                "~/Scripts/angular-ui/ui-bootstrapm-tpls.js"
+                "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
                 ));
         }
     }

@@ -16,8 +16,8 @@ namespace TaskVlopper.Controllers
 {
     public class TaskController : Controller
     {
-        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
-        static ITaskLogic logic = container.Resolve<ITaskLogic>();
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        
 
         [HttpGet]
         public ActionResult Index(int projectId)
@@ -26,6 +26,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
                     var model = logic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name);
                     var viewModel = new TasksViewModel(model.ToList());
 
@@ -48,6 +49,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
                     var viewModel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -74,13 +76,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Task/Create
         [HttpPost]
-        public ActionResult Create(int projectId, FormCollection collection)
+        public ActionResult Create(int projectId, Base.Model.Task task)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleTaskAdd(collection, projectId, User.Identity.Name);
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.HandleTaskAdd(task, projectId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Task successfully created!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -99,6 +102,7 @@ namespace TaskVlopper.Controllers
             try {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
                     var viewmodel = logic.HandleTaskGet(projectId, id);
                     return PartialView(viewmodel);
                 }
@@ -114,14 +118,14 @@ namespace TaskVlopper.Controllers
 
         // POST: Task/Edit/5
         [HttpPost]
-        public ActionResult Edit(int projectId, int id, FormCollection collection)
+        public ActionResult Edit(int projectId, int id, Base.Model.Task task)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    logic.HandleTaskEdit(collection, projectId, id);
-
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.HandleTaskEdit(task, projectId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Task successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
                 ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
@@ -140,6 +144,7 @@ namespace TaskVlopper.Controllers
             try {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
                     var viewmodel = logic.HandleTaskGet(projectId, id);
                     return View(viewmodel);
                 }
@@ -155,12 +160,13 @@ namespace TaskVlopper.Controllers
 
         // POST: Task/Delete/5
         [HttpPost]
-        public ActionResult Delete(int projectId, int id, FormCollection collection)
+        public ActionResult Delete(int projectId, int id, Base.Model.Task task)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
                     logic.HandleTaskDelete(projectId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Task successfully removed!"), JsonRequestBehavior.AllowGet);
                 }

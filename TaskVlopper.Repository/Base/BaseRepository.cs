@@ -23,9 +23,10 @@ namespace TaskVlopper.Repository.Base
         {
             using (var transaction = new TransactionScope())
             {
-                Ctx.Entry<T>(element).State = EntityState.Added;
+                //Ctx.Entry<T>(element).State = EntityState.Added;
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Added;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }
@@ -49,7 +50,7 @@ namespace TaskVlopper.Repository.Base
             {
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Deleted;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }
@@ -72,7 +73,7 @@ namespace TaskVlopper.Repository.Base
             {
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Modified;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }

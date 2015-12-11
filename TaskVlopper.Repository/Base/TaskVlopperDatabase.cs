@@ -28,7 +28,6 @@
                             _init = true;
                             this.Database.CreateIfNotExists();
                             noTransaction.Complete();
-                            _init = false;
                         }
                     }
                 }

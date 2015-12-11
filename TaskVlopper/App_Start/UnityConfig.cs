@@ -72,6 +72,7 @@ namespace TaskVlopper.ServiceLocator
             container.RegisterType<IWorklogSerialize, WorklogSerialize>();
             container.RegisterType<IMeetingSerialize, MeetingSerialize>();
             container.RegisterType<IMeetingParticipantsSerialize, MeetingParticipantsSerialize>();
+
         }
     }
 }
