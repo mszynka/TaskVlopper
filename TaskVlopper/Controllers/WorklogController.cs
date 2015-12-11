@@ -4,105 +4,177 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskVlopper.Base.Logic;
+using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Helpers;
 using TaskVlopper.Models;
+using TaskVlopper.Repository.Base;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Controllers
 {
     public class WorklogController : Controller
     {
-        [HttpGet]
-        public ActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-                {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewModel = new WorklogsViewModel(repository.GetAll().ToList());
+        static IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        static IWorklogLogic logic = container.Resolve<IWorklogLogic>();
 
+        [HttpGet]
+        public ActionResult Index(int projectId, int taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
+            }
         }
 
         // GET: Worklog/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int projectId, int taskId, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IWorklogRepository>();
-                    var viewModel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
-
+                    var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
+            }
         }
 
         // GET: Worklog/Create
         public ActionResult Create()
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            return View("Error", handler.handleError());
         }
 
         // POST: Worklog/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, int projectId, int taskId)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    logic.HandleWorklogAdd(collection, projectId, taskId, User.Identity.Name);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
+                }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
         // GET: Worklog/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int projectId, int taskId, int id)
         {
-            return Json(HttpNotFound());
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
+                    return PartialView(viewmodel);
+                }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
+            }
+
         }
 
         // POST: Worklog/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(FormCollection collection, int id, int projectId, int taskId)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    logic.HandleWorklogEdit(collection, projectId, taskId, id);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
+                }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
 
         // GET: Worklog/Delete/5
         public ActionResult Delete(int id)
         {
-            return Json(HttpNotFound());
+            try {
+                if (User.Identity.IsAuthenticated)
+                {
+                    using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                    {
+                        var repository = container.Resolve<IWorklogRepository>();
+                        var viewmodel = new WorklogViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+
+                        return View(viewmodel);
+                    }
+                }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
+            }
         }
 
         // POST: Worklog/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(FormCollection collection, int projectId, int taskId, int id)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    logic.HandleWorklogDelete(projectId, taskId, id, User.Identity.Name);
+                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
+                }
+                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                return View("Error", handler.handleError());
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                ExceptionHandler handler = new ExceptionHandler(ex);
+                return View("Error", handler.handleError());
             }
         }
     }

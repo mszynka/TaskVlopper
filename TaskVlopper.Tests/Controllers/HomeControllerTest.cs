@@ -9,32 +9,19 @@ using TaskVlopper.Controllers;
 using Moq;
 using System.Security.Claims;
 using System.Security.Principal;
+using TaskVlopper.Tests.Mocks;
 
 namespace TaskVlopper.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest
     {
-        HomeController CreateHomeControllerAs(string userName, bool isUserLoggedIn)
-        {
-
-            var mock = new Mock<ControllerContext>();
-            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
-            mock.SetupGet(p => p.HttpContext.User.Identity.IsAuthenticated).Returns(isUserLoggedIn);
-            // other possibility of mocking user is:
-            // mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
-
-            var controller = new HomeController();
-            controller.ControllerContext = mock.Object;
-
-            return controller;
-        }
 
         [TestMethod]
         public void IndexLoggedUser()
         {
             // Arrange
-            HomeController controller = CreateHomeControllerAs("LoggedUser", isUserLoggedIn: true);
+            HomeController controller = ControllersMocks.GetControllerAsLoggedUser<HomeController>();
 
             // Act
             RedirectToRouteResult action = controller.Index() as RedirectToRouteResult;
@@ -47,13 +34,13 @@ namespace TaskVlopper.Tests.Controllers
         public void IndexNotLoggedUser()
         {
             // Arrange
-            HomeController controller = CreateHomeControllerAs("NotLoggedUser", isUserLoggedIn: false);
+            HomeController controller = ControllersMocks.GetControllerAsNotLoggedUser<HomeController>();
 
             // Act
-            ViewResult viewResult = controller.Index() as ViewResult;
+            ViewResult action = controller.Index() as ViewResult;
 
             // Assert
-            Assert.IsNotNull(viewResult);
+            Assert.IsNotNull(action);
         }
     }
 }

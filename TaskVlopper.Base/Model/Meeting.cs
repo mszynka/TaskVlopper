@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 
 namespace TaskVlopper.Base.Model
 {
@@ -19,6 +19,7 @@ namespace TaskVlopper.Base.Model
         public int ProjectID { get; set; }
         public int? TaskID { get; set; }
 
+        [DisplayName("Date and time")]
         public DateTime DateAndTime { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Title can't be emepty.")]

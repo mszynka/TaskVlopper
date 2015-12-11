@@ -13,8 +13,6 @@ namespace TaskVlopper.Controllers
 {
     public class TestController : Controller
     {
-
-
         // GET: Default
         public ActionResult Test()
         {

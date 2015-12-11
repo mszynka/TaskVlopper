@@ -118,6 +118,8 @@ namespace TaskVlopper.Tests
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
                 var repository = container.Resolve<ITestRepository>();
+                repository.RemoveAll();
+
                 //Adding test
                 Test test = new Test();
                 test.Name = "1";
@@ -143,9 +145,20 @@ namespace TaskVlopper.Tests
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
-                //Updating test, where ID is 2
                 var repository = container.Resolve<ITestRepository>();
-                Test test = repository.GetAll().Single(x => x.Name == "2");
+                repository.RemoveAll();
+
+                Test test = new Test();
+                test.Name = "2";
+                test.Result = 32.5;
+                test.Type = Base.Enums.TestTypeEnum.Dos;
+                test.Date = DateTime.Now;
+                test.ID = 2;
+                repository.Add(test); 
+
+                //Updating test, where ID is 2
+                
+                test = repository.GetAll().Single(x => x.Name == "2");
                 test.Result = 123.123;
 
                 repository.Update(test);
@@ -158,9 +171,19 @@ namespace TaskVlopper.Tests
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
-                //Deleting Test with ID 3
                 var repository = container.Resolve<ITestRepository>();
-                Test test = repository.GetAll().Single(x => x.Name == "3");
+                repository.RemoveAll();
+
+                Test test = new Test();
+                test.Name = "3";
+                test.Result = 32.5;
+                test.Type = Base.Enums.TestTypeEnum.Dos;
+                test.Date = DateTime.Now;
+                test.ID = 2;
+                repository.Add(test);
+
+                //Deleting Test with ID 3
+                test = repository.GetAll().Single(x => x.Name == "3");
                 repository.Remove(test);
 
                 //Element now should be null if we try to get ID 3
@@ -229,8 +252,8 @@ namespace TaskVlopper.Tests
             {
                 using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
                 {
-                    var projectRepo = container.Resolve<IProjectsRepository>();
-                    var taskRepo = container.Resolve<ITasksRepository>();
+                    var projectRepo = container.Resolve<IProjectRepository>();
+                    var taskRepo = container.Resolve<ITaskRepository>();
                     var workRepo = container.Resolve<IWorklogRepository>();
                     var userTaskAssignmentRepo = container.Resolve<IUserTaskAssignmentRepository>();
                     var userProjectAssignmentRepo = container.Resolve<IUserProjectAssignmentRepository>();

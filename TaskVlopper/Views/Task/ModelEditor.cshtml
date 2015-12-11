@@ -1,0 +1,94 @@
+﻿@model TaskVlopper.Models.TaskViewModel
+
+<h5>Model editor</h5>
+
+@Html.ValidationSummary(true)
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.ProjectID, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Task.ProjectID, new { @class = "form-control", placeholder = "ProjectID" })
+            @Html.ValidationMessageFor(p => p.Task.ProjectID)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.Name, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextAreaFor(p => p.Task.Name, new { @class = "form-control", placeholder = "Name" })
+            @Html.ValidationMessageFor(p => p.Task.Name)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.Description, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Task.Description, new { @class = "form-control", placeholder = "Description" })
+            @Html.ValidationMessageFor(p => p.Task.Description)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.StartDate, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            <div class='input-group date hasDatepicker'>
+                @Html.TextBoxFor(p => p.Task.StartDate, new { @class = "form-control", placeholder = "Start date" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(p => p.Task.StartDate)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.EndDate, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            <div class='input-group date hasDatepicker'>
+                @Html.TextBoxFor(p => p.Task.EndDate, new { @class = "form-control", placeholder = "Due date" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(p => p.Task.EndDate)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.EstimatedTimeInHours, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Task.EstimatedTimeInHours, new { @class = "form-control", placeholder = "Estimated hours", type = "number", min = "0" })
+            @Html.ValidationMessageFor(p => p.Task.EstimatedTimeInHours)
+        </div>
+    </div>
+
+    @* TODO: Create crazy select enumeration *@
+    @*<div class="form-group">
+            @Html.LabelFor(p => p.Task.Status, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Task.Status, new { @class = "form-control", placeholder = "Status" })
+            @Html.ValidationMessageFor(p => p.Task.Status)
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.ExecutiveUserID, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Task.ExecutiveUserID, new { @class = "form-control", placeholder = "ExecutiveUserID" })
+            @Html.ValidationMessageFor(p => p.Task.ExecutiveUserID)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Task.Storypoints, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(p => p.Task.Storypoints, new { @class = "form-control", placeholder = "Storypoints", type = "number", min = "0" })
+            @Html.ValidationMessageFor(p => p.Task.Storypoints)
+        </div>
+    </div>
+
+    <div class="col-sm-8 col-sm-push-4">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</div>

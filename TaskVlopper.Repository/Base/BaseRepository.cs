@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 using TaskVlopper.Base.Repository;
 
 namespace TaskVlopper.Repository.Base
 {
-    public abstract class BaseRepository<T> : TaskVlopper.Base.Base.IBaseRepository<T>, IDisposable
+    public abstract class BaseRepository<T> : TaskVlopper.Base.IBaseRepository<T>, IDisposable
         where T : class
     {
 
@@ -39,9 +38,9 @@ namespace TaskVlopper.Repository.Base
             }
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return Ctx.Set<T>().AsEnumerable();
+            return Ctx.Set<T>().AsQueryable();
         }
 
         public void Remove(T element)

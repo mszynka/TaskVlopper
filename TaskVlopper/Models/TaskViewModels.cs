@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Models
 {
     public class TasksViewModel
     {
-        public TasksViewModel(IList<Tasks> tasks)
+        public TasksViewModel(IList<Base.Model.Task> tasks)
         {
             Tasks = tasks;
         }
 
-        public IList<Tasks> Tasks { get; private set; }
+        public IList<Base.Model.Task> Tasks { get; private set; }
     }
 
     public class TaskViewModel
     {
-        public TaskViewModel(Tasks tasks)
+        public TaskViewModel(Base.Model.Task tasks)
         {
-            Tasks = tasks;
+            Task = tasks;
         }
 
-        public Tasks Tasks { get; private set; }
+        public Task Task { get; private set; }
     }
 }
