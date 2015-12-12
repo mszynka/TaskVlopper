@@ -124,7 +124,6 @@
     <Compile Include="Controllers\ProjectControllerTest.cs" />
     <Compile Include="Controllers\TaskControllerTest.cs" />
     <Compile Include="Controllers\WorklogControllerTest.cs" />
-    <Compile Include="Helpers\JsonHelpersTests.cs" />
     <Compile Include="Mocks\ControllersMocks.cs" />
     <Compile Include="Mocks\ModelsMocks.cs" />
     <Compile Include="ProjectSetupTests.cs" />
@@ -154,6 +153,9 @@
       <Project>{001F0FC7-5658-4CC4-949F-16F8D7B9023A}</Project>
       <Name>TaskVlopper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
