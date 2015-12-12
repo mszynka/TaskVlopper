@@ -14,6 +14,7 @@ namespace TaskVlopper.Controllers
     public class TestController : Controller
     {
         // GET: Default
+        [HttpGet]
         public ActionResult Test()
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())

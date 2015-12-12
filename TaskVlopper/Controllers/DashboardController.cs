@@ -9,14 +9,15 @@ namespace TaskVlopper.Controllers
     public class DashboardController : Controller
     {
         // GET: Dashboard
+        [HttpGet]
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View();
+                return View("Private");
             }
 
-            return RedirectToAction("Index", "Home");
+            return View("Public");
         }
     }
 }

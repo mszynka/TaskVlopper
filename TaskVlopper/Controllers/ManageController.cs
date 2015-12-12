@@ -27,6 +27,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/Index
+        [HttpGet]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -50,6 +51,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/RemoveLogin
+        [HttpGet]
         public ActionResult RemoveLogin()
         {
             var linkedAccounts = userManager.GetLogins(User.Identity.GetUserId());
@@ -83,6 +85,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/AddPhoneNumber
+        [HttpGet]
         public ActionResult AddPhoneNumber()
         {
             return View();
@@ -142,6 +145,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/VerifyPhoneNumber
+        [HttpGet]
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code = await userManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
@@ -176,6 +180,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/RemovePhoneNumber
+        [HttpGet]
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await userManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
@@ -193,6 +198,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/ChangePassword
+        [HttpGet]
         public ActionResult ChangePassword()
         {
             return View();
@@ -224,6 +230,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/SetPassword
+        [HttpGet]
         public ActionResult SetPassword()
         {
             return View();
@@ -256,6 +263,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Manage/ManageLogins
+        [HttpGet]
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =

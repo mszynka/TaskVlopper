@@ -24,9 +24,12 @@ namespace TaskVlopper.Helpers
 
             if (Ex != null)
                 Message = string.Join(" ", Message, Ex.Message);
+
+            if (Message == null)
+                Message = "Internal Server Error";
         }
 
-        private JsonHttpViewModel handleHttpData()
+        private JsonHttpViewModel getHttpData()
         {
             JsonHttpViewModel viewModel = new JsonHttpViewModel();
             viewModel.HttpCode = (int)HttpCode;
@@ -35,32 +38,32 @@ namespace TaskVlopper.Helpers
             return viewModel;
         }
 
-        public JsonHttpViewModel handleError()
+        public JsonHttpViewModel getError()
         {
             Logger.LogException(Message);
 
-            return handleHttpData();
+            return getHttpData();
         }
 
-        public JsonHttpViewModel handleWarning()
+        public JsonHttpViewModel getWarning()
         {
             Logger.LogWarning(Message);
 
-            return handleHttpData();
+            return getHttpData();
         }
 
-        public JsonHttpViewModel handleInfo()
+        public JsonHttpViewModel getInfo()
         {
             Logger.LogInfo(Message);
 
-            return handleHttpData();
+            return getHttpData();
         }
 
-        public JsonHttpViewModel handleData()
+        public JsonHttpViewModel getData()
         {
             Logger.Log(Message);
 
-            return handleHttpData();
+            return getHttpData();
         }
     }
 }

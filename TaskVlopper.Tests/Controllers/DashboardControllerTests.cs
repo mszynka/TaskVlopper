@@ -14,7 +14,13 @@ namespace TaskVlopper.Controllers.Tests
     {
 
         [TestMethod, Ignore]
-        public void IndexTest()
+        public void IndexLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod, Ignore]
+        public void IndexNotLoggedUserTest()
         {
 
         }
