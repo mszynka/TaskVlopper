@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="160.14977mm"
+   height="32.666115mm"
+   viewBox="0 0 567.4598 115.74608"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="taskvlopper-logo.svg"
+   inkscape:export-filename="/home/mateusz/STUDIA/PRZEDMIOTY/Sem 5/GK/#Lab/Projekt Inkscape/taskvlopper-logo.png"
+   inkscape:export-xdpi="300.82999"
+   inkscape:export-ydpi="300.82999">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="155.71402 : 321.29188 : 1"
+       inkscape:vp_y="999.88712 : -15.026047 : 0"
+       inkscape:vp_z="524.68748 : 336.34036 : 1"
+       inkscape:persp3d-origin="36.173307 : 610.70316 : 1"
+       id="perspective4223" />
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4753"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <linearGradient
+       id="linearGradient4715"
+       inkscape:collect="always">
+      <stop
+         id="stop4733"
+         offset="0"
+         style="stop-color:#061dbe;stop-opacity:1;" />
+      <stop
+         id="stop4735"
+         offset="1"
+         style="stop-color:#061dbe;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4715"
+       id="linearGradient4739"
+       x1="160"
+       y1="287.36221"
+       x2="200"
+       y2="287.36221"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4715"
+       id="linearGradient4194"
+       x1="297.14874"
+       y1="223.84212"
+       x2="499.29431"
+       y2="1316.8933"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.46792299,0,0,0.36070258,10.517523,120.63625)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="288.47974"
+     inkscape:cy="46.587228"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="724"
+     inkscape:window-x="0"
+     inkscape:window-y="22"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="5"
+     fit-margin-left="5"
+     fit-margin-bottom="5"
+     fit-margin-right="5"
+     borderlayer="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4703"
+       originx="-88.317357"
+       originy="-930.33267" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="logotype1"
+     style="display:inline"
+     transform="translate(-88.317354,-6.2834647)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer2"
+       inkscape:label="tick"
+       style="display:inline">
+      <g
+         id="g4357"
+         transform="matrix(0.49885629,0,0,0.49885629,64.948084,-83.11553)">
+        <g
+           id="g4350">
+          <path
+             style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.16824746;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="m 229.30555,280.41883 -0.17318,-10.73175 13.16107,-13.7724 0,24.86187 z"
+             id="path4320"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccc" />
+          <path
+             sodipodi:nodetypes="ccccc"
+             inkscape:connector-curvature="0"
+             id="path4326"
+             d="m 242.09664,223.9963 c 0.0683,3.57717 0.18701,7.28052 0.18701,10.73152 -4.03135,3.6962 -9.0778,8.87731 -13.14332,13.78934 l -0.032,-24.86185 z"
+             style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.16824746;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        </g>
+        <g
+           id="g4337">
+          <path
+             style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:15.27999973;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             d="m 235.71429,275.62796 0,92.44854 0,0 -145.714286,0 -10e-7,-145.71428 145.714287,0 0,6.73764"
+             id="path4318"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccc" />
+          <path
+             style="opacity:1;fill:url(#linearGradient4194);fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             d="m 267.32021,229.63401 c -38.27172,34.20661 -66.37637,66.79696 -92.10835,116.24167 l -65.78896,-52.04359 9.69021,-13.19663 48.35231,34.09155 c 25.7989,-38.04446 71.94591,-76.47804 94.10631,-91.75986 z"
+             id="path4170"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccc" />
+        </g>
+      </g>
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer1"
+       inkscape:label="text"
+       style="display:inline">
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot4328"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(1.8612569,0,0,2.0032597,-303.68932,-476.12342)"><flowRegion
+           id="flowRegion4330"><rect
+             id="rect4332"
+             width="422.85715"
+             height="136.42857"
+             x="277.14285"
+             y="224.50507" /></flowRegion><flowPara
+           id="flowPara4334"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:171.00000381%;font-family:'Baekmuk Gulim';-inkscape-font-specification:'Baekmuk Gulim';text-align:start;letter-spacing:0px;word-spacing:0.0057226px;text-anchor:start">taskVlopper</flowPara></flowRoot>    </g>
+  </g>
+</svg>
