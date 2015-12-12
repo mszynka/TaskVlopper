@@ -264,6 +264,7 @@
     <Content Include="Scripts\jcs-auto-validate.min.js" />
     <Content Include="Scripts\jcs-auto-validate.min.js.map" />
     <Content Include="Scripts\angular-app\controllers\ibase.ctrl.js" />
+    <Content Include="Loader.html" />
     <None Include="Scripts\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.min.js" />
