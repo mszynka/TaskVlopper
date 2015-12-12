@@ -30,12 +30,12 @@ namespace TaskVlopper.Controllers
                     var viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -51,12 +51,12 @@ namespace TaskVlopper.Controllers
                     var viewModel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -68,7 +68,7 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
             return View("Error", handler.handleError());
         }
 
@@ -84,12 +84,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleMeetingAdd(meeting, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Meeting successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -103,7 +103,7 @@ namespace TaskVlopper.Controllers
                 var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
                 return PartialView(viewmodel);
             }
-            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
             return View("Error", handler.handleError());
         }
 
@@ -119,12 +119,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleMeetingEdit(meeting, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Meeting successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -140,12 +140,12 @@ namespace TaskVlopper.Controllers
                     var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
                     return View(viewmodel);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -162,12 +162,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleMeetingDelete(projectId, taskId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Meeting successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }

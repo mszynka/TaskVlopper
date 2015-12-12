@@ -30,12 +30,12 @@ namespace TaskVlopper.Controllers
                     var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -51,12 +51,12 @@ namespace TaskVlopper.Controllers
                     var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -68,7 +68,7 @@ namespace TaskVlopper.Controllers
             {
                 return View();
             }
-            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+            JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
             return View("Error", handler.handleError());
         }
 
@@ -84,12 +84,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogAdd(worklog, projectId, taskId, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Worklog successfully created!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -105,12 +105,12 @@ namespace TaskVlopper.Controllers
                     var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
                     return PartialView(viewmodel);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
 
@@ -128,12 +128,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogEdit(worklog, projectId, taskId, id);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Worklog successfully updated!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -152,12 +152,12 @@ namespace TaskVlopper.Controllers
                         return View(viewmodel);
                     }
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
@@ -174,12 +174,12 @@ namespace TaskVlopper.Controllers
                     logic.HandleWorklogDelete(projectId, taskId, id, User.Identity.Name);
                     return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Worklog successfully removed!"), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
+                JsonDataHandler handler = new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden);
                 return View("Error", handler.handleError());
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
+                JsonDataHandler handler = new JsonDataHandler(ex);
                 return View("Error", handler.handleError());
             }
         }
