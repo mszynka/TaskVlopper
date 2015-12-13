@@ -4,6 +4,12 @@
     var urlPrepend = "/static/templates/";
     
     $stateProvider
+        .state("index", {
+            url: "",
+            onEnter: function () {
+                $state.go('project/list');
+            }
+        })
         .state('project/list', {
             url: "/project/list",
             templateUrl: urlPrepend + "project/list.html",

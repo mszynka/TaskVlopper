@@ -29,5 +29,8 @@
     //];
     //}
 
-    
+    $scope.$on('$stateChangeStart',
+        function (event, toState, toParams, fromState, fromParams) {
+            Pace.restart();
+        });
 });

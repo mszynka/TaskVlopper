@@ -75,11 +75,6 @@
             console.log($scope.status);
         });
     }
-
-    $scope.$on('$stateChangeStart', 
-        function(event, toState, toParams, fromState, fromParams){ 
-            Pace.restart();
-        });
 });
 
 app

@@ -3,9 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid" ng-cloak ui-view></div>
-
-<div class="tv-loading-screen" ng-hide="true"></div>
+<div ng-controller="DashboardController as dashboard">
+    <div class="container-fluid" ng-cloak ui-view></div>
+</div>
 
 @section scripts{
     <script>
