@@ -1,0 +1,33 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">Projects</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <!--<input type="text" placeholder="Search by project name..." class="form-control" ng-model="dashboard.projectSearchInput" />
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>-->
+            <button type="button" class="btn btn-default pull-right" ui-sref="project/list">
+                <span class="glyphicon glyphicon-list" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<form name="modelEditorForm">
+    <div class="form-horizontal col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+        <div class="panel panel-default">
+            <!--<tv-project-modeleditor></tv-project-modeleditor>-->
+        </div>
+        <div class="panel-footer">
+            <div class="text-center">
+                <button class="btn btn-primary">
+                    Save
+                </button>
+                <!-- TODO: handle cancel -->
+                <button class="btn btn-danger" ng-click="handlers.action.formCancel()" onclick="return false" disabled>Cancel</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>

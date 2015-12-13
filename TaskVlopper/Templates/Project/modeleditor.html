@@ -1,0 +1,54 @@
+﻿<div>
+    <div class="panel-body">
+        <input type="text" placeholder="Name" class="form-control" ng-model="model.Name" ng-required="true" />
+    </div>
+
+    <div class="panel-footer">
+        <div class="form-group">
+            <div class="col-xs-12">
+                <textarea class="form-control" placeholder="Description" rows="3" ng-model="model.Description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <p class="input-group">
+                    <input type="text" class="form-control"
+                           ng-model="model.StartDate"
+                           is-open="status.opened"
+                           show-button-bar="false"
+                           max-date="model.Deadline"
+                           uib-datepicker-popup />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+
+            <div class="col-xs-6">
+                <p class="input-group">
+                    <input type="text" class="form-control"
+                           ng-model="model.Deadline"
+                           is-open="status.opened"
+                           show-button-bar="false"
+                           min-date="model.StartDate" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Estimated time: </label>
+            <div class="col-xs-9">
+                <div class="input-group">
+                    <input type="number" min="0" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                           ng-model="model.EstimatedTimeInHours"
+                           ng-required="true" />
+                    <span class="input-group-addon">h</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

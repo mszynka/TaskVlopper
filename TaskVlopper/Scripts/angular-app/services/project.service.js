@@ -1,5 +1,4 @@
-﻿angular.module('taskVlopperApp')
-    .service('ProjectService', ['$http', function ($http) {
+﻿app.service('ProjectService', ['$http', function ($http) {
 
         this.getAll = function () {
             return $http.get('/Project');
