@@ -3,8 +3,8 @@
         <strong>{{project.Name}}</strong>
 
         <div class="pull-right">
-            <button class="glyphicon glyphicon-pencil icon-button" disabled></button>
-            <button class="glyphicon glyphicon-trash icon-button alert-danger" ui-sref="project/delete" disabled></button>
+            <button class="glyphicon glyphicon-pencil icon-button" ui-sref="project/edit({ projectId: project.ID })"></button>
+            <button class="glyphicon glyphicon-trash icon-button alert-danger" ui-sref="project/delete({ projectId: project.ID })"></button>
         </div>
 
     </div>

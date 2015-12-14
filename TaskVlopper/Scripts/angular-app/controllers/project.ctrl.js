@@ -1,5 +1,6 @@
-﻿app.controller('ProjectController', function ($scope, ProjectService) {
+﻿app.controller('ProjectController', function ($scope, $stateParams, ProjectService) {
 
+    $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
     $scope.projectHandler.getProjects = function () {
         ProjectService.getAll()
@@ -22,7 +23,7 @@
             if (response.HttpCode != undefined) {
                 console.log(response.HttpCode + " " + response.Message);
             }
-            $scope.model = response.Projects;
+            $scope.model = response.Project;
         })
         .error(function (error) {
             $scope.status = '[ProjectService.get] Unable to load data: ' + error.message;
@@ -44,8 +45,12 @@
         });
     };
 
-    $scope.projectHandler.editProject = function (project) {
-        var temp_model = project;
+    $scope.projectHandler.initEditor = function () {
+        $scope.projectHandler.getProject($scope.currentProjectId);
+    }
+
+    $scope.projectHandler.editProject = function () {
+        var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         console.log(temp_model);
         ProjectService.update(temp_model)
@@ -61,8 +66,8 @@
         });
     };
 
-    $scope.projectHandler.deleteProject = function (projectId) {
-        ProjectService.delete(projectId)
+    $scope.projectHandler.deleteProject = function () {
+        ProjectService.delete($scope.currentProjectId)
         .success(function (response) {
             if (response.HttpCode != undefined) {
                 console.log(response.HttpCode + " " + response.Message);
