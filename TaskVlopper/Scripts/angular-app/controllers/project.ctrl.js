@@ -1,4 +1,4 @@
-﻿app.controller('ProjectController', function ($scope, $stateParams, ProjectService) {
+﻿app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
 
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
@@ -16,8 +16,8 @@
     };
 
     $scope.projectHandler.createProject = function () {
-        ProjectService.create($scope.model).then(function(response){
-            $scope.projectHandler.getProjects();
+        ProjectService.create($scope.model).then(function (response) {
+            $state.go('project/list');
         })
     };
 
@@ -28,15 +28,15 @@
     $scope.projectHandler.editProject = function () {
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
-        ProjectService.update(temp_model).then(function(response){
-            $scope.projectHandler.getProjects();
+        ProjectService.update(temp_model).then(function (response) {
+            $state.go('project/list');
         });
     };
 
     $scope.projectHandler.deleteProject = function () {
         ProjectService.delete($scope.currentProjectId).then(function (response) {
             $scope.model = null;
-            $scope.projectHandler.getProjects();
+            $state.go('project/list');
         });
     }
 });
