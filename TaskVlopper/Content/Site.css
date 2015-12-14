@@ -50,7 +50,7 @@ textarea {
 .project-panel {
     padding: 0;
     margin: .5em;
-    width: 18em;
+    width: calc(20% - 1em);
 }
 
     .project-panel .panel-body {
