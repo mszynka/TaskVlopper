@@ -1,6 +1,8 @@
 ﻿<div>
     <div class="panel-body">
-        <input type="text" placeholder="Name" class="form-control" ng-model="model.Name" ng-required="true" />
+        <input type="text" placeholder="Name" class="form-control" 
+               ng-model="model.Name" 
+               ng-required="true" />
     </div>
 
     <div class="panel-footer">
@@ -43,7 +45,8 @@
             <label class="col-xs-3 control-label">Estimated time: </label>
             <div class="col-xs-9">
                 <div class="input-group">
-                    <input type="number" min="0" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                    <input type="number" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                           min="0"
                            ng-model="model.EstimatedTimeInHours"
                            ng-required="true" />
                     <span class="input-group-addon">h</span>
