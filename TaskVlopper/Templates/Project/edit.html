@@ -27,7 +27,11 @@
                         Save
                     </button>
                     <!-- TODO: handle cancel -->
-                    <button class="btn btn-danger" ng-click="handlers.action.formCancel()" onclick="return false" disabled>Cancel</button>
+                    <button class="btn btn-danger" 
+                            ng-click="model = null;" 
+                            ui-sref="project/list">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
