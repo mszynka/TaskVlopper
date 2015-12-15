@@ -242,7 +242,9 @@
     <Content Include="Scripts\angular-app\config.js" />
     <Content Include="Scripts\angular-app\controllers\dashboard.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\project.ctrl.js" />
+    <Content Include="Scripts\angular-app\controllers\task.ctrl.js" />
     <Content Include="Scripts\angular-app\directives\project.directives.js" />
+    <Content Include="Scripts\angular-app\directives\task.directives.js" />
     <Content Include="Scripts\angular-app\filters\date.filter.js" />
     <Content Include="Scripts\angular-app\router.js" />
     <Content Include="Scripts\angular-app\services\project.service.js" />
@@ -342,19 +344,19 @@
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Meeting\Index.cshtml" />
     <Content Include="Templates\Project\list.html" />
-    <Content Include="Views\Task\Index.cshtml" />
+    <Content Include="Templates\Task\list.html" />
     <Content Include="Views\Worklog\Index.cshtml" />
     <Content Include="Templates\Project\modeleditor.html" />
     <Content Include="Views\Dashboard\Private.cshtml" />
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
-    <Content Include="Views\Task\ModelEditor.cshtml" />
+    <Content Include="Templates\Task\modeleditor.html" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
     <Content Include="Views\Meeting\Create.cshtml" />
     <Content Include="Views\Meeting\Delete.cshtml" />
     <Content Include="Views\Meeting\Edit.cshtml" />
-    <Content Include="Views\Task\Create.cshtml" />
-    <Content Include="Views\Task\Delete.cshtml" />
-    <Content Include="Views\Task\Edit.cshtml" />
+    <Content Include="Templates\Task\create.html" />
+    <Content Include="Templates\Task\delete.html" />
+    <Content Include="Templates\Task\edit.html" />
     <Content Include="Views\Worklog\Create.cshtml" />
     <Content Include="Views\Worklog\Delete.cshtml" />
     <Content Include="Views\Worklog\Edit.cshtml" />
@@ -365,7 +367,7 @@
     <Content Include="Scripts\lang\jcs-auto-validate_en-us.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_en-gb.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_de-de.json" />
-    <Content Include="Views\Task\ngViewer.cshtml" />
+    <Content Include="Templates\Task\viewer.html" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -2,11 +2,12 @@
 
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
+
     $scope.projectHandler.getProjects = function () {
         ProjectService.getAll().then(function (response) {
             $scope.projects = response;
         })
-    }
+    };
     $scope.projectHandler.getProjects();
 
     $scope.projectHandler.getProject = function (projectId) {
@@ -23,7 +24,7 @@
 
     $scope.projectHandler.initEditor = function () {
         $scope.projectHandler.getProject($scope.currentProjectId);
-    }
+    };
 
     $scope.projectHandler.editProject = function () {
         var temp_model = $scope.model;

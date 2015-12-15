@@ -1,9 +1,9 @@
 ﻿<div class="form-horizontal">
     <div class="form-group">
-        <h2 class="pull-left">Projects</h2>
+        <h2 class="pull-left">Tasks</h2>
 
         <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
-            <button type="button" class="btn btn-primary pull-right" ui-sref="project/list">
+            <button type="button" class="btn btn-primary pull-right" ui-sref="task/list({ projectId: currentProjectId })">
                 <span class="glyphicon glyphicon-list" style="font-size: smaller;"></span>
             </button>
         </div>
@@ -13,18 +13,18 @@
 <form name="modelEditorForm">
     <div class="form-horizontal col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
         <div class="panel panel-default">
-            <tv-project-modeleditor></tv-project-modeleditor>
+            <tv-task-modeleditor></tv-task-modeleditor>
             <div class="panel-footer">
                 <div class="text-center">
-                    <button class="btn btn-primary" 
-                            ng-disabled="modelEditorForm.$invalid" 
-                            ng-click="projectHandler.createProject();"
+                    <button class="btn btn-primary"
+                            ng-disabled="modelEditorForm.$invalid"
+                            ng-click="taskHandler.createTask();"
                             type="submit">
                         Save
                     </button>
                     <button class="btn btn-danger"
                             ng-click="model = null;"
-                            ui-sref="project/list"
+                            ui-sref="task/list({ projectId: currentProjectId })"
                             type="reset">
                         Cancel
                     </button>
