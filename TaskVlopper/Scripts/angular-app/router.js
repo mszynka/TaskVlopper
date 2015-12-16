@@ -1,4 +1,8 @@
-﻿/// <reference path="services/task.service.js" />
+﻿/// <reference path="controllers/project.ctrl.js" />
+/// <reference path="controllers/task.ctrl.js" />
+/// <reference path="services/project.service.js" />
+/// <reference path="services/task.service.js" />
+
 app.config(function ($stateProvider, $urlRouterProvider) {
     
     $urlRouterProvider.otherwise("/project/list");

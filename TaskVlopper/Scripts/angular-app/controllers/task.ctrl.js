@@ -1,4 +1,6 @@
-﻿app.controller('TaskController', function ($scope, $state, $stateParams, TaskService) {
+﻿/// <reference path="services/task.service.js" />
+
+app.controller('TaskController', function ($scope, $state, $stateParams, TaskService) {
     
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;

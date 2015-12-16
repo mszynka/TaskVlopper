@@ -1,4 +1,6 @@
-﻿app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
+﻿/// <reference path="services/project.service.js" />
+
+app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
 
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
