@@ -32,17 +32,16 @@ namespace TaskVlopper.Controllers
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {
             try
@@ -51,27 +50,26 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewModel = new ProjectViewModel(logic.HandleProjectGet(id));
+
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Create
+        [HttpGet]
         public ActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View();
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User authenticated!").getInfo(), JsonRequestBehavior.AllowGet);
             }
-            ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-            return View("Error", handler.handleError());
+            return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Project/Create
@@ -85,19 +83,18 @@ namespace TaskVlopper.Controllers
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectAdd(collection, User.Identity.Name);
 
-                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Created, "Project successfully created!"), JsonRequestBehavior.AllowGet);
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Project successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Edit/5
+        [HttpGet]
         public ActionResult Edit(int id)
         {
             try
@@ -106,15 +103,14 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
-                    return PartialView(viewmodel);
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -128,19 +124,19 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectEdit(collection, id);
-                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.Accepted, "Project successfully updated!"), JsonRequestBehavior.AllowGet);
+                    
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Accepted, message: "Project successfully updated!").getInfo(), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
             try
@@ -149,15 +145,14 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
-                    return View(viewmodel);
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return View("Error", handler.handleError());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -171,15 +166,14 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectDelete(id, User.Identity.Name);
-                    return Json(JsonHelpers.HttpMessage(HttpCodeEnum.OK, "Project successfully removed!"), JsonRequestBehavior.AllowGet);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "Project successfully removed!").getInfo(), JsonRequestBehavior.AllowGet);
                 }
-                ExceptionHandler handler = new ExceptionHandler(errorCode: HttpCodeEnum.Forbidden);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                ExceptionHandler handler = new ExceptionHandler(ex);
-                return Json(handler.handleError(), JsonRequestBehavior.AllowGet);
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -7,7 +7,7 @@ using TaskVlopper.Helpers;
 
 namespace TaskVlopper.Models
 {
-    public class ErrorViewModel
+    public class JsonHttpViewModel
     {   
         [Required]
         public int HttpCode { get; set; }

@@ -31,6 +31,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/Login
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -71,6 +72,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/VerifyCode
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -119,6 +121,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/Register
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -146,7 +149,7 @@ namespace TaskVlopper.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 AddErrors(result);
             }
@@ -157,6 +160,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ConfirmEmail
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -170,6 +174,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ForgotPassword
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
@@ -206,6 +211,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ForgotPasswordConfirmation
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
@@ -214,6 +220,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ResetPassword
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
@@ -248,6 +255,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
@@ -267,6 +275,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/SendCode
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -302,6 +311,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ExternalLoginCallback
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -375,11 +385,12 @@ namespace TaskVlopper.Controllers
         public ActionResult LogOff()
         {
             authenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         //
         // GET: /Account/ExternalLoginFailure
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
@@ -412,7 +423,7 @@ namespace TaskVlopper.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

@@ -196,7 +196,6 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MeetingController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
@@ -206,15 +205,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\ExceptionHandlerHelpers.cs" />
-    <Compile Include="Helpers\JsonHelpers.cs" />
+    <Compile Include="Helpers\JsonDataHandler.cs" />
     <Compile Include="Identity\ApplicationDbContext.cs" />
     <Compile Include="Identity\ApplicationSignInManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Identity\EmailService.cs" />
     <Compile Include="Identity\SmsService.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ErrorViewModel.cs" />
+    <Compile Include="Models\JsonHttpViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MeetingViewModels.cs" />
@@ -312,9 +310,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\_About.cshtml" />
-    <Content Include="Views\Home\_Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Dashboard\_About.cshtml" />
+    <Content Include="Views\Dashboard\_Contact.cshtml" />
+    <Content Include="Views\Dashboard\Public.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -342,7 +340,7 @@
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Worklog\Index.cshtml" />
     <Content Include="Views\Project\ngModelEditor.cshtml" />
-    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Dashboard\Private.cshtml" />
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
     <Content Include="Views\Task\ModelEditor.cshtml" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
