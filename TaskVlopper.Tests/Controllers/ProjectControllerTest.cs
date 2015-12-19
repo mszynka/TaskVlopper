@@ -10,6 +10,7 @@ using TaskVlopper.Tests.Mocks;
 using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
+using System.Data.Entity;
 
 namespace TaskVlopper.Controllers.Tests
 {
@@ -26,21 +27,23 @@ namespace TaskVlopper.Controllers.Tests
             // Act
             JsonResult action = controller.Index() as JsonResult;
 
+
             // Assert
             Assert.IsNotNull(action);
         }
 
         [TestMethod()]
         public void IndexNotLoggedUserTest()
-        {   // TODO
-            //// Arrange
-            //ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
+        {
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
 
-            //// Act
-            //JsonResult action = controller.Index() as JsonResult;
+            // Act
+            JsonResult action = controller.Index() as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
-            //// Assert
-            //Assert.IsNull(action);
+            // Assert
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
         [TestMethod]
@@ -58,9 +61,9 @@ namespace TaskVlopper.Controllers.Tests
 
             // Act
             JsonResult action = controller.Details(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
-
+            var project = (TaskVlopper.Models.ProjectViewModel)action.Data;
             // Assert
-            Assert.IsNotNull(action);
+            Assert.IsNotNull(project);
         }
 
         [TestMethod]
@@ -79,12 +82,13 @@ namespace TaskVlopper.Controllers.Tests
 
             // Act
             JsonResult action = controller.Details(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
             // Assert
-            Assert.IsNull(action);
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateGetLoggedUserTest()
         {
             // Arrange
@@ -105,9 +109,10 @@ namespace TaskVlopper.Controllers.Tests
 
             // Act
             JsonResult action = controller.Create() as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
             // Assert
-            Assert.IsNull(action);
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
         [TestMethod]
@@ -138,20 +143,21 @@ namespace TaskVlopper.Controllers.Tests
 
         [TestMethod]
         public void CreatePostNotLoggedUserTest()
-        {   // TODO
-            //// Arrange
-            //ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
+        {
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
 
-            //// Act
-            //JsonResult action = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
+            // Act
+            JsonResult action = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
-            //// Assert
-            //Assert.IsNull(action);
+            // Assert
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
         [TestMethod]
         public void EditGetLoggedUserTest()
-        {
+         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
                 var repository = container.Resolve<IProjectRepository>();
@@ -162,10 +168,11 @@ namespace TaskVlopper.Controllers.Tests
             ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
 
             // Act
-            PartialViewResult partialView = controller.Edit(ModelsMocks.ProjectModelSecond.ID) as PartialViewResult;
+            JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID) as JsonResult;
+            var project = (TaskVlopper.Models.ProjectViewModel)action.Data;
 
             // Assert
-            Assert.IsNotNull(partialView);
+            Assert.IsNotNull(project);
         }
 
         [TestMethod]
@@ -182,45 +189,46 @@ namespace TaskVlopper.Controllers.Tests
 
             // Act
             JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
             // Assert
-            Assert.IsNull(action);
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
         [TestMethod]
         public void EditPostLoggedUserTest()
-        {   // TODO
-            //using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
-            //{
-            //    var repository = container.Resolve<IProjectRepository>();
-            //    repository.RemoveAll();
-            //    repository.Add(ModelsMocks.ProjectModelSecond);
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var repository = container.Resolve<IProjectRepository>();
+                repository.RemoveAll();
+                repository.Add(ModelsMocks.ProjectModelSecond);
 
-            //    // Arrange
-            //    ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
+                // Arrange
+                ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
+                
+                // Act
+                JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.ProjectModelFirst) as JsonResult;
 
-            //    // Act
-            //    JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.ProjectModelSecond) as JsonResult;
+                // Assert
+                Assert.AreEqual(ModelsMocks.ProjectModelFirst.Name,
+                    repository.GetProjectByIdWithoutTracking(ModelsMocks.ProjectModelSecond.ID).Name);
 
-            //    // Assert
-            //    Assert.AreEqual(ModelsMocks.ProjectModelFirst.Name,
-            //        repository.GetProjectByIdWithoutTracking(ModelsMocks.ProjectModelSecond.ID).Name);
-
-            //}
+            }
         }
 
         [TestMethod]
         public void EditPostNotLoggedUserTest()
         {
-            // TODO
-            //// Arrange
-            //ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
 
-            //// Act
-            //JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.ProjectModelSecond) as JsonResult;
+            // Act
+            JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.ProjectModelSecond) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
-            //// Assert
-            //Assert.IsNull(action);
+            // Assert
+            Assert.AreEqual(403, forbidden.HttpCode);
 
         }
 
@@ -232,16 +240,16 @@ namespace TaskVlopper.Controllers.Tests
                 var repository = container.Resolve<IProjectRepository>();
                 repository.RemoveAll();
                 repository.Add(ModelsMocks.ProjectModelSecond);
+
+                // Arrange
+                ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
+
+                // Act
+                JsonResult action = controller.Delete(ModelsMocks.ProjectModelSecond.ID) as JsonResult;
+                var project = (Models.ProjectViewModel)action.Data;
+                // Assert
+                Assert.IsNotNull(project);
             }
-
-            // Arrange
-            ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
-
-            // Act
-            ViewResult viewResult = controller.Delete(ModelsMocks.ProjectModelSecond.ID) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(viewResult);
         }
 
         [TestMethod]
@@ -252,9 +260,10 @@ namespace TaskVlopper.Controllers.Tests
 
             // Act
             JsonResult action = controller.Delete(ModelsMocks.ProjectModelSecond.ID) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
             // Assert
-            Assert.IsNull(action);
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
 
         [TestMethod]
@@ -264,7 +273,7 @@ namespace TaskVlopper.Controllers.Tests
             {
                 var repository = container.Resolve<IProjectRepository>();
                 repository.RemoveAll();
-                
+
 
 
                 // Arrange
@@ -281,15 +290,16 @@ namespace TaskVlopper.Controllers.Tests
 
         [TestMethod]
         public void DeletePostNotLoggedUserTest()
-        {   // TODO
-            //// Arrange
-            //ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
+        {
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsNotLoggedUser<ProjectController>();
 
-            //// Act
-            //JsonResult action = controller.Delete(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.Form) as JsonResult;
+            // Act
+            JsonResult action = controller.Delete(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.Form) as JsonResult;
+            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
 
-            //// Assert
-            //Assert.IsNull(action);
+            // Assert
+            Assert.AreEqual(403, forbidden.HttpCode);
         }
     }
 }
