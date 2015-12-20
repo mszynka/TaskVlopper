@@ -15,12 +15,12 @@ namespace TaskVlopper.Tests.Mocks
         public const string LoggedUser = "Logged";
         public const string NotloggedUser = "NotLogged";
 
-        public static T GetControllerAsLoggedUser<T>(string userName = "Logged", bool isUserLoggedIn = true) where T : Controller, new()
+        public static T GetControllerAsLoggedUser<T>(string userName = LoggedUser, bool isUserLoggedIn = true) where T : Controller, new()
         {
             return CreateControllerAs<T>(userName, isUserLoggedIn);
         }
 
-        public static T GetControllerAsNotLoggedUser<T>(string userName = "NotLogged", bool isUserLoggedIn = false) where T : Controller, new()
+        public static T GetControllerAsNotLoggedUser<T>(string userName = NotloggedUser, bool isUserLoggedIn = false) where T : Controller, new()
         {
             return CreateControllerAs<T>(userName, isUserLoggedIn);
         }

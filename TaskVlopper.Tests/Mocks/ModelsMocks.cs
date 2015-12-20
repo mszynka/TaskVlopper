@@ -1,15 +1,64 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
+using TaskVlopper.Base.Repository;
+using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Tests.Mocks
 {
     public static class ModelsMocks
     {
+        public static void CleanUpBeforeTest()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projRepo = container.Resolve<IProjectRepository>();
+                var projAssignmentRepo = container.Resolve<IUserProjectAssignmentRepository>();
+
+                var taskRepo = container.Resolve<ITaskRepository>();
+                var taskAssignmentRepo = container.Resolve<IUserTaskAssignmentRepository>();
+
+                var worklogRepo = container.Resolve<IWorklogRepository>();
+
+                projRepo.RemoveAll();
+                projAssignmentRepo.RemoveAll();
+                taskRepo.RemoveAll();
+                taskAssignmentRepo.RemoveAll();
+                worklogRepo.RemoveAll();
+            }
+        }
+
+        public static void AddTestProject(bool isUserLogged)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projLogic = container.Resolve<IProjectLogic>();
+                projLogic.HandleProjectAdd(ModelsMocks.ProjectModelFirst,
+                    isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
+            }
+        }
+
+        public static void AddTestTask(bool isUserLogged, TaskVlopper.Base.Model.Project project)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var taskLogic = container.Resolve<ITaskLogic>();
+                taskLogic.HandleTaskAdd(ModelsMocks.TaskModelFirst, project.ID,
+                    isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
+            }
+        }
+
+        public static void AddTestWorklog()
+        {
+
+        }
+
         public static TaskVlopper.Base.Model.Task TaskModelFirst = new TaskVlopper.Base.Model.Task()
         {
             ID = 1,

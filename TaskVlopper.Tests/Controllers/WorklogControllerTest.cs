@@ -19,15 +19,16 @@ namespace TaskVlopper.Controllers.Tests
         [TestMethod()]
         public void IndexLoggedUserTest()
         {
-            //ToDo
-            //// Arrange 
-            //WorklogController controller = ControllersMocks.GetControllerAsLoggedUser<WorklogController>();
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
+            // Arrange 
+            WorklogController controller = ControllersMocks.GetControllerAsLoggedUser<WorklogController>();
 
-            //// Act
-            //JsonResult action = controller.Index() as JsonResult;
-
-            //// Assert
-            //Assert.IsNotNull(action);
+            // Act
+            JsonResult action = controller.Index(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
+            var worklogs = (Models.WorklogsViewModel)action.Data;
+            // Assert
+            Assert.IsNotNull(worklogs);
         }
 
         [TestMethod()]
@@ -89,7 +90,7 @@ namespace TaskVlopper.Controllers.Tests
         [TestMethod, Ignore]
         public void EditGetNotLoggedUserTest()
         {
-
+           
         }
 
         [TestMethod, Ignore]

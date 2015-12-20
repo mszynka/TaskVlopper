@@ -26,7 +26,8 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IWorklogLogic logic = container.Resolve<IWorklogLogic>();
-                    var viewModel = logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name);
+                    var viewModel = new WorklogsViewModel(
+                        logic.GetAllWorklogForGivenProjectAndTaskAndUser(projectId, taskId, User.Identity.Name).ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -47,7 +48,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IWorklogLogic logic = container.Resolve<IWorklogLogic>();
-                    var viewModel = logic.HandleWorklogGet(projectId, taskId, id);
+                    var viewModel = new WorklogViewModel(logic.HandleWorklogGet(projectId, taskId, id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -100,7 +101,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IWorklogLogic logic = container.Resolve<IWorklogLogic>();
-                    var viewmodel = logic.HandleWorklogGet(projectId, taskId, id);
+                    var viewmodel = new WorklogViewModel(logic.HandleWorklogGet(projectId, taskId, id));
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }
