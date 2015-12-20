@@ -10,6 +10,34 @@ namespace TaskVlopper.Tests.Mocks
 {
     public static class ModelsMocks
     {
+        public static TaskVlopper.Base.Model.Task TaskModelFirst = new TaskVlopper.Base.Model.Task()
+        {
+            ID = 1,
+            Description = "TaskDescription",
+            EndDate = new DateTime(2015, 01, 01),
+            EstimatedTimeInHours = 100,
+            ExecutiveUserID = "Logged",
+            Name = "Task1",
+            ProjectID = 1,
+            StartDate = new DateTime(2014, 01, 01),
+            Status = Base.Enums.TaskStatusEnum.Started,
+            Storypoints = 123
+        };
+
+        public static TaskVlopper.Base.Model.Task TaskModelSecond = new TaskVlopper.Base.Model.Task()
+        {
+            ID = 2,
+            Description = "TaskDescription2",
+            EndDate = new DateTime(2015, 02, 02),
+            EstimatedTimeInHours = 102,
+            ExecutiveUserID = "Logged",
+            Name = "Task2",
+            ProjectID = 2,
+            StartDate = new DateTime(2014, 01, 01),
+            Status = Base.Enums.TaskStatusEnum.Active,
+            Storypoints = 123
+        };
+
         public static Project ProjectModelFirst = new Project()
         {
             ID = 1,

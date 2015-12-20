@@ -51,6 +51,7 @@ namespace TaskVlopper.Logic
             UserTaskAssignment assignment = new UserTaskAssignment();
             assignment.UserID = userId;
             assignment.TaskID = task.ID;
+            assignment.ProjectID = projectId;
             UserTaskAssignmentRepository.Add(assignment);
         }
 
@@ -66,8 +67,8 @@ namespace TaskVlopper.Logic
 
         public void HandleTaskEdit(Base.Model.Task task, int projectId, int id)
         {
-            //Base.Model.Task task = Serializer.Serialize(form);
-
+            task.ProjectID = projectId;
+            task.ID = id;
             TaskRepository.Update(task);
         }
 
