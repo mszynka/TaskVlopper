@@ -301,5 +301,20 @@ namespace TaskVlopper.Controllers.Tests
             // Assert
             Assert.AreEqual(403, forbidden.HttpCode);
         }
+
+        [TestMethod]
+        public void CleanUpTest()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projRepository = container.Resolve<IProjectRepository>();
+                var projAssignmentRepo = container.Resolve<IUserProjectAssignmentRepository>();
+                projRepository.RemoveAll();
+                projAssignmentRepo.RemoveAll();
+
+                Assert.AreEqual(0, projRepository.GetAll().Count() + projAssignmentRepo.GetAll().Count());
+
+            }
+        }
     }
 }

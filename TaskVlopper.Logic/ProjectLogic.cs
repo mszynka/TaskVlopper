@@ -31,12 +31,12 @@ namespace TaskVlopper.Logic
 
         public IEnumerable<Project> GetAllProjectsForCurrentUser(string userId)
         {
-            var assignment = UserProjectAssignmentRepository.GetAll().Where(x => x.UserID == userId);
+            var assignments = UserProjectAssignmentRepository.GetAll().Where(x=>x.UserID == userId).Select(x => x.ProjectID);
 
             List<Project> projectsForCurrentUser = new List<Project>();
-            foreach (var ass in assignment)
+            foreach (var assignment in assignments)
             {
-                projectsForCurrentUser.Add(ProjectRepository.GetAll().Where(x => x.ID == ass.ProjectID).Single());
+                projectsForCurrentUser.Add(ProjectRepository.GetProjectByIdWithoutTracking(assignment));
             }
 
             return projectsForCurrentUser.AsEnumerable();
