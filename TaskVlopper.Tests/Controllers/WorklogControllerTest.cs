@@ -158,8 +158,8 @@ namespace TaskVlopper.Controllers.Tests
             JsonResult action = controller.Edit(ModelsMocks.WorklogModelSecond, ModelsMocks.ProjectModelFirst.ID,
                 ModelsMocks.TaskModelFirst.ID, ModelsMocks.WorklogModelFirst.ID) as JsonResult;
 
-            var worklog = (Models.WorklogViewModel)action.Data;
-            Assert.IsNotNull(worklog);
+            var ok = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
+            Assert.AreEqual(202, ok.HttpCode);
         }
 
         [TestMethod]
