@@ -54,10 +54,36 @@ namespace TaskVlopper.Tests.Mocks
             }
         }
 
-        public static void AddTestWorklog()
+        public static void AddTestWorklog(bool isUserLogged, TaskVlopper.Base.Model.Task task)
         {
-
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var worklogLogic = container.Resolve<IWorklogLogic>();
+                worklogLogic.HandleWorklogAdd(ModelsMocks.WorklogModelFirst, task.ProjectID, task.ID, 
+                    isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
+            }
         }
+
+        public static Worklog WorklogModelFirst = new Worklog()
+        {
+            ID = 1,
+            Date = new DateTime(2015, 07, 01),
+            Description = "Worklog description",
+            Hours = 15,
+            TaskID = 1,
+            UserID = ControllersMocks.LoggedUser
+        };
+
+        public static Worklog WorklogModelSecond = new Worklog()
+        {
+            ID = 2,
+            Date = new DateTime(2015, 07, 02),
+            Description = "Worklog description 2",
+            Hours = 115,
+            TaskID = 2,
+            UserID = ControllersMocks.NotloggedUser
+            
+        };
 
         public static TaskVlopper.Base.Model.Task TaskModelFirst = new TaskVlopper.Base.Model.Task()
         {

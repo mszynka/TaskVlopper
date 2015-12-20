@@ -62,7 +62,7 @@ namespace TaskVlopper.Controllers
 
         // GET: Worklog/Create
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int projectId, int taskId)
         {
             if (User.Identity.IsAuthenticated)
             {

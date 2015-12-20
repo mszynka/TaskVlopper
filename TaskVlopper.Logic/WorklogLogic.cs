@@ -49,6 +49,8 @@ namespace TaskVlopper.Logic
 
         public void HandleWorklogEdit(Worklog worklog, int projectId, int taskId, int id)
         {
+            worklog.TaskID = taskId;
+            worklog.ID = id;
             WorklogRepository.Update(worklog);
         }
     }
