@@ -2,6 +2,21 @@
 
 app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
 
+    Pace.on("done",
+        function () {
+            $('#modelDeadline').parent().datetimepicker({
+                format: "MM/DD/YYYY",
+                useCurrent: false
+            });
+            $("#modelStartDate").parent().on("dp.change", function (e) {
+                $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
+            });
+            $("#modelDeadline").parent().on("dp.change", function (e) {
+                $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    
+
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
 
@@ -15,6 +30,10 @@ app.controller('ProjectController', function ($scope, $state, $stateParams, Proj
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
             $scope.model = response;
+            if($scope.model.StartDate != undefined)
+                $scope.model.StartDate = new Date(parseInt($scope.model.StartDate.split("(")[1]));
+            if($scope.model.Deadline != undefined)
+                $scope.model.Deadline = new Date(parseInt($scope.model.Deadline.split("(")[1]));
         })
     };
 

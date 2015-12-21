@@ -2,6 +2,20 @@
 
 app.controller('TaskController', function ($scope, $state, $stateParams, TaskService) {
     
+    Pace.on("done",
+        function () {
+            $('#modelEndDate').parent().datetimepicker({
+                format: "MM/DD/YYYY",
+                useCurrent: false
+            });
+            $("#modelStartDate").parent().on("dp.change", function (e) {
+                $('#modelEndDate').parent().data("DateTimePicker").minDate(e.date);
+            });
+            $("#modelEndDate").parent().on("dp.change", function (e) {
+                $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
     $scope.tasks = [];

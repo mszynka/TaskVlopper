@@ -1,5 +1,6 @@
 ﻿<div>
     <!--@Html.TextBoxFor(p => p.Task.ProjectID, new { @class = "form-control", placeholder = "ProjectID" })-->
+    <span ng-init="model.ProjectID = currentProjectId"></span>
 
     <div class="panel-heading">
         <input type="text" placeholder="Name" class="form-control"
@@ -16,28 +17,20 @@
 
         <div class="form-group">
             <div class="col-xs-6">
-                <p class="input-group">
-                    <input type="text" class="form-control"
-                           ng-model="model.StartDate"
-                           is-open="status.opened"
-                           show-button-bar="false"
-                           max-date="model.EndDate"
-                           uib-datepicker-popup />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                <p class="input-group date hasDatepicker">
+                    <input type="text" class="form-control" id="modelStartDate"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
                     </span>
                 </p>
             </div>
 
             <div class="col-xs-6">
-                <p class="input-group">
-                    <input type="text" class="form-control"
-                           ng-model="model.EndDate"
-                           is-open="status.opened"
-                           show-button-bar="false"
-                           min-date="model.StartDate" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                <p class="input-group date">
+                    <input type="text" class="form-control" id="modelEndDate"
+                           ng-model="model.EndDate"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
                     </span>
                 </p>
             </div>
