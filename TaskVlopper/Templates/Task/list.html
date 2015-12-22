@@ -19,11 +19,33 @@
 </div>
 
 <div class="form-horizontal" ng-hide="(tasks | filter: { Name: controller.taskSearchInput }).length == 0">
-    <div class="row project-row">
-        <div class="panel panel-default project-panel" ng-repeat="task in tasks | filter: { Name: controller.taskSearchInput }">
-            <tv-task-viewer></tv-task-viewer>
-        </div>
-    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Estimated time (h)</th>
+                <th>Storypoints</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="task in tasks | filter: { Name: controller.taskSearchInput }">
+                <th scope="row">{{task.ID}}</th>
+                <td title="{{task.Description}}">{{task.Name}}</td>
+                <td>{{task.EstimatedTimeInHours}}</td>
+                <td>{{task.Storypoints}}</td>
+                <td>{{task.Status}}</td>
+                <td>
+                    <div class="btn-group-xs">
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: task.ID, projectId: currentProjectId })"></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div class="alert alert-warning" ng-show="(tasks | filter: { Name: controller.taskSearchInput }).length == 0 && tasks.length > 0">

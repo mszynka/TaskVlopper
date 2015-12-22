@@ -369,7 +369,6 @@
     <Content Include="Scripts\lang\jcs-auto-validate_en-us.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_en-gb.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_de-de.json" />
-    <Content Include="Templates\Task\viewer.html" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

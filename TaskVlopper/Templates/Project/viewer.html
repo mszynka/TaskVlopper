@@ -3,10 +3,17 @@
         <strong>{{project.Name}}</strong>
 
         <div class="pull-right">
-            <button class="glyphicon glyphicon-pencil icon-button" ui-sref="project/edit({ projectId: project.ID })"></button>
-            <button class="glyphicon glyphicon-trash icon-button alert-danger" ui-sref="project/delete({ projectId: project.ID })"></button>
+            <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: project.ID })"></button>
+            <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: project.ID })"></button>
         </div>
 
+    </div>
+
+    <!-- TODO: project progress -->
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+            <span class="sr-only">10% Complete</span>
+        </div>
     </div>
 
     <div class="panel-footer">
@@ -15,17 +22,15 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button class="glyphicon glyphicon-check icon-button" ui-sref="task/list({ projectId: project.ID })">{{project.taskCount}}</button>
-                <button class="glyphicon glyphicon-user icon-button" disabled>1</button><!--{{project.boundUsers}}-->
+                <button class="glyphicon glyphicon-check icon-button" title="Tasks for project" ui-sref="task/list({ projectId: project.ID })">{{project.taskCount}}</button>
+                <button class="glyphicon glyphicon-user icon-button" title="Users in project's workgroup" disabled>1</button><!--{{project.boundUsers}}-->
+                <button class="glyphicon glyphicon-time icon-button" title="Estimated project time" ui-sref="worklog/list({ projectId: project.ID })" disabled>{{project.EstimatedTimeInHours}}h</button>
             </div>
         </div>
         <!-- TODO: handle additional data, another fullviewer? -->
         <!--<div class="row">
             <div class="col-sm-6">
                 <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
-            </div>
-            <div class="col-sm-6">
-                <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
             </div>
         </div>-->
 

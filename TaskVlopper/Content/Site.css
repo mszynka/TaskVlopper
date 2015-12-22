@@ -53,6 +53,13 @@ textarea {
     width: calc(20% - 1em);
 }
 
+    .project-panel .progress {
+        margin-bottom: 0;
+        position: relative;
+        border-radius: 0;
+        height: 1px;
+    }
+
     .project-panel .panel-body {
         padding: 10px 5px 10px 15px;
     }
@@ -74,9 +81,9 @@ textarea {
         width: calc(50% - 1em);
     }
 
-     .searchInput {
-         display: none;
-     }
+    .searchInput {
+        display: none;
+    }
 }
 
 @media all and (max-width: 370px) {
