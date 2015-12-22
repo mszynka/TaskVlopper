@@ -9,8 +9,7 @@
                 return response.data.Tasks;
             })
             .catch(function (error) {
-                $scope.status = '[TaskService.getAll] Unable to load data: ' + error.data.message;
-                console.log($scope.status);
+                console.log('[TaskService.getAll] Unable to load data: ' + error.data.message);
             });
         };
 
@@ -31,8 +30,7 @@
                 return response.data.Task;
             })
             .catch(function (error) {
-                $scope.status = '[TaskService.get] Unable to load data: ' + error.message;
-                console.log($scope.status);
+                console.log('[TaskService.get] Unable to load data: ' + error.message);
             });
         };
 

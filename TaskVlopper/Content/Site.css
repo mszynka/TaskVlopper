@@ -57,6 +57,36 @@ textarea {
         padding: 10px 5px 10px 15px;
     }
 
+@media all and (max-width: 800px) {
+    .project-panel {
+        width: calc(25% - 1em);
+    }
+}
+
+@media all and (max-width: 600px) {
+    .project-panel {
+        width: calc(33% - 1em);
+    }
+}
+
+@media all and (max-width: 500px) {
+    .project-panel {
+        width: calc(50% - 1em);
+    }
+
+     .searchInput {
+         display: none;
+     }
+}
+
+@media all and (max-width: 370px) {
+    .project-panel {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
 .project-row {
     display: flex;
     flex-direction: row;

@@ -1,6 +1,6 @@
 ﻿/// <reference path="services/project.service.js" />
 
-app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
+app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService, TaskService) {
 
     Pace.on("done",
         function () {
@@ -22,6 +22,11 @@ app.controller('ProjectController', function ($scope, $state, $stateParams, Proj
 
     $scope.projectHandler.getProjects = function () {
         ProjectService.getAll().then(function (response) {
+            angular.forEach(response, function (project) {
+                TaskService.getAll(project.ID).then(function (response) {
+                    project.taskCount = response.length;
+                })
+            })
             $scope.projects = response;
         })
     };
