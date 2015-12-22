@@ -57,4 +57,25 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "task/delete.html",
             controller: "TaskController as controller"
         })
+
+        .state('meeting/list', {
+            url: "/meeting/list?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/list.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/create', {
+            url: "/meeting/create?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/create.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/edit', {
+            url: "/meeting/edit/:meetingId?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/edit.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/delete', {
+            url: "/meeting/delete/:meetingId?projectId",
+            templateUrl: urlPrepend + "meeting/delete.html",
+            controller: "MeetingController as controller"
+        })
 });
