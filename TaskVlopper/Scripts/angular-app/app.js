@@ -1,1 +1,5 @@
-﻿var app = angular.module('taskVlopperApp', ['ui.bootstrap', 'ui.bootstrap.datepicker']);
+﻿var app = angular.module('taskVlopperApp', [
+    'ui.router',
+    'ui.bootstrap', 
+    'ui.bootstrap.datepicker'
+]);

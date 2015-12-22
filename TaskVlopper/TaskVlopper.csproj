@@ -232,6 +232,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery.modal.css" />
+    <Content Include="Content\pace.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -240,15 +241,21 @@
     <Content Include="Scripts\angular-app\app.js" />
     <Content Include="Scripts\angular-app\config.js" />
     <Content Include="Scripts\angular-app\controllers\dashboard.ctrl.js" />
+    <Content Include="Scripts\angular-app\controllers\menu.ctrl.js" />
+    <Content Include="Scripts\angular-app\controllers\project.ctrl.js" />
+    <Content Include="Scripts\angular-app\controllers\task.ctrl.js" />
+    <Content Include="Scripts\angular-app\directives\project.directives.js" />
+    <Content Include="Scripts\angular-app\directives\task.directives.js" />
     <Content Include="Scripts\angular-app\filters\date.filter.js" />
-    <Content Include="Scripts\angular-app\lib\class.js" />
+    <Content Include="Scripts\angular-app\router.js" />
+    <Content Include="Scripts\angular-app\services\menu.service.js" />
     <Content Include="Scripts\angular-app\services\project.service.js" />
     <Content Include="Scripts\angular-app\services\task.service.js" />
     <Content Include="Scripts\angular\angular-animate.js" />
     <Content Include="Scripts\angular\angular-animate.min.js" />
     <Content Include="Scripts\angular\angular-mocks.js" />
-    <Content Include="Scripts\angular\angular-ui-router.js" />
-    <Content Include="Scripts\angular\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular-ui\ui-router.js" />
+    <Content Include="Scripts\angular-ui\ui-router.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
@@ -262,7 +269,6 @@
     <Content Include="Scripts\jcs-auto-validate.js" />
     <Content Include="Scripts\jcs-auto-validate.min.js" />
     <Content Include="Scripts\jcs-auto-validate.min.js.map" />
-    <Content Include="Scripts\angular-app\controllers\ibase.ctrl.js" />
     <Content Include="Loader.html" />
     <None Include="Scripts\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.js" />
@@ -291,12 +297,15 @@
     <Content Include="Scripts\plugins\jquery.modal.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\plugins\pace.js" />
     <Content Include="Scripts\respond\respond.js" />
     <Content Include="Scripts\respond\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Templates\Project\create.html" />
+    <Content Include="Templates\Project\delete.html" />
+    <Content Include="Templates\Project\edit.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -336,31 +345,31 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Meeting\Index.cshtml" />
-    <Content Include="Views\Project\ngIndex.cshtml" />
-    <Content Include="Views\Task\Index.cshtml" />
+    <Content Include="Templates\Project\list.html" />
+    <Content Include="Templates\Task\list.html" />
     <Content Include="Views\Worklog\Index.cshtml" />
-    <Content Include="Views\Project\ngModelEditor.cshtml" />
+    <Content Include="Templates\Project\modeleditor.html" />
     <Content Include="Views\Dashboard\Private.cshtml" />
     <Content Include="Views\Meeting\ModelEditor.cshtml" />
-    <Content Include="Views\Task\ModelEditor.cshtml" />
+    <Content Include="Templates\Task\modeleditor.html" />
     <Content Include="Views\Worklog\ModelEditor.cshtml" />
     <Content Include="Views\Meeting\Create.cshtml" />
     <Content Include="Views\Meeting\Delete.cshtml" />
     <Content Include="Views\Meeting\Edit.cshtml" />
-    <Content Include="Views\Task\Create.cshtml" />
-    <Content Include="Views\Task\Delete.cshtml" />
-    <Content Include="Views\Task\Edit.cshtml" />
+    <Content Include="Templates\Task\create.html" />
+    <Content Include="Templates\Task\delete.html" />
+    <Content Include="Templates\Task\edit.html" />
     <Content Include="Views\Worklog\Create.cshtml" />
     <Content Include="Views\Worklog\Delete.cshtml" />
     <Content Include="Views\Worklog\Edit.cshtml" />
-    <Content Include="Views\Project\ngViewer.cshtml" />
+    <Content Include="Templates\Project\viewer.html" />
     <Content Include="Scripts\lang\jcs-auto-validate_ru-ru.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_it-it.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_fr-fr.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_en-us.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_en-gb.json" />
     <Content Include="Scripts\lang\jcs-auto-validate_de-de.json" />
-    <Content Include="Views\Task\ngViewer.cshtml" />
+    <Content Include="Templates\Task\viewer.html" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

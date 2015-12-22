@@ -50,7 +50,7 @@ textarea {
 .project-panel {
     padding: 0;
     margin: .5em;
-    width: 18em;
+    width: calc(20% - 1em);
 }
 
     .project-panel .panel-body {
@@ -74,4 +74,11 @@ textarea {
 /* Glyphicon font size fix */
 .glyphicon {
     font-size: .85em;
+}
+
+/* Straight inheritance panel fix */
+.panel-default .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
 }
