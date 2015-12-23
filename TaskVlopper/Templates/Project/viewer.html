@@ -22,9 +22,10 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button class="glyphicon glyphicon-check icon-button" title="Tasks for project" ui-sref="task/list({ projectId: project.ID })">{{project.taskCount}}</button>
-                <button class="glyphicon glyphicon-user icon-button" title="Users in project's workgroup" disabled>1</button><!--{{project.boundUsers}}-->
-                <button class="glyphicon glyphicon-time icon-button" title="Estimated project time" ui-sref="worklog/list({ projectId: project.ID })" disabled>{{project.EstimatedTimeInHours}}h</button>
+                <button class="glyphicon glyphicon-check icon-button" title="Tasks" ui-sref="task/list({ projectId: project.ID })">{{project.taskCount}}</button>
+                <button class="glyphicon glyphicon-blackboard icon-button" title="Meetings" ui-sref="meeting/list({ projectId: project.ID })" disabled>{{project.futureMeetingCount}}</button>
+                <button class="glyphicon glyphicon-user icon-button" title="Users" disabled>1</button><!--{{project.boundUsers}}-->
+                <span class="glyphicon glyphicon-time icon-button" title="Estimated project time">{{project.EstimatedTimeInHours}}h</span>
             </div>
         </div>
         <!-- TODO: handle additional data, another fullviewer? -->

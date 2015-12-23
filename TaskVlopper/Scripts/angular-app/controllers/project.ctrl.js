@@ -1,6 +1,13 @@
 ﻿/// <reference path="services/project.service.js" />
+/// <reference path="services/task.service.js" />
+/// <reference path="services/meeting.service.js" />
+/// <reference path="services/worklog.service.js" />
 
-app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService, TaskService) {
+app.controller('ProjectController', function ($scope, $state, $stateParams,
+    ProjectService,
+    TaskService,
+    MeetingService,
+    WorklogService) {
 
     Pace.on("done",
         function () {
@@ -25,7 +32,13 @@ app.controller('ProjectController', function ($scope, $state, $stateParams, Proj
             angular.forEach(response, function (project) {
                 TaskService.getAll(project.ID).then(function (response) {
                     project.taskCount = response.length;
-                })
+                });
+                MeetingService.getAll(project.ID, null).then(function(response) {
+                    if (response != undefined)
+                        project.futureMeetingCount = response.lenght;
+                    else
+                        project.futureMeetingCount = 0;
+                });
             })
             $scope.projects = response;
         })
