@@ -39,6 +39,7 @@
                 <td>{{task.Status}}</td>
                 <td>
                     <div class="btn-group-xs">
+                        <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: task.ID, projectId: currentProjectId })"></button>
                         <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: task.ID, projectId: currentProjectId })"></button>
                         <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: task.ID, projectId: currentProjectId })"></button>
                     </div>

@@ -250,6 +250,7 @@
     <Content Include="Scripts\angular-app\directives\meeting.directives.js" />
     <Content Include="Scripts\angular-app\directives\project.directives.js" />
     <Content Include="Scripts\angular-app\directives\task.directives.js" />
+    <Content Include="Scripts\angular-app\directives\worklog.directives.js" />
     <Content Include="Scripts\angular-app\filters\date.filter.js" />
     <Content Include="Scripts\angular-app\router.js" />
     <Content Include="Scripts\angular-app\services\alert.service.js" />

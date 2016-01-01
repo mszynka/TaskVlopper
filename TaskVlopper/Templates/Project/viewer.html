@@ -1,12 +1,11 @@
 ﻿<div>
     <div class="panel-body">
-        <strong>{{project.Name}}</strong>
-
         <div class="pull-right">
             <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: project.ID })"></button>
             <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: project.ID })"></button>
         </div>
-
+        
+        <strong>{{project.Name}}</strong>
     </div>
 
     <!-- TODO: project progress -->

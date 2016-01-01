@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TaskVlopper.Models;
 using TaskVlopper.Identity;
+using System.Collections.Generic;
+using TaskVlopper.Helpers;
 
 namespace TaskVlopper.Controllers
 {
@@ -395,6 +397,32 @@ namespace TaskVlopper.Controllers
         public ActionResult ExternalLoginFailure()
         {
             return View();
+        }
+
+        //
+        // GET: /Account/Users
+        [HttpGet]
+        public ActionResult Users()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    List<ApplicationUser> users = signInManager.ListUsers().ToList<ApplicationUser>();
+                    List<string> usernames = new List<string>();
+                    foreach(var user in users)
+                    {
+                        usernames.Add(user.UserName);
+                    }
+
+                    return Json(usernames, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         #region Helpers

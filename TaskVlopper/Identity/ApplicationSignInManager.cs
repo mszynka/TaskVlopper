@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,11 @@ namespace TaskVlopper.Identity
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+        }
+
+        public IEnumerable<ApplicationUser> ListUsers()
+        {
+            return UserManager.Users.AsEnumerable();
         }
     }
 }

@@ -78,4 +78,25 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "meeting/delete.html",
             controller: "MeetingController as controller"
         })
+
+        .state('worklog/list', {
+            url: "/worklog/list?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/list.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/create', {
+            url: "/worklog/create?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/create.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/edit', {
+            url: "/worklog/edit/:worklogId?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/edit.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/delete', {
+            url: "/worklog/delete/:worklogId?projectId",
+            templateUrl: urlPrepend + "worklog/delete.html",
+            controller: "WorklogController as controller"
+        })
 });

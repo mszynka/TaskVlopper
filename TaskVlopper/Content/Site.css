@@ -53,6 +53,10 @@ textarea {
     width: calc(20% - 1em);
 }
 
+    .project-panel .panel-body {
+        min-height: 8em;
+    }
+
     .project-panel .progress {
         margin-bottom: 0;
         position: relative;
@@ -64,29 +68,29 @@ textarea {
         padding: 10px 5px 10px 15px;
     }
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 1200px) {
     .project-panel {
         width: calc(25% - 1em);
     }
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 800px) {
     .project-panel {
         width: calc(33% - 1em);
     }
 }
 
-@media all and (max-width: 500px) {
+@media all and (max-width: 650px) {
     .project-panel {
         width: calc(50% - 1em);
     }
 
     .searchInput {
-        display: none;
+        display: none !important;
     }
 }
 
-@media all and (max-width: 370px) {
+@media all and (max-width: 450px) {
     .project-panel {
         width: 100%;
         margin-left: 0;

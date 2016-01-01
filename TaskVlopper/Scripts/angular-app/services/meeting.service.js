@@ -11,7 +11,6 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                console.log(response);
                 return response.data.Meetings;
             })
             .catch(function (error) {
