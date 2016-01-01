@@ -15,6 +15,7 @@ namespace TaskVlopper
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/jquery.modal.css",
                       "~/Content/ui-bootstrap-csp.css",
+                      "~/Content/pace.css",
                       "~/Content/Site.css"
                 ));
 
@@ -45,7 +46,7 @@ namespace TaskVlopper
                 "~/Scripts/angular/angular.js",
                 "~/Scripts/angular/angular-animate.js",
                 "~/Scripts/angular/angular-mocks.js",
-                "~/Scripts/angular/angular-ui-router.js",
+                "~/Scripts/angular-ui/ui-router.js",
                 "~/Scripts/angular-ui/ui-bootstrap.js",
                 "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
                 ));

@@ -1,0 +1,33 @@
+﻿<div>
+    <div class="panel-body">
+        <strong>{{project.Name}}</strong>
+
+        <div class="pull-right">
+            <button class="glyphicon glyphicon-pencil icon-button" ui-sref="project/edit({ projectId: project.ID })"></button>
+            <button class="glyphicon glyphicon-trash icon-button alert-danger" ui-sref="project/delete({ projectId: project.ID })"></button>
+        </div>
+
+    </div>
+
+    <div class="panel-footer">
+        <div ng-show="project.Description.length > 0">
+            <label class="control-label">Description:</label> <div class="well well-sm" style="background: white"> {{project.Description}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="glyphicon glyphicon-check icon-button" ui-sref="task/list({ projectId: project.ID })">0</button><!--{{project.taskCount}}-->
+                <button class="glyphicon glyphicon-user icon-button" disabled>1</button><!--{{project.boundUsers}}-->
+            </div>
+        </div>
+        <!-- TODO: handle additional data, another fullviewer? -->
+        <!--<div class="row">
+            <div class="col-sm-6">
+                <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
+            </div>
+            <div class="col-sm-6">
+                <label class="control-label">Estimated time:</label> {{project.EstimatedTimeInHours}}h
+            </div>
+        </div>-->
+
+    </div>
+</div>

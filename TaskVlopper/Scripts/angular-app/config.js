@@ -1,5 +1,4 @@
-﻿angular.module('taskVlopperApp', [])
-    .config(["$httpProvider",
+﻿app.config(["$httpProvider",
         function ($httpProvider) {
 
             var httpStatusCodeInterceptorFactory = function ($q) {

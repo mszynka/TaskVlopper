@@ -1,0 +1,31 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">Tasks</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <input type="text" placeholder="Search by project name..." class="form-control" ng-model="controller.taskSearchInput" />
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <button type="button" class="btn btn-primary pull-right" ui-sref="task/create({ projectId: currentProjectId })">
+                <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" ng-hide="tasks.length > 0">
+    Currently no tasks available. Add a task.
+</div>
+
+<div class="form-horizontal" ng-hide="(tasks | filter: { Name: controller.taskSearchInput }).length == 0">
+    <div class="row project-row">
+        <div class="panel panel-default project-panel" ng-repeat="task in tasks | filter: { Name: controller.taskSearchInput }">
+            <tv-task-viewer></tv-task-viewer>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning" ng-show="(tasks | filter: { Name: controller.taskSearchInput }).length == 0 && tasks.length > 0">
+    No task satisfying the current query.
+</div>

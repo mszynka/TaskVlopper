@@ -8,6 +8,9 @@
   return false;
 });
 
-$(".hasDatepicker").datetimepicker({
-    format: "MM/DD/YYYY",
-});
+Pace.on("done",
+        function () {
+            $(".hasDatepicker").datetimepicker({
+                format: "MM/DD/YYYY",
+            });
+        });
