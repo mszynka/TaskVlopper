@@ -93,7 +93,7 @@
         });
     };
 
-    this.delete = function (meetingId, projectId) {
+    this.delete = function (meetingId, projectId, taskId) {
         if (meetingId === undefined || isNaN(meetingId)) {
             console.log("[MeetingService.delete] MeetingID is invalid!");
             return null;
