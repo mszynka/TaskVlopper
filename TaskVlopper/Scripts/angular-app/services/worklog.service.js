@@ -26,7 +26,7 @@
             console.log("[WorklogService.get] ProjectID is invalid!");
             return null;
         }
-        return $http.get('/Task/Details/' + worklogId + "?projectId=" + projectId + '&taskId=' + taskId)
+        return $http.get('/Worklog/Details/' + worklogId + "?projectId=" + projectId + '&taskId=' + taskId)
         .then(function (response) {
             if (response.data.HttpCode != undefined) {
                 console.log(response.data.HttpCode + " " + response.data.Message);
@@ -42,7 +42,7 @@
         var newmodel = JSON.stringify(model);
         return $http({
             method: 'POST',
-            url: '/Task/Create?projectId=' + projectId + '&taskId=' + taskId,
+            url: '/Worklog/Create?projectId=' + projectId + '&taskId=' + taskId,
             accept: 'application/json',
             data: newmodel
         })
@@ -61,7 +61,7 @@
     this.update = function (model, projectId, taskId) {
         return $http({
             method: 'POST',
-            url: '/Task/Edit/' + model.ID + "?projectId=" + projectId + '&taskId=' + taskId,
+            url: '/Worklog/Edit/' + model.ID + "?projectId=" + projectId + '&taskId=' + taskId,
             accept: 'application/json',
             data: model
         })
@@ -90,7 +90,7 @@
             console.log("[WorklogService.delete] ProjectID is invalid!");
             return null;
         }
-        return $http.post('/Task/Delete/' + worklogId + "?projectId=" + projectId + '&taskId=' + taskId)
+        return $http.post('/Worklog/Delete/' + worklogId + "?projectId=" + projectId + '&taskId=' + taskId)
         .then(function (response) {
             if (response.data.HttpCode != undefined) {
                 console.log(response.data.HttpCode + " " + response.data.Message);

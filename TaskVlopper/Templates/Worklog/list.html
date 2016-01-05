@@ -28,18 +28,17 @@
         </thead>
         <tbody>
             <tr ng-repeat="worklog in worklogs">
-                <!--<th scope="row">{{task.ID}}</th>
-                <td title="{{task.Description}}">{{task.Name}}</td>
-                <td>{{task.EstimatedTimeInHours}}</td>
-                <td>{{task.Storypoints}}</td>
-                <td>{{task.Status}}</td>
+                <th scope="row">{{worklog.ID}}</th>
+                <td title="{{worklog.Description}}">{{worklog.Description}}</td>
+                <td>{{worklog.Hours}}</td>
+                <td>-</td>
+                <td>-</td>
                 <td>
                     <div class="btn-group-xs">
-                        <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: task.ID, projectId: currentProjectId })"></button>
-                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: task.ID, projectId: currentProjectId })"></button>
-                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/edit({ taskId: currentTaskId, projectId: currentProjectId, worklogId: worklog.ID })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/delete({ taskId: currentTaskId, projectId: currentProjectId, worklogId: worklog.ID })"></button>
                     </div>
-                </td>-->
+                </td>
             </tr>
         </tbody>
     </table>

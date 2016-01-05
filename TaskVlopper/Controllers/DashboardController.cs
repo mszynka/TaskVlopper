@@ -14,9 +14,11 @@ namespace TaskVlopper.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                ViewBag.HasAngular = true;
                 return View("Private");
             }
 
+            ViewBag.HasAngular = false;
             return View("Public");
         }
     }
