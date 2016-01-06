@@ -278,6 +278,7 @@
     <Content Include="Scripts\jcs-auto-validate.min.js" />
     <Content Include="Scripts\jcs-auto-validate.min.js.map" />
     <Content Include="Loader.html" />
+    <None Include="Properties\PublishProfiles\ToFolder.pubxml" />
     <None Include="Scripts\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery\jquery-2.1.4.min.js" />
@@ -305,7 +306,7 @@
     <Content Include="Scripts\plugins\jquery.modal.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\plugins\pace.js" />
+    <Content Include="Scripts\pace.js" />
     <Content Include="Scripts\respond\respond.js" />
     <Content Include="Scripts\respond\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond\respond.matchmedia.addListener.min.js" />

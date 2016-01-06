@@ -43,6 +43,7 @@ namespace TaskVlopper
 
             bundles.Add(new ScriptBundle("~/bundles/angular")
                 .Include(
+                "~/Scripts/pace.js",
                 "~/Scripts/angular/angular.js",
                 "~/Scripts/angular/angular-animate.js",
                 "~/Scripts/angular/angular-mocks.js",
