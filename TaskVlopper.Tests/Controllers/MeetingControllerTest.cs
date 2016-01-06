@@ -32,6 +32,12 @@ namespace TaskVlopper.Controllers.Tests
             var data = (Models.MeetingsViewModel)action.Data;
             // Assert
             Assert.AreEqual(1, data.Meeting.Count());
+
+            // Act
+            action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            data = (Models.MeetingsViewModel)action.Data;
+            // Assert
+            Assert.AreEqual(1, data.Meeting.Count());
         }
 
         [TestMethod()]
