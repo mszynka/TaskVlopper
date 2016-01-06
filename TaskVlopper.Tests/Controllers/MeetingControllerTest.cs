@@ -34,7 +34,7 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(1, data.Meeting.Count());
 
             // Act
-            action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            action = controller.Index(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
             Assert.AreEqual(1, data.Meeting.Count());
@@ -51,7 +51,7 @@ namespace TaskVlopper.Controllers.Tests
             MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>();
 
             // Act
-            JsonResult action = controller.Index() as JsonResult;
+            JsonResult action = controller.ForCurrentUser() as JsonResult;
             var data = (Models.MeetingsViewModel)action.Data;
             // Assert
             Assert.AreEqual(1, data.Meeting.Count());
@@ -79,7 +79,7 @@ namespace TaskVlopper.Controllers.Tests
             MeetingController controller = ControllersMocks.GetControllerAsNotLoggedUser<MeetingController>();
 
             // Act
-            JsonResult action = controller.Index() as JsonResult;
+            JsonResult action = controller.ForCurrentUser() as JsonResult;
             var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
             // Assert
             Assert.AreEqual(403, forbidden.HttpCode);

@@ -18,8 +18,9 @@ namespace TaskVlopper.Controllers
     {
         public IUnityContainer container = UnityConfig.GetConfiguredContainer();
         
+        // GET: Meeting/ForCurrentUser
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult ForCurrentUser()
         {
             try
             {
@@ -38,41 +39,27 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        // GET: Meeting
         [HttpGet]
-        
-        public ActionResult Index(int projectId, int taskId)
+        public ActionResult Index(int projectId, int? taskId)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewModel = 
-                        logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, projectId, taskId);
-
-                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
-                }
-                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult Index(int projectId)
-        {
-            try
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewModel =
+                    if(taskId != null)
+                    {
+                        var viewModel =
+                        logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, projectId, taskId.Value);
+                        return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        var viewModel =
                                 logic.GetAllMeetingsForCurrentUserAndProject(User.Identity.Name, projectId);
-
-
-                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
+                        return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
+                    }
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
