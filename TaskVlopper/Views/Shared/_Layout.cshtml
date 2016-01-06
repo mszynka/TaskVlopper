@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - TaskVlopper</title>
     @Styles.Render("~/bundles/styles")
+    @if (ViewBag.HasAngular != null && ViewBag.HasAngular == true)
+    {
+        @Styles.Render("~/bundles/pace")
+    }
     @Scripts.Render("~/bundles/modernizr")
     <style>
         /*
