@@ -26,6 +26,11 @@ namespace TaskVlopper.Tests.Mocks
 
                 var worklogRepo = container.Resolve<IWorklogRepository>();
 
+                var meetingRepo = container.Resolve<IMeetingRepository>();
+                var meetingAssignmentRepo = container.Resolve<IMeetingParticipantsRepository>();
+
+                meetingRepo.RemoveAll();
+                meetingAssignmentRepo.RemoveAll();
                 projRepo.RemoveAll();
                 projAssignmentRepo.RemoveAll();
                 taskRepo.RemoveAll();
@@ -63,6 +68,34 @@ namespace TaskVlopper.Tests.Mocks
                     isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
             }
         }
+
+        public static void AddTestMeeting(bool isUserLogged, 
+            TaskVlopper.Base.Model.Meeting meeting, 
+            TaskVlopper.Base.Model.Task task)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var meetingLogic = container.Resolve<IMeetingLogic>();
+                meetingLogic.HandleMeetingAdd(ModelsMocks.MeetingModelFirst, task.ProjectID, task.ID,
+                    isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
+            }
+        }
+
+        public static Meeting MeetingModelFirst = new Meeting()
+        {
+            ID = 1,
+            DateAndTime = new DateTime(2015, 07, 07),
+            Description = "wololo",
+            Title = "SomeMeetingTitle"
+        };
+
+        public static Meeting MeetingModelSecond = new Meeting()
+        {
+            ID = 1,
+            DateAndTime = new DateTime(2015, 08, 08),
+            Description = "1",
+            Title = "2"
+        };
 
         public static Worklog WorklogModelFirst = new Worklog()
         {

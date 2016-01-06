@@ -19,7 +19,7 @@ namespace TaskVlopper.Controllers
         public IUnityContainer container = UnityConfig.GetConfiguredContainer();
         
         [HttpGet]
-        public ActionResult Index(int projectId, int? taskId)
+        public ActionResult Index()
         {
             try
             {
@@ -28,7 +28,7 @@ namespace TaskVlopper.Controllers
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     var viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
 
-                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -38,6 +38,28 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        [HttpGet]
+        
+        public ActionResult Index(int projectId, int? taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    var viewModel = taskId == null ?
+                        logic.GetAllMeetingsForCurrentUserAndProject(User.Identity.Name, projectId) :
+                        logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, projectId, (int)taskId);
+
+                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
         // GET: Meeting/Details/5
         [HttpGet]
         public ActionResult Details(int projectId, int? taskId, int id)
@@ -98,7 +120,7 @@ namespace TaskVlopper.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
+                var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
 
                 return Json(viewmodel, JsonRequestBehavior.AllowGet);
             }
@@ -135,7 +157,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
+                    var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }

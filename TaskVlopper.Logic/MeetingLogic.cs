@@ -72,6 +72,7 @@ namespace TaskVlopper.Logic
             MeetingRepository.Add(meeting);
 
             MeetingParticipants participant = new MeetingParticipants();
+            participant.MeetingID = meeting.ID;
             participant.UserID = userId;
             MeetingParticipantsRepository.Add(participant);
         }
@@ -85,6 +86,9 @@ namespace TaskVlopper.Logic
 
         public void HandleMeetingEdit(Meeting meeting, int projectId, int? taskId, int id)
         {
+            meeting.ID = id;
+            meeting.ProjectID = projectId;
+            if (taskId != null) meeting.TaskID = taskId;
             MeetingRepository.Update(meeting);
         }
 
