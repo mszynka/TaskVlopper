@@ -48,14 +48,14 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         TaskService.update(temp_model, $scope.currentProjectId).then(function (response) {
-            $state.go('task/list?projectId=' + $scope.currentProjectId);
+            $state.go('task/list', { projectId: $scope.currentProjectId });
         });
     };
 
     $scope.taskHandler.deleteTask= function () {
-        TaskService.delete($scope.currenctTaskId, $scope.currentProjectId).then(function (response) {
+        TaskService.delete($scope.currentTaskId, $scope.currentProjectId).then(function (response) {
             $scope.model = null;
-            $state.go('task/list?projectId=' + $scope.currentProjectId);
+            $state.go('task/list', { projectId: $scope.currentProjectId });
         });
     }
 });

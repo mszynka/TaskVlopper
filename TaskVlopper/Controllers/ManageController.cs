@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using TaskVlopper.Models;
 using Microsoft.Practices.Unity;
 using TaskVlopper.Identity;
+using TaskVlopper.Helpers;
 
 namespace TaskVlopper.Controllers
 {
@@ -28,9 +29,13 @@ namespace TaskVlopper.Controllers
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public ActionResult Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var statusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
@@ -38,176 +43,178 @@ namespace TaskVlopper.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword(),
-                PhoneNumber = await userManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
-                TwoFactor = await userManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
-                Logins = await userManager.GetLoginsAsync(User.Identity.GetUserId()),
-                BrowserRemembered = await authenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
-            };
-            return View(model);
-        }
-
-        //
-        // GET: /Manage/RemoveLogin
-        [HttpGet]
-        public ActionResult RemoveLogin()
-        {
-            var linkedAccounts = userManager.GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
-            return View(linkedAccounts);
-        }
-
-        //
-        // POST: /Manage/RemoveLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
-        {
-            ManageMessageId? message;
-            var result = await userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
-            if (result.Succeeded)
-            {
-                var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInAsync(user, isPersistent: false);
+                    var model = new IndexViewModel
+                    {
+                        StatusMessage = statusMessage,
+                    };
+                    return Json(model, JsonRequestBehavior.AllowGet);
                 }
-                message = ManageMessageId.RemoveLoginSuccess;
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            else
+            catch (Exception ex)
             {
-                message = ManageMessageId.Error;
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
-            return RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        //
-        // GET: /Manage/AddPhoneNumber
-        [HttpGet]
-        public ActionResult AddPhoneNumber()
-        {
-            return View();
-        }
+        //// GET: /Manage/RemoveLogin
+        //[HttpGet]
+        //public ActionResult RemoveLogin()
+        //{
+        //    var linkedAccounts = userManager.GetLogins(User.Identity.GetUserId());
+        //    ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
+        //    return View(linkedAccounts);
+        //}
 
-        //
-        // POST: /Manage/AddPhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            // Generate the token and send it
-            var code = await userManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
-            if (userManager.SmsService != null)
-            {
-                var message = new IdentityMessage
-                {
-                    Destination = model.Number,
-                    Body = "Your security code is: " + code
-                };
-                await userManager.SmsService.SendAsync(message);
-            }
-            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
-        }
+        ////
+        //// POST: /Manage/RemoveLogin
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
+        //{
+        //    ManageMessageId? message;
+        //    var result = await userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+        //    if (result.Succeeded)
+        //    {
+        //        var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //        if (user != null)
+        //        {
+        //            await SignInAsync(user, isPersistent: false);
+        //        }
+        //        message = ManageMessageId.RemoveLoginSuccess;
+        //    }
+        //    else
+        //    {
+        //        message = ManageMessageId.Error;
+        //    }
+        //    return RedirectToAction("ManageLogins", new { Message = message });
+        //}
 
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
-        [HttpPost]
-        public async Task<ActionResult> EnableTwoFactorAuthentication()
-        {
-            await userManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
-            var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInAsync(user, isPersistent: false);
-            }
-            return RedirectToAction("Index", "Manage");
-        }
+        ////
+        //// GET: /Manage/AddPhoneNumber
+        //[HttpGet]
+        //public ActionResult AddPhoneNumber()
+        //{
+        //    return View();
+        //}
 
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
-        [HttpPost]
-        public async Task<ActionResult> DisableTwoFactorAuthentication()
-        {
-            await userManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
-            var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInAsync(user, isPersistent: false);
-            }
-            return RedirectToAction("Index", "Manage");
-        }
+        ////
+        //// POST: /Manage/AddPhoneNumber
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    // Generate the token and send it
+        //    var code = await userManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
+        //    if (userManager.SmsService != null)
+        //    {
+        //        var message = new IdentityMessage
+        //        {
+        //            Destination = model.Number,
+        //            Body = "Your security code is: " + code
+        //        };
+        //        await userManager.SmsService.SendAsync(message);
+        //    }
+        //    return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
+        //}
 
-        //
-        // GET: /Manage/VerifyPhoneNumber
-        [HttpGet]
-        public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
-        {
-            var code = await userManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
-            // Send an SMS through the SMS provider to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
-        }
+        ////
+        //// POST: /Manage/EnableTwoFactorAuthentication
+        //[HttpPost]
+        //public async Task<ActionResult> EnableTwoFactorAuthentication()
+        //{
+        //    await userManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
+        //    var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //    if (user != null)
+        //    {
+        //        await SignInAsync(user, isPersistent: false);
+        //    }
+        //    return RedirectToAction("Index", "Manage");
+        //}
 
-        //
-        // POST: /Manage/VerifyPhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var result = await userManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
-            if (result.Succeeded)
-            {
-                var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInAsync(user, isPersistent: false);
-                }
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
-            }
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Failed to verify phone");
-            return View(model);
-        }
+        ////
+        //// POST: /Manage/DisableTwoFactorAuthentication
+        //[HttpPost]
+        //public async Task<ActionResult> DisableTwoFactorAuthentication()
+        //{
+        //    await userManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
+        //    var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //    if (user != null)
+        //    {
+        //        await SignInAsync(user, isPersistent: false);
+        //    }
+        //    return RedirectToAction("Index", "Manage");
+        //}
 
-        //
-        // GET: /Manage/RemovePhoneNumber
-        [HttpGet]
-        public async Task<ActionResult> RemovePhoneNumber()
-        {
-            var result = await userManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
-            if (!result.Succeeded)
-            {
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
-            }
-            var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInAsync(user, isPersistent: false);
-            }
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
-        }
+        ////
+        //// GET: /Manage/VerifyPhoneNumber
+        //[HttpGet]
+        //public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
+        //{
+        //    var code = await userManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
+        //    // Send an SMS through the SMS provider to verify the phone number
+        //    return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+        //}
 
-        //
-        // GET: /Manage/ChangePassword
-        [HttpGet]
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
+        ////
+        //// POST: /Manage/VerifyPhoneNumber
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    var result = await userManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
+        //    if (result.Succeeded)
+        //    {
+        //        var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //        if (user != null)
+        //        {
+        //            await SignInAsync(user, isPersistent: false);
+        //        }
+        //        return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+        //    }
+        //    // If we got this far, something failed, redisplay form
+        //    ModelState.AddModelError("", "Failed to verify phone");
+        //    return View(model);
+        //}
+
+        ////
+        //// GET: /Manage/RemovePhoneNumber
+        //[HttpGet]
+        //public async Task<ActionResult> RemovePhoneNumber()
+        //{
+        //    var result = await userManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
+        //    if (!result.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", new { Message = ManageMessageId.Error });
+        //    }
+        //    var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //    if (user != null)
+        //    {
+        //        await SignInAsync(user, isPersistent: false);
+        //    }
+        //    return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
+        //}
+
+        ////
+        //// GET: /Manage/ChangePassword
+        //[HttpGet]
+        //public ActionResult ChangePassword()
+        //{
+        //    return View();
+        //}
 
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -228,85 +235,83 @@ namespace TaskVlopper.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Manage/SetPassword
-        [HttpGet]
-        public ActionResult SetPassword()
-        {
-            return View();
-        }
+        //// GET: /Manage/SetPassword
+        //[HttpGet]
+        //public ActionResult SetPassword()
+        //{
+        //    return View();
+        //}
 
         //
         // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInAsync(user, isPersistent: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+        //        if (result.Succeeded)
+        //        {
+        //            var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //            if (user != null)
+        //            {
+        //                await SignInAsync(user, isPersistent: false);
+        //            }
+        //            return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+        //        }
+        //        AddErrors(result);
+        //    }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
-        //
-        // GET: /Manage/ManageLogins
-        [HttpGet]
-        public async Task<ActionResult> ManageLogins(ManageMessageId? message)
-        {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-            var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var userLogins = await userManager.GetLoginsAsync(User.Identity.GetUserId());
-            var otherLogins = authenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
-            ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
-            {
-                CurrentLogins = userLogins,
-                OtherLogins = otherLogins
-            });
-        }
+        //// GET: /Manage/ManageLogins
+        //[HttpGet]
+        //public async Task<ActionResult> ManageLogins(ManageMessageId? message)
+        //{
+        //    ViewBag.StatusMessage =
+        //        message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+        //        : message == ManageMessageId.Error ? "An error has occurred."
+        //        : "";
+        //    var user = await userManager.FindByIdAsync(User.Identity.GetUserId());
+        //    if (user == null)
+        //    {
+        //        return View("Error");
+        //    }
+        //    var userLogins = await userManager.GetLoginsAsync(User.Identity.GetUserId());
+        //    var otherLogins = authenticationManager.GetExternalAuthenticationTypes().Where(auth => userLogins.All(ul => auth.AuthenticationType != ul.LoginProvider)).ToList();
+        //    ViewBag.ShowRemoveButton = user.PasswordHash != null || userLogins.Count > 1;
+        //    return View(new ManageLoginsViewModel
+        //    {
+        //        CurrentLogins = userLogins,
+        //        OtherLogins = otherLogins
+        //    });
+        //}
 
-        //
-        // POST: /Manage/LinkLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LinkLogin(string provider)
-        {
-            // Request a redirect to the external login provider to link a login for the current user
-            return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
-        }
+        ////
+        //// POST: /Manage/LinkLogin
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult LinkLogin(string provider)
+        //{
+        //    // Request a redirect to the external login provider to link a login for the current user
+        //    return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+        //}
 
-        //
-        // GET: /Manage/LinkLoginCallback
-        public async Task<ActionResult> LinkLoginCallback()
-        {
-            var loginInfo = await authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-            if (loginInfo == null)
-            {
-                return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
-            }
-            var result = await userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
-        }
+        ////
+        //// GET: /Manage/LinkLoginCallback
+        //public async Task<ActionResult> LinkLoginCallback()
+        //{
+        //    var loginInfo = await authenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
+        //    if (loginInfo == null)
+        //    {
+        //        return RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        //    }
+        //    var result = await userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+        //    return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        //}
 
         #region Helpers
         // Used for XSRF protection when adding external logins
@@ -327,25 +332,25 @@ namespace TaskVlopper.Controllers
             }
         }
 
-        private bool HasPassword()
-        {
-            var user = userManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
-        }
+        //private bool HasPassword()
+        //{
+        //    var user = userManager.FindById(User.Identity.GetUserId());
+        //    if (user != null)
+        //    {
+        //        return user.PasswordHash != null;
+        //    }
+        //    return false;
+        //}
 
-        private bool HasPhoneNumber()
-        {
-            var user = userManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PhoneNumber != null;
-            }
-            return false;
-        }
+        //private bool HasPhoneNumber()
+        //{
+        //    var user = userManager.FindById(User.Identity.GetUserId());
+        //    if (user != null)
+        //    {
+        //        return user.PhoneNumber != null;
+        //    }
+        //    return false;
+        //}
 
         public enum ManageMessageId
         {

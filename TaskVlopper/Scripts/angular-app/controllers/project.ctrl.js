@@ -1,6 +1,13 @@
 ﻿/// <reference path="services/project.service.js" />
+/// <reference path="services/task.service.js" />
+/// <reference path="services/meeting.service.js" />
+/// <reference path="services/worklog.service.js" />
 
-app.controller('ProjectController', function ($scope, $state, $stateParams, ProjectService) {
+app.controller('ProjectController', function ($scope, $state, $stateParams,
+    ProjectService,
+    TaskService,
+    MeetingService,
+    WorklogService) {
 
     Pace.on("done",
         function () {
@@ -8,12 +15,14 @@ app.controller('ProjectController', function ($scope, $state, $stateParams, Proj
                 format: "MM/DD/YYYY",
                 useCurrent: false
             });
-            $("#modelStartDate").parent().on("dp.change", function (e) {
-                $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
-            });
-            $("#modelDeadline").parent().on("dp.change", function (e) {
-                $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
-            });
+            if($("#modelStartDate") != [])
+                $("#modelStartDate").parent().on("dp.change", function (e) {
+                    $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
+                });
+            if ($("#modelDeadline") != [])
+                $("#modelDeadline").parent().on("dp.change", function (e) {
+                    $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
+                });
         });
     
 
@@ -22,6 +31,21 @@ app.controller('ProjectController', function ($scope, $state, $stateParams, Proj
 
     $scope.projectHandler.getProjects = function () {
         ProjectService.getAll().then(function (response) {
+            angular.forEach(response, function (project) {
+                TaskService.getAll(project.ID).then(function (response) {
+                    if (response != undefined)
+                        project.taskCount = response.length;
+                    else
+                        project.taskCount = 0;
+                    
+                });
+                MeetingService.getAll(project.ID, null).then(function (response) {
+                    if (response != undefined)
+                        project.futureMeetingCount = response.length;
+                    else
+                        project.futureMeetingCount = 0;
+                });
+            })
             $scope.projects = response;
         })
     };

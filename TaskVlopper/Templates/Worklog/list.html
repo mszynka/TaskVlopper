@@ -1,0 +1,45 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">Worklog</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <button type="button" class="btn btn-primary pull-right" ui-sref="worklog/create({ projectId: currentProjectId, taskId: currentTaskId })">
+                <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" ng-hide="worklogs.length > 0">
+    Currently no worklog history available. Add some.
+</div>
+
+<div class="form-horizontal" ng-hide="worklogs.length == 0">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Estimated time (h)</th>
+                <th>Storypoints</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="worklog in worklogs">
+                <th scope="row">{{worklog.ID}}</th>
+                <td title="{{worklog.Description}}">{{worklog.Description}}</td>
+                <td>{{worklog.Hours}}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>
+                    <div class="btn-group-xs">
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/edit({ taskId: currentTaskId, projectId: currentProjectId, worklogId: worklog.ID })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/delete({ taskId: currentTaskId, projectId: currentProjectId, worklogId: worklog.ID })"></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

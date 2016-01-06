@@ -3,12 +3,15 @@
         <h2 class="pull-left">Projects</h2>
 
         <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
-            <input type="text" placeholder="Search by project name..." class="form-control" ng-model="controller.projectSearchInput" />
+            <input type="text" placeholder="Search by project name..." class="form-control searchInput" ng-model="controller.projectSearchInput" />
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-search"></span>
             </div>
             <button type="button" class="btn btn-primary pull-right" ui-sref="project/create">
                 <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-right searchButton">
+                <span class="glyphicon glyphicon-search" style="font-size: smaller;"></span>
             </button>
         </div>
     </div>

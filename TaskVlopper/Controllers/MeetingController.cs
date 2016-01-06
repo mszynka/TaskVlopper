@@ -18,17 +18,24 @@ namespace TaskVlopper.Controllers
     {
         public IUnityContainer container = UnityConfig.GetConfiguredContainer();
         
+        // GET: Meeting/Index
         [HttpGet]
-        public ActionResult Index(int projectId, int? taskId)
+        public ActionResult Index(int? projectId = null, int? taskId = null)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
-
-                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                    IEnumerable<Meeting> viewModel = new List<Meeting>();
+                    if (projectId == null & taskId == null)
+                        viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
+                    else if (taskId == null)
+                        viewModel = logic.GetAllMeetingsForCurrentUserAndProject(User.Identity.Name, (int)projectId);
+                    else if (projectId != null & taskId != null)
+                        viewModel =
+                            logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, (int)projectId, (int)taskId);
+                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -98,7 +105,7 @@ namespace TaskVlopper.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
+                var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
 
                 return Json(viewmodel, JsonRequestBehavior.AllowGet);
             }
@@ -135,7 +142,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewmodel = logic.HandleMeetingGet(projectId, taskId, id);
+                    var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }

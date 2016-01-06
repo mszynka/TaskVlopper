@@ -101,7 +101,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
-                    var viewmodel = logic.HandleTaskGet(projectId, id);
+                    var viewmodel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }
@@ -142,7 +142,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
-                    var viewmodel = logic.HandleTaskGet(projectId, id);
+                    var viewmodel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }

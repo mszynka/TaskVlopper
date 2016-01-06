@@ -1,6 +1,6 @@
 ﻿<div class="form-horizontal">
     <div class="form-group">
-        <h2 class="pull-left">Tasks</h2>
+        <h2 class="pull-left">Edit task</h2>
 
         <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
             <button type="button" class="btn btn-primary pull-right" ui-sref="task/list">
@@ -24,7 +24,7 @@
                     </button>
                     <button class="btn btn-danger"
                             ng-click="model = null;"
-                            ui-sref="task/list">
+                            ui-sref="task/list({ projectId: currentProjectId })">
                         Cancel
                     </button>
                 </div>

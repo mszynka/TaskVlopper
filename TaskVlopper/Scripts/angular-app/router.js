@@ -57,4 +57,62 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "task/delete.html",
             controller: "TaskController as controller"
         })
+
+        .state('meeting/list', {
+            url: "/meeting/list?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/list.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/create', {
+            url: "/meeting/create?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/create.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/edit', {
+            url: "/meeting/edit/:meetingId?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/edit.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/view', {
+            url: "/meeting/view/:meetingId?projectId&taskId",
+            templateUrl: urlPrepend + "meeting/viewer.html",
+            controller: "MeetingController as controller"
+        })
+        .state('meeting/delete', {
+            url: "/meeting/delete/:meetingId?projectId",
+            templateUrl: urlPrepend + "meeting/delete.html",
+            controller: "MeetingController as controller"
+        })
+
+        .state('worklog/list', {
+            url: "/worklog/list?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/list.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/create', {
+            url: "/worklog/create?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/create.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/edit', {
+            url: "/worklog/edit/:worklogId?projectId&taskId",
+            templateUrl: urlPrepend + "worklog/edit.html",
+            controller: "WorklogController as controller"
+        })
+        .state('worklog/delete', {
+            url: "/worklog/delete/:worklogId?projectId",
+            templateUrl: urlPrepend + "worklog/delete.html",
+            controller: "WorklogController as controller"
+        })
+        
+        .state('user/manage', {
+            url: "/user/manage",
+            templateUrl: urlPrepend + "user/manage.html",
+            controller: "UserController as controller"
+        })
+        .state('user/manage/changepassword', {
+            url: "/user/manage/changepassword",
+            templateUrl: urlPrepend + "user/changepassword.html",
+            controller: "UserController as controller"
+        })
 });
