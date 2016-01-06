@@ -15,12 +15,14 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
                 format: "MM/DD/YYYY",
                 useCurrent: false
             });
-            $("#modelStartDate").parent().on("dp.change", function (e) {
-                $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
-            });
-            $("#modelDeadline").parent().on("dp.change", function (e) {
-                $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
-            });
+            if($("#modelStartDate") != [])
+                $("#modelStartDate").parent().on("dp.change", function (e) {
+                    $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
+                });
+            if ($("#modelDeadline") != [])
+                $("#modelDeadline").parent().on("dp.change", function (e) {
+                    $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
+                });
         });
     
 
@@ -31,11 +33,15 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
         ProjectService.getAll().then(function (response) {
             angular.forEach(response, function (project) {
                 TaskService.getAll(project.ID).then(function (response) {
-                    project.taskCount = response.length;
-                });
-                MeetingService.getAll(project.ID, null).then(function(response) {
                     if (response != undefined)
-                        project.futureMeetingCount = response.lenght;
+                        project.taskCount = response.length;
+                    else
+                        project.taskCount = 0;
+                    
+                });
+                MeetingService.getAll(project.ID, null).then(function (response) {
+                    if (response != undefined)
+                        project.futureMeetingCount = response.length;
                     else
                         project.futureMeetingCount = 0;
                 });

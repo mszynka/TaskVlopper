@@ -246,10 +246,12 @@
     <Content Include="Scripts\angular-app\controllers\menu.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\project.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\task.ctrl.js" />
+    <Content Include="Scripts\angular-app\controllers\user.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\worklog.ctrl.js" />
     <Content Include="Scripts\angular-app\directives\meeting.directives.js" />
     <Content Include="Scripts\angular-app\directives\project.directives.js" />
     <Content Include="Scripts\angular-app\directives\task.directives.js" />
+    <Content Include="Scripts\angular-app\directives\user.directives.js" />
     <Content Include="Scripts\angular-app\directives\worklog.directives.js" />
     <Content Include="Scripts\angular-app\filters\date.filter.js" />
     <Content Include="Scripts\angular-app\router.js" />
@@ -258,6 +260,7 @@
     <Content Include="Scripts\angular-app\services\menu.service.js" />
     <Content Include="Scripts\angular-app\services\project.service.js" />
     <Content Include="Scripts\angular-app\services\task.service.js" />
+    <Content Include="Scripts\angular-app\services\user.service.js" />
     <Content Include="Scripts\angular-app\services\worklog.service.js" />
     <Content Include="Scripts\angular\angular-animate.js" />
     <Content Include="Scripts\angular\angular-animate.min.js" />
@@ -316,6 +319,7 @@
     <Content Include="Templates\Project\create.html" />
     <Content Include="Templates\Project\delete.html" />
     <Content Include="Templates\Project\edit.html" />
+    <Content Include="Templates\User\selector.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -344,12 +348,12 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Templates\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Templates\Manage\ChangePassword.cshtml" />
+    <Content Include="Templates\User\manage.html" />
+    <Content Include="Templates\Manage\ManageLogins.cshtml" />
+    <Content Include="Templates\Manage\SetPassword.cshtml" />
+    <Content Include="Templates\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />

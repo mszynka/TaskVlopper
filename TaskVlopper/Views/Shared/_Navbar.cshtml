@@ -7,7 +7,7 @@
     @Html.ActionLink("TaskVlopper", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })
 </div>
 <div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav" ng-cloak>
         @if (User.Identity.IsAuthenticated)
         {
             <li><a href="/#/project/list" role="button">Projects</a></li>

@@ -1,9 +1,9 @@
-﻿@model TaskVlopper.Models.IndexViewModel
-@{
+﻿<!--model TaskVlopper.Models.IndexViewModel
+{
     ViewBag.Title = "Manage account";
-}
+}-->
 
-<h2>@ViewBag.Title</h2>
+<h2>Manage account</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
@@ -28,15 +28,13 @@
             @Model.Logins.Count [
             @Html.ActionLink("Manage", "ManageLogins") ]
         </dd>
-        @*
+        <!--
             Phone Numbers can used as a second factor of verification in a two-factor authentication system.
              
              See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
                 for details on setting up this ASP.NET application to support two-factor authentication using SMS.
              
              Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
             <dt>Phone Number:</dt>
             <dd>
                 @(Model.PhoneNumber ?? "None") [
@@ -52,14 +50,14 @@
                 }
                 ]
             </dd>
-        *@
+        --><!--
         <dt>Two-Factor Authentication:</dt>
         <dd>
             <p>
                 There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
                 for details on setting up this ASP.NET application to support two-factor authentication.
             </p>
-            @*@if (Model.TwoFactor)
+            if (Model.TwoFactor)
                 {
                     using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
@@ -78,7 +76,7 @@
                         <input type="submit" value="Enable" class="btn btn-link" />
                         </text>
                     }
-                }*@
-        </dd>
+                }
+        </dd>-->
     </dl>
 </div>

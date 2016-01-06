@@ -2,7 +2,7 @@
     <div class="panel-heading">
         <input type="text" placeholder="Title" class="form-control"
                ng-model="model.Title"
-               ng-required="true" autofocus />
+               ng-required="true" required autofocus />
     </div>
 
     <div class="panel-body">
@@ -21,7 +21,7 @@
                            is-open="status.opened1"
                            max-date="{{ model.DateAndTime }}"
                            datepicker-options="dateOptions"
-                           date-disabled="disabled(date, mode)" />
+                           date-disabled="disabled(date, mode)" required />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default"
                                 ng-click="open($event, 1)">

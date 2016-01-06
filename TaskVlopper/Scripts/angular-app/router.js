@@ -104,4 +104,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "worklog/delete.html",
             controller: "WorklogController as controller"
         })
+        
+        .state('user/manage', {
+            url: "/user/manage",
+            templateUrl: urlPrepend + "user/manage.html",
+            controller: "UserController as controller"
+        })
 });
