@@ -272,7 +272,9 @@ namespace TaskVlopper.Controllers.Tests
                     var worklog = repo.GetWorklogByIdWithoutTracking(ModelsMocks.WorklogModelFirst.ID);
                     Assert.Fail();
                 }
-                catch(Exception ex)
+                #pragma warning disable CS0168 // Variable is declared but never used
+                catch (Exception ex)
+                #pragma warning restore CS0168 // Variable is declared but never used
                 {
                     //Passed
                 }

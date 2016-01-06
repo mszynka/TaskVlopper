@@ -348,12 +348,8 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Templates\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Templates\Manage\ChangePassword.cshtml" />
+    <Content Include="Templates\User\changepassword.html" />
     <Content Include="Templates\User\manage.html" />
-    <Content Include="Templates\Manage\ManageLogins.cshtml" />
-    <Content Include="Templates\Manage\SetPassword.cshtml" />
-    <Content Include="Templates\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />

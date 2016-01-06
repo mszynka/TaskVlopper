@@ -137,3 +137,7 @@ textarea {
 .searchButton {
     display: none;
 }
+/* Fix for router links */
+a[ui-sref] {
+    cursor: pointer;
+}

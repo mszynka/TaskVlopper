@@ -110,4 +110,9 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "user/manage.html",
             controller: "UserController as controller"
         })
+        .state('user/manage/changepassword', {
+            url: "/user/manage/changepassword",
+            templateUrl: urlPrepend + "user/changepassword.html",
+            controller: "UserController as controller"
+        })
 });
