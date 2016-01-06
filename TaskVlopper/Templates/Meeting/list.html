@@ -26,7 +26,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Title</th>
                 <th>Date and time</th>
                 <th>Actions</th>
             </tr>
@@ -35,12 +35,12 @@
             <tr ng-repeat="meeting in meetings">
                 <th scope="row">{{meeting.ID}}</th>
                 <td>{{meeting.Title}}</td>
-                <td>{{meeting.DateAndTime}}</td>
+                <td>{{meeting.DateAndTime | aspDate | date: "HH:mm - MM/dd/yyyy"}}</td>
                 <td>
                     <div class="btn-group-xs">
-                        <button class="btn btn-default glyphicon glyphicon-align-justify" style="font-size: .8em; margin-top: -5px" ui-sref="meetings/view({ meetingId: meeting.ID, taskId: currentTaskId, projectId: currentProjectId })"></button>
-                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="meetings/edit({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
-                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="meetings/delete({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-align-justify" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/view({ meetingId: meeting.ID, taskId: currentTaskId, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/edit({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/delete({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
                     </div>
                 </td>
             </tr>

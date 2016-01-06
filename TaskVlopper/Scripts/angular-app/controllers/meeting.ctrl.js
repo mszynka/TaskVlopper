@@ -4,6 +4,7 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
+    $scope.currentMeetingId = $stateParams.meetingId;
     $scope.meetings = [];
 
     $scope.meetingHandler = {};
@@ -17,6 +18,7 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = response;
+            $scope.model.DateAndTime = new Date(parseInt($scope.model.DateAndTime.split("(")[1]));
         })
     };
 

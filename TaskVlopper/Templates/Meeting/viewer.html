@@ -1,16 +1,19 @@
-﻿<div class="form-horizontal">
+﻿<div class="form-horizontal" ng-init="meetingHandler.initEditor()">
     <div class="form-group">
-        <h2 class="pull-left">{{meeting.Title}}</h2>
+        <h2 class="pull-left">{{model.Title}}</h2>
 
-        <button type="button" class="btn btn-primary pull-right" ui-sref="meeting/list({ projectId: currentProjectId, taskId: currentTaskId })">
-            <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
-        </button>
-    </div>
-    <div class="form-group">
-        <h4 class="pull-left small text-muted">{{meeting.DateAndTime}}</h4>
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <button type="button" class="btn btn-primary pull-right" ui-sref="meeting/list({ projectId: currentProjectId, taskId: currentTaskId })">
+                <span class="glyphicon glyphicon-list" style="font-size: smaller;"></span>
+            </button>
+        </div>
+        <div class="clearfix"></div>
+        <h4 class="pull-left small text-muted" style="margin-top: 0">{{model.DateAndTime | date: "HH-mm MM/dd/yyyy"}}</h4>
     </div>
 </div>
 
-<div class="well well-lg">
-    {{meeting.Description}}
+<div class="well" ng-show="model.Description">
+    {{model.Description}}
 </div>
+
+<tv-user-selector></tv-user-selector>

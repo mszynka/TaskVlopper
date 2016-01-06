@@ -6,7 +6,7 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data.Meetings;
+                return response.data.Meeting;
             })
             .catch(function (error) {
                 console.log('[MeetingService.getAllForCurrentUser] Unable to load data: ' + error.data.message);
@@ -24,7 +24,7 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data.Meetings;
+                return response.data.Meeting;
             })
             .catch(function (error) {
                 console.log('[MeetingService.getAll] Unable to load data: ' + error.data.message);
