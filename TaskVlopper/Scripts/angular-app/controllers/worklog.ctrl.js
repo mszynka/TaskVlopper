@@ -21,6 +21,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.createWorklog = function () {
+        Pace.start();
         WorklogService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $state.go('worklog/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
         })
@@ -31,6 +32,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.editWorklog = function () {
+        Pace.start();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         WorklogService.update(temp_model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
@@ -39,6 +41,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.deleteWorklog = function () {
+        Pace.start();
         WorklogService.delete($scope.currentWorklogId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = null;
             $state.go('worklog/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
