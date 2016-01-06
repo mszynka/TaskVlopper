@@ -34,28 +34,18 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(1, data.Meeting.Count());
 
             // Act
-            action = controller.Index(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
+            action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            data = (Models.MeetingsViewModel)action.Data;
+            // Assert
+            Assert.AreEqual(1, data.Meeting.Count());
+
+            // Act
+            action = controller.Index() as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
             Assert.AreEqual(1, data.Meeting.Count());
         }
 
-        [TestMethod()]
-        public void IndexWithoutParametersLoggedUserTest()
-        {
-            ModelsMocks.CleanUpBeforeTest();
-            ModelsMocks.AddTestProject(true);
-            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
-            ModelsMocks.AddTestMeeting(true, ModelsMocks.MeetingModelFirst, ModelsMocks.TaskModelFirst);
-            // Arrange
-            MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>();
-
-            // Act
-            JsonResult action = controller.ForCurrentUser() as JsonResult;
-            var data = (Models.MeetingsViewModel)action.Data;
-            // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
-        }
 
         [TestMethod()]
         public void IndexWithParametersNotLoggedUserTest()
@@ -69,21 +59,20 @@ namespace TaskVlopper.Controllers.Tests
             var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
             // Assert
             Assert.AreEqual(403, forbidden.HttpCode);
-        }
-
-        [TestMethod()]
-        public void IndexWithoutParametersNotLoggedUserTest()
-        {
-            ModelsMocks.CleanUpBeforeTest();
-            // Arrange 
-            MeetingController controller = ControllersMocks.GetControllerAsNotLoggedUser<MeetingController>();
 
             // Act
-            JsonResult action = controller.ForCurrentUser() as JsonResult;
-            var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
+            action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
+            // Assert
+            Assert.AreEqual(403, forbidden.HttpCode);
+
+            // Act
+            action = controller.Index() as JsonResult;
+            forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
             // Assert
             Assert.AreEqual(403, forbidden.HttpCode);
         }
+
 
         [TestMethod]
         public void DetailsLoggedUserTest()
