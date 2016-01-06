@@ -4,8 +4,11 @@
             <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: project.ID })"></button>
             <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: project.ID })"></button>
         </div>
-        
-        <strong>{{project.Name}}</strong>
+
+        <strong style="font-size: 1.3em">{{project.Name}}</strong>
+        <div ng-show="project.Description.length > 0">
+            <div class="text-muted" style="margin-top: 5px; font-size: .95em"> {{project.Description}}</div>
+        </div>
     </div>
 
     <!-- TODO: project progress -->
@@ -16,15 +19,27 @@
     </div>
 
     <div class="panel-footer">
-        <div ng-show="project.Description.length > 0">
-            <label class="control-label">Description:</label> <div class="well well-sm" style="background: white"> {{project.Description}}</div>
-        </div>
+
         <div class="row">
             <div class="col-xs-12">
-                <button class="glyphicon glyphicon-check icon-button" title="Tasks" ui-sref="task/list({ projectId: project.ID })">{{project.taskCount}}</button>
-                <button class="glyphicon glyphicon-blackboard icon-button" title="Meetings" ui-sref="meeting/list({ projectId: project.ID })">{{project.futureMeetingCount}}</button>
-                <button class="glyphicon glyphicon-user icon-button" title="Users" disabled>1</button><!--{{project.boundUsers}}-->
-                <span class="glyphicon glyphicon-time icon-button" style="cursor: default" title="Estimated project time">{{project.EstimatedTimeInHours}}h</span>
+                <button class="icon-button clear-letter-spacing" title="Tasks" ui-sref="task/list({ projectId: project.ID })" style="margin-right: .8em;">
+                    <span class="glyphicon glyphicon-check"></span>
+                    <span class="glyphicon-addon">{{project.taskCount}}</span>
+                </button>
+                <button class="icon-button clear-letter-spacing" title="Meetings" ui-sref="meeting/list({ projectId: project.ID })" style="margin-right: .8em;">
+                    <span class="glyphicon glyphicon-blackboard"></span>
+                    <span class="glyphicon-addon">{{project.futureMeetingCount}}</span>
+                </button>
+                <button class="icon-button clear-letter-spacing" title="Users" style="margin-right: .8em;" disabled>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="glyphicon-addon">1</span>
+                </button><!--{{project.boundUsers}}-->
+                <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Estimated project time">
+                    <span class="glyphicon glyphicon-time"></span>
+                    <span class="glyphicon-addon">
+                        {{project.EstimatedTimeInHours}}h
+                    </span>
+                </span>
             </div>
         </div>
         <!-- TODO: handle additional data, another fullviewer? -->

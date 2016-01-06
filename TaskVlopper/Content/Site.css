@@ -85,8 +85,12 @@ textarea {
         width: calc(50% - 1em);
     }
 
-    .searchInput {
+    .searchInput, .searchInput + .input-group-addon {
         display: none !important;
+    }
+
+    .searchButton {
+        display: block !important;
     }
 }
 
@@ -113,7 +117,7 @@ textarea {
 }
 
 /* Glyphicon font size fix */
-.glyphicon {
+.glyphicon, .glyphicon-addon {
     font-size: .85em;
 }
 
@@ -122,4 +126,14 @@ textarea {
     color: #333;
     background-color: #f5f5f5;
     border-color: #ddd;
+}
+
+/* Letter spacing fix for multiple numbers */
+.clear-letter-spacing {
+    letter-spacing: 0;
+}
+
+/* Search button for smaller screens */
+.searchButton {
+    display: none;
 }

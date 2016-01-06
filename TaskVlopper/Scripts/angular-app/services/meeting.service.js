@@ -1,5 +1,18 @@
 ﻿app.service('MeetingService', ['$http', function ($http) {
 
+    this.getAllForCurrentUser = function () {
+        return $http.get('/Meeting')
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response.data.Meetings;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.getAllForCurrentUser] Unable to load data: ' + error.data.message);
+            });
+    };
+
     this.getAll = function (projectId, taskId) {
         var taskData = "";
         if (taskId != undefined && taskId != null) {
