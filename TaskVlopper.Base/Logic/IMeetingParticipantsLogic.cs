@@ -8,5 +8,6 @@ namespace TaskVlopper.Base.Logic
 {
     public interface IMeetingParticipantsLogic
     {
+        IEnumerable<string> GetMeetingUsers(int meetingId);
     }
 }

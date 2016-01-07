@@ -79,5 +79,9 @@ namespace TaskVlopper.Logic
             return ProjectRepository.GetProjectByIdWithoutTracking(id);
         }
 
+        public IEnumerable<string> GetProjectUsers(int projectId)
+        {
+            return UserProjectAssignmentRepository.GetAllUsersIDsForGivenProject(projectId);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace TaskVlopper.Base.Repository
         IEnumerable<MeetingParticipants> GetMeetingParticipantsByUserId(string userId);
         IEnumerable<MeetingParticipants> GetMeetingParticipantsByMeetingId(int meetingId);
         MeetingParticipants GetMeetingParticipantsByUserIdAndMeetingId(string userId, int meetingId);
+        IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId);
     }
 }

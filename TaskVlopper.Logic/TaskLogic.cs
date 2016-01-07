@@ -76,5 +76,10 @@ namespace TaskVlopper.Logic
         {
             return TaskRepository.GetTaskByIdWithoutTracking(id);
         }
+
+        public IEnumerable<string> GetTaskUsers(int projectId, int taskId)
+        {
+            return UserTaskAssignmentRepository.GetAllUsersIDsForGivenTaskProject(projectId, taskId);
+        }
     }
 }

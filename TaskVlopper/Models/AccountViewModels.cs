@@ -109,4 +109,19 @@ namespace TaskVlopper.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    public class UserViewModel
+    {
+        public UserViewModel(string email)
+        {
+            Email = email;
+        }
+        public string Email { get; set; }
+    }
+
+    public class UsersViewModel
+    {
+        public List<UserViewModel> Users { get; set; }
+    }
+
 }

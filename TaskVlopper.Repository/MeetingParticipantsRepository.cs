@@ -24,5 +24,10 @@ namespace TaskVlopper.Repository
         {
             return this.GetAll().Where(x => x.UserID == userId && x.MeetingID == meetingId).Single();
         }
+
+        public IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId)
+        {
+            return this.GetAll().Where(x => x.MeetingID == meetingId).Select(x => x.UserID);
+        }
     }
 }
