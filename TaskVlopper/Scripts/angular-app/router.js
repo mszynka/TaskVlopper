@@ -100,7 +100,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: "WorklogController as controller"
         })
         .state('worklog/delete', {
-            url: "/worklog/delete/:worklogId?projectId",
+            url: "/worklog/delete/:worklogId?projectId&taskId",
             templateUrl: urlPrepend + "worklog/delete.html",
             controller: "WorklogController as controller"
         })

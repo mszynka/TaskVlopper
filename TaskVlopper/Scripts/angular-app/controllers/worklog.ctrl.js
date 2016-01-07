@@ -4,6 +4,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
+    $scope.currentWorklogId = $stateParams.worklogId;
     $scope.worklog = [];
 
     $scope.worklogHandler = {};
@@ -17,6 +18,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     $scope.worklogHandler.getWorklog = function (worklogId) {
         WorklogService.get(worklogId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = response;
+            $scope.model.Date = new Date(parseInt($scope.model.Date.split("(")[1]));
         })
     };
 
