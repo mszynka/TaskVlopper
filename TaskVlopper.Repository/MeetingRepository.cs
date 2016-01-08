@@ -13,12 +13,12 @@ namespace TaskVlopper.Repository
     {
         public Meeting GetMeetingByIdWithTracking(int id)
         {
-            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
+            return this.GetMeetingByIdWithTrackingQueryable(id).Single();
         }
 
         public Meeting GetMeetingByIdWithoutTracking(int id)
         {
-            return this.GetAll().Where(x => x.ID == id).Single();
+            return this.GetMeetingByIdWithoutTrackingQueryable(id).Single();
         }
         public IEnumerable<Meeting> GetMeetingByProjectId(int projectId)
         {
@@ -30,5 +30,14 @@ namespace TaskVlopper.Repository
             return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId);
         }
 
+        public IQueryable<Meeting> GetMeetingByIdWithTrackingQueryable(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id);
+        }
+
+        public IQueryable<Meeting> GetMeetingByIdWithoutTrackingQueryable(int id)
+        {
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
+        }
     }
 }

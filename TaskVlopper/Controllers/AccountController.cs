@@ -21,15 +21,15 @@ namespace TaskVlopper.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        
+
         private readonly ApplicationUserManager userManager;
         private readonly ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;
         public IUnityContainer container = UnityConfig.GetConfiguredContainer();
 
 
-        public AccountController(ApplicationUserManager userManager, 
-            ApplicationSignInManager signInManager, 
+        public AccountController(ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
             IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
@@ -417,12 +417,11 @@ namespace TaskVlopper.Controllers
                 {
                     List<ApplicationUser> applicationUsers = userManager.Users.ToList();
                     UsersViewModel users = new UsersViewModel();
-                    foreach(var applicationUser in applicationUsers)
-                    {
-                        UserViewModel user =
-                            new UserViewModel(applicationUser.Email);
-                        users.Users.Add(user);
-                    }
+                    users.Users.AddRange(
+                        applicationUsers
+                            .Select(x => new UserViewModel(x.Email))
+                            .AsEnumerable()
+                        );
 
                     return Json(users, JsonRequestBehavior.AllowGet);
                 }
@@ -443,18 +442,7 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     IEnumerable<string> usersIds = logic.GetProjectUsers(projectId);
-                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
-                    foreach (var id in usersIds)
-                    {
-                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
-                    }
-                    UsersViewModel users = new UsersViewModel();
-                    foreach (var applicationUser in applicationUsers)
-                    {
-                        UserViewModel user =
-                            new UserViewModel(applicationUser.Email);
-                        users.Users.Add(user);
-                    }
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
 
                     return Json(users, JsonRequestBehavior.AllowGet);
                 }
@@ -464,7 +452,7 @@ namespace TaskVlopper.Controllers
             {
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
-            
+
         }
 
         [HttpGet]
@@ -476,18 +464,7 @@ namespace TaskVlopper.Controllers
                 {
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
                     IEnumerable<string> usersIds = logic.GetTaskUsers(projectId, taskId);
-                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
-                    foreach (var id in usersIds)
-                    {
-                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
-                    }
-                    UsersViewModel users = new UsersViewModel();
-                    foreach (var applicationUser in applicationUsers)
-                    {
-                        UserViewModel user =
-                            new UserViewModel(applicationUser.Email);
-                        users.Users.Add(user);
-                    }
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
 
                     return Json(users, JsonRequestBehavior.AllowGet);
                 }
@@ -506,20 +483,9 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    IMeetingParticipantsLogic logic = container.Resolve<IMeetingParticipantsLogic>();
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     IEnumerable<string> usersIds = logic.GetMeetingUsers(meetingId);
-                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
-                    foreach (var id in usersIds)
-                    {
-                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
-                    }
-                    UsersViewModel users = new UsersViewModel();
-                    foreach (var applicationUser in applicationUsers)
-                    {
-                        UserViewModel user =
-                            new UserViewModel(applicationUser.Email);
-                        users.Users.Add(user);
-                    }
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
 
                     return Json(users, JsonRequestBehavior.AllowGet);
                 }
@@ -531,8 +497,22 @@ namespace TaskVlopper.Controllers
             }
         }
         #region Helpers
-            // Used for XSRF protection when adding external logins
+        // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
+
+        private UsersViewModel getUsersQueryHelper(IEnumerable<string> queryIds)
+        {
+            UsersViewModel users = new UsersViewModel();
+
+            users.Users.AddRange(
+                userManager.Users
+                    .Select(user => new UserViewModel(user.Email))
+                    .Where(user => queryIds
+                                       .Any(id => id == user.Email))
+                );
+
+            return users;
+        }
 
         //private IAuthenticationManager AuthenticationManager
         //{

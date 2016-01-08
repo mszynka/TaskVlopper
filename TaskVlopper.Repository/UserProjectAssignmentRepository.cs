@@ -22,12 +22,17 @@ namespace TaskVlopper.Repository
 
         public UserProjectAssignment GetProjectAssignmentByUserIdAndProjectId(string userId, int projectId)
         {
-            return this.GetAll().Where(x => x.ProjectID == projectId && x.UserID == userId ).Single();
+            return this.GetProjectAssignmentByUserIdAndProjectIdQueryable(userId, projectId).Single();
         }
 
         public IEnumerable<string> GetAllUsersIDsForGivenProject(int projectId)
         {
             return this.GetAll().Where(x => x.ProjectID == projectId).Select(x => x.UserID);
+        }
+
+        public IQueryable<UserProjectAssignment> GetProjectAssignmentByUserIdAndProjectIdQueryable(string userId, int projectId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId && x.UserID == userId);
         }
     }
 }

@@ -11,5 +11,8 @@ namespace TaskVlopper.Base.Repository
     {
         Worklog GetWorklogByIdWithoutTracking(int id);
         Worklog GetWorklogByIdWithTracking(int id);
+
+        IQueryable<Worklog> GetWorklogByIdWithoutTrackingQueryable(int id);
+        IQueryable<Worklog> GetWorklogByIdWithTrackingQueryable(int id);
     }
 }

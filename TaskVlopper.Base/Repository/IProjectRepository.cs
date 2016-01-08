@@ -11,5 +11,8 @@ namespace TaskVlopper.Base.Repository
     {
         Project GetProjectByIdWithTracking(int id);
         Project GetProjectByIdWithoutTracking(int id);
+
+        IQueryable<Project> GetProjectByIdWithTrackingQueryable(int id);
+        IQueryable<Project> GetProjectByIdWithoutTrackingQueryable(int id);
     }
 }

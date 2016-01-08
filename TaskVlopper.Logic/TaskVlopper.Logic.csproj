@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MeetingLogic.cs" />
-    <Compile Include="MeetingParticipantsLogic.cs" />
     <Compile Include="ProjectLogic.cs" />
     <Compile Include="TaskLogic.cs" />
     <Compile Include="WorklogLogic.cs" />

@@ -10,13 +10,14 @@ namespace TaskVlopper.Base.Logic
 {
     public interface IMeetingLogic
     {
-        IEnumerable<TaskVlopper.Base.Model.Meeting> GetAllMeetingsForCurrentUser(string userId);
-        IEnumerable<TaskVlopper.Base.Model.Meeting> GetAllMeetingsForCurrentUserAndProject(string userId, int projectId);
-        IEnumerable<TaskVlopper.Base.Model.Meeting> GetAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId);
+        IEnumerable<Meeting> GetAllMeetingsForCurrentUser(string userId);
+        IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProject(string userId, int projectId);
+        IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId);
         void HandleMeetingEdit(Meeting meeting, int projectId, int? taskId, int id);
         void HandleMeetingDelete(int projectId, int? taskId, int id, string userId);
         void HandleMeetingAdd(Meeting meeting, int projectId, int? taskId, string userId);
-        TaskVlopper.Base.Model.Meeting HandleMeetingGet(int projectId, int? taskId, int id);
+        Meeting HandleMeetingGet(int projectId, int? taskId, int id);
         void AssignUserToMeeting(int meetingId, string userId);
+        IEnumerable<string> GetMeetingUsers(int meetingId);
     }
 }

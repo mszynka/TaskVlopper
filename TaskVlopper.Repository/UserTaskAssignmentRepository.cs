@@ -27,7 +27,7 @@ namespace TaskVlopper.Repository
 
         public UserTaskAssignment GetTaskAssignmentByUserIdAndProjectIdAndTaskId(string userId, int projectId, int taskId)
         {
-            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId && x.UserID == userId).Single();
+            return this.GetTaskAssignmentByUserIdAndProjectIdAndTaskIdQueryable(userId, projectId, taskId).Single();
         }
 
         public IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectId(string userId, int projectId)
@@ -38,6 +38,11 @@ namespace TaskVlopper.Repository
         public IEnumerable<string> GetAllUsersIDsForGivenTaskProject(int projectId, int taskId)
         {
             return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId).Select(x => x.UserID);
+        }
+
+        public IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectIdAndTaskIdQueryable(string userId, int projectId, int taskId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId && x.UserID == userId);
         }
     }
 }
