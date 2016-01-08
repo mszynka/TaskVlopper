@@ -483,7 +483,7 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    IMeetingParticipantsLogic logic = container.Resolve<IMeetingParticipantsLogic>();
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     IEnumerable<string> usersIds = logic.GetMeetingUsers(meetingId);
                     UsersViewModel users = getUsersQueryHelper(usersIds);
 

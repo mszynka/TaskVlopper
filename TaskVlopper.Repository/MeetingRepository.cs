@@ -32,12 +32,12 @@ namespace TaskVlopper.Repository
 
         public IQueryable<Meeting> GetMeetingByIdWithTrackingQueryable(int id)
         {
-            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
+            return this.GetAll().Where(x => x.ID == id);
         }
 
         public IQueryable<Meeting> GetMeetingByIdWithoutTrackingQueryable(int id)
         {
-            return this.GetAll().Where(x => x.ID == id);
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
         }
     }
 }
