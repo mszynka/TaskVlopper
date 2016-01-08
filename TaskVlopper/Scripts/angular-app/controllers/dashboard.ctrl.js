@@ -61,6 +61,12 @@
 
     $scope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams) {
-            Pace.restart();
+            if(toState != fromState && toParams != fromParams)
+                Pace.restart();
+        });
+
+    $scope.$on('$viewContentLoaded',
+        function (event) {
+            Pace.stop();
         });
 });

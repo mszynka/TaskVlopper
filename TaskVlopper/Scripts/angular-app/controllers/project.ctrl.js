@@ -62,6 +62,7 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
     };
 
     $scope.projectHandler.createProject = function () {
+        Pace.start();
         ProjectService.create($scope.model).then(function (response) {
             $state.go('project/list');
         })
@@ -72,6 +73,7 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
     };
 
     $scope.projectHandler.editProject = function () {
+        Pace.start();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         ProjectService.update(temp_model).then(function (response) {
@@ -80,6 +82,7 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
     };
 
     $scope.projectHandler.deleteProject = function () {
+        Pace.start();
         ProjectService.delete($scope.currentProjectId).then(function (response) {
             $scope.model = null;
             $state.go('project/list');

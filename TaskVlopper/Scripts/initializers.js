@@ -14,3 +14,8 @@ Pace.on("done",
                 format: "MM/DD/YYYY",
             });
         });
+
+paceOptions = {
+    restartOnPushState: false,
+    restartOnRequestAfter: false
+}
