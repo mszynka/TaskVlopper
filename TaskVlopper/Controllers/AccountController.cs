@@ -12,6 +12,9 @@ using TaskVlopper.Models;
 using TaskVlopper.Identity;
 using System.Collections.Generic;
 using TaskVlopper.Helpers;
+using Microsoft.Practices.Unity;
+using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Logic;
 
 namespace TaskVlopper.Controllers
 {
@@ -22,8 +25,12 @@ namespace TaskVlopper.Controllers
         private readonly ApplicationUserManager userManager;
         private readonly ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager)
+
+        public AccountController(ApplicationUserManager userManager, 
+            ApplicationSignInManager signInManager, 
+            IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -408,14 +415,16 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    List<ApplicationUser> users = signInManager.ListUsers().ToList<ApplicationUser>();
-                    List<string> usernames = new List<string>();
-                    foreach(var user in users)
+                    List<ApplicationUser> applicationUsers = userManager.Users.ToList();
+                    UsersViewModel users = new UsersViewModel();
+                    foreach(var applicationUser in applicationUsers)
                     {
-                        usernames.Add(user.UserName);
+                        UserViewModel user =
+                            new UserViewModel(applicationUser.Email);
+                        users.Users.Add(user);
                     }
 
-                    return Json(usernames, JsonRequestBehavior.AllowGet);
+                    return Json(users, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -425,8 +434,104 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult UsersByProject(int projectId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    IEnumerable<string> usersIds = logic.GetProjectUsers(projectId);
+                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
+                    foreach (var id in usersIds)
+                    {
+                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
+                    }
+                    UsersViewModel users = new UsersViewModel();
+                    foreach (var applicationUser in applicationUsers)
+                    {
+                        UserViewModel user =
+                            new UserViewModel(applicationUser.Email);
+                        users.Users.Add(user);
+                    }
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        [HttpGet]
+        public ActionResult UsersByProjectTask(int projectId, int taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    IEnumerable<string> usersIds = logic.GetTaskUsers(projectId, taskId);
+                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
+                    foreach (var id in usersIds)
+                    {
+                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
+                    }
+                    UsersViewModel users = new UsersViewModel();
+                    foreach (var applicationUser in applicationUsers)
+                    {
+                        UserViewModel user =
+                            new UserViewModel(applicationUser.Email);
+                        users.Users.Add(user);
+                    }
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UsersByMeeting(int meetingId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingParticipantsLogic logic = container.Resolve<IMeetingParticipantsLogic>();
+                    IEnumerable<string> usersIds = logic.GetMeetingUsers(meetingId);
+                    List<ApplicationUser> applicationUsers = new List<ApplicationUser>();
+                    foreach (var id in usersIds)
+                    {
+                        applicationUsers.Add(userManager.Users.Single(x => x.Email == id));
+                    }
+                    UsersViewModel users = new UsersViewModel();
+                    foreach (var applicationUser in applicationUsers)
+                    {
+                        UserViewModel user =
+                            new UserViewModel(applicationUser.Email);
+                        users.Users.Add(user);
+                    }
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
         #region Helpers
-        // Used for XSRF protection when adding external logins
+            // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         //private IAuthenticationManager AuthenticationManager

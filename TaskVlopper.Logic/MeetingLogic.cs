@@ -96,5 +96,14 @@ namespace TaskVlopper.Logic
         {
             return MeetingRepository.GetMeetingByIdWithoutTracking(id);
         }
+
+        public void AssignUserToMeeting(int meetingId, string userId)
+        {
+            MeetingParticipants participant = new MeetingParticipants();
+            participant.MeetingID = meetingId;
+            participant.UserID = userId;
+
+            MeetingParticipantsRepository.Add(participant);
+        }
     }
 }

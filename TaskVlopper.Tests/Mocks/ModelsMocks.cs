@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Tests.Mocks
@@ -39,6 +41,59 @@ namespace TaskVlopper.Tests.Mocks
             }
         }
 
+        public static List<ApplicationUser> GetApplicationUserList()
+        {
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            users.Add(FirstUser);
+            users.Add(LoggedUser);
+            users.Add(NotLoggedUser);
+            return users;
+        }
+
+        public static string FirstUserEmail = "one@x.pl";
+        public static ApplicationUser FirstUser = new ApplicationUser
+        {
+            Email = FirstUserEmail
+        };
+
+        public static ApplicationUser LoggedUser = new ApplicationUser
+        {
+            Email = ControllersMocks.LoggedUser
+        };
+
+        public static ApplicationUser NotLoggedUser = new ApplicationUser
+        {
+            Email = ControllersMocks.NotloggedUser
+        };
+
+public static void AssignUserToProject(ApplicationUser user, TaskVlopper.Base.Model.Project project)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projLogic = container.Resolve<IProjectLogic>();
+                projLogic.AssignUserToProject(project.ID, user.Email);
+            }
+        }
+
+        public static void AssignUserToProjectTask(ApplicationUser user, TaskVlopper.Base.Model.Task task)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var taskLogic = container.Resolve<ITaskLogic>();
+                taskLogic.AssignUserToProjectTask(task.ProjectID, task.ID, user.Email);
+            }
+        }
+
+        public static void AssignUserToMeeting(ApplicationUser user, TaskVlopper.Base.Model.Meeting meeting)
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var taskLogic = container.Resolve<IMeetingLogic>();
+                taskLogic.AssignUserToMeeting(meeting.ID, user.Email);
+            }
+        }
+
+
         public static void AddTestProject(bool isUserLogged)
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
@@ -64,13 +119,13 @@ namespace TaskVlopper.Tests.Mocks
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
                 var worklogLogic = container.Resolve<IWorklogLogic>();
-                worklogLogic.HandleWorklogAdd(ModelsMocks.WorklogModelFirst, task.ProjectID, task.ID, 
+                worklogLogic.HandleWorklogAdd(ModelsMocks.WorklogModelFirst, task.ProjectID, task.ID,
                     isUserLogged ? ControllersMocks.LoggedUser : ControllersMocks.NotloggedUser);
             }
         }
 
-        public static void AddTestMeeting(bool isUserLogged, 
-            TaskVlopper.Base.Model.Meeting meeting, 
+        public static void AddTestMeeting(bool isUserLogged,
+            TaskVlopper.Base.Model.Meeting meeting,
             TaskVlopper.Base.Model.Task task)
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
@@ -115,7 +170,7 @@ namespace TaskVlopper.Tests.Mocks
             Hours = 115,
             TaskID = 2,
             UserID = ControllersMocks.NotloggedUser
-            
+
         };
 
         public static TaskVlopper.Base.Model.Task TaskModelFirst = new TaskVlopper.Base.Model.Task()
@@ -171,9 +226,9 @@ namespace TaskVlopper.Tests.Mocks
             {"Project.Deadline", new DateTime(2015, 12, 12).ToString() },
             {"Project.Description", "Description" },
             {"Project.EstimatedTimeInHours", "" + 50 },
-            {"Project.Name", "Name"},    
-            {"Project.StartDate", new DateTime(2015, 01, 01).ToString() }        
+            {"Project.Name", "Name"},
+            {"Project.StartDate", new DateTime(2015, 01, 01).ToString() }
         };
-        
+
     }
 }

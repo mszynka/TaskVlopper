@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TaskVlopper.Controllers;
+using TaskVlopper.Identity;
+using TaskVlopper.Models;
 
 namespace TaskVlopper.Tests.Mocks
 {
@@ -40,6 +44,29 @@ namespace TaskVlopper.Tests.Mocks
             controller.ControllerContext = mock.Object;
 
             return controller;
+        }
+
+        public static AccountController CreateAccountControllerAs(string userName, bool isUserLoggedIn)
+        {
+            var mock = new Mock<ControllerContext>();
+            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
+            mock.SetupGet(p => p.HttpContext.User.Identity.IsAuthenticated).Returns(isUserLoggedIn);
+            var response = new Mock<HttpResponseBase>();
+            mock.SetupGet(p => p.HttpContext.Response).Returns(response.Object);
+
+            var userStore = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<ApplicationUserManager>(userStore.Object);
+            var authenticationManager = new Mock<IAuthenticationManager>();
+            var signInManager = new Mock<ApplicationSignInManager>(userManager.Object, authenticationManager.Object);
+
+            userManager.Setup(x => x.Users)
+                .Returns(ModelsMocks.GetApplicationUserList().AsQueryable());
+
+            var accountController = new AccountController(
+                userManager.Object, signInManager.Object, authenticationManager.Object);
+
+            accountController.ControllerContext = mock.Object;
+            return accountController;
         }
     }
 }

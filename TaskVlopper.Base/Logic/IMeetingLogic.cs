@@ -17,5 +17,6 @@ namespace TaskVlopper.Base.Logic
         void HandleMeetingDelete(int projectId, int? taskId, int id, string userId);
         void HandleMeetingAdd(Meeting meeting, int projectId, int? taskId, string userId);
         TaskVlopper.Base.Model.Meeting HandleMeetingGet(int projectId, int? taskId, int id);
+        void AssignUserToMeeting(int meetingId, string userId);
     }
 }

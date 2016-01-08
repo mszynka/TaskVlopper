@@ -14,5 +14,7 @@ namespace TaskVlopper.Base.Repository
         IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndTaskId(string userId, int taskId);
         UserTaskAssignment GetTaskAssignmentByUserIdAndProjectIdAndTaskId(string userId, int projectId, int taskId);
         IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectId(string userId, int porjectId);
+        IEnumerable<string> GetAllUsersIDsForGivenTaskProject(int projectId, int taskId);
+
     }
 }

@@ -34,5 +34,10 @@ namespace TaskVlopper.Repository
         {
             return this.GetAll().Where(x => x.ProjectID == projectId && x.UserID == userId);
         }
+
+        public IEnumerable<string> GetAllUsersIDsForGivenTaskProject(int projectId, int taskId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId).Select(x => x.UserID);
+        }
     }
 }
