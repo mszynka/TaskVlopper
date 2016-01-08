@@ -121,6 +121,11 @@ namespace TaskVlopper.Models
 
     public class UsersViewModel
     {
+        public UsersViewModel()
+        {
+            Users = new List<UserViewModel>();
+        }
+
         public List<UserViewModel> Users { get; set; }
     }
 

@@ -81,5 +81,14 @@ namespace TaskVlopper.Logic
         {
             return UserTaskAssignmentRepository.GetAllUsersIDsForGivenTaskProject(projectId, taskId);
         }
+
+        public void AssignUserToProjectTask(int projectId, int taskId, string userId)
+        {
+            UserTaskAssignment assignment = new UserTaskAssignment();
+            assignment.TaskID = taskId;
+            assignment.UserID = userId;
+            assignment.ProjectID = projectId;
+            UserTaskAssignmentRepository.Add(assignment);
+        }
     }
 }
