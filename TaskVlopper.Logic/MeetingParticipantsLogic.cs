@@ -11,6 +11,7 @@ namespace TaskVlopper.Logic
     public class MeetingParticipantsLogic : IMeetingParticipantsLogic
     {
         private readonly IMeetingParticipantsRepository MeetingParticipantsRepository;
+
         public MeetingParticipantsLogic(IMeetingParticipantsRepository meetingParticipantsRepository)
         {
             MeetingParticipantsRepository = meetingParticipantsRepository;

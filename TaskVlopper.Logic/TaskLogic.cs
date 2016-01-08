@@ -31,15 +31,8 @@ namespace TaskVlopper.Logic
 
         public IEnumerable<Base.Model.Task> GetAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
         {
-            var assignments = UserTaskAssignmentRepository.GetTaskAssignmentByUserIdAndProjectId(userId, projectId);
-
-            List<Base.Model.Task> taskList = new List<Base.Model.Task>();
-            foreach (var assign in assignments)
-            {
-                taskList.Add(TaskRepository.GetTaskByIdWithTracking(assign.TaskID));
-            }
-
-            return taskList.AsEnumerable();
+            return UserTaskAssignmentRepository.GetTaskAssignmentByUserIdAndProjectId(userId, projectId)
+                .Select(assingment => TaskRepository.GetTaskByIdWithTracking(assingment.TaskID));
         }
 
         public void HandleTaskAdd(Base.Model.Task task, int projectId, string userId)

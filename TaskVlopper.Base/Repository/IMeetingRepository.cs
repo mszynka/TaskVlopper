@@ -13,5 +13,8 @@ namespace TaskVlopper.Base.Repository
         Meeting GetMeetingByIdWithoutTracking(int id);
         IEnumerable<Meeting> GetMeetingByProjectId(int projectId);
         IEnumerable<Meeting> GetMeetingByProjectIdAndTaskId(int projectId, int taskId);
+
+        IQueryable<Meeting> GetMeetingByIdWithTrackingQueryable(int id);
+        IQueryable<Meeting> GetMeetingByIdWithoutTrackingQueryable(int id);
     }
 }

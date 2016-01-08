@@ -17,12 +17,22 @@ namespace TaskVlopper.Repository
 
         public Project GetProjectByIdWithoutTracking(int id)
         {
-            return this.GetAll().AsNoTracking().Where(x => x.ID == id).Single();
+            return GetProjectByIdWithoutTrackingQueryable(id).Single();
+        }
+
+        public IQueryable<Project> GetProjectByIdWithoutTrackingQueryable(int id)
+        {
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
         }
 
         public Project GetProjectByIdWithTracking(int id)
         {
-            return this.GetAll().Where(x => x.ID == id).Single();
+            return this.GetProjectByIdWithTrackingQueryable(id).Single();
+        }
+
+        public IQueryable<Project> GetProjectByIdWithTrackingQueryable(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id);
         }
     }
 }

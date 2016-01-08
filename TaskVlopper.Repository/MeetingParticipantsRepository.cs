@@ -20,14 +20,19 @@ namespace TaskVlopper.Repository
             return this.GetAll().Where(x => x.UserID == userId);
         }
 
-        public MeetingParticipants GetMeetingParticipantsByUserIdAndMeetingId(string userId , int meetingId)
+        public MeetingParticipants GetMeetingParticipantsByUserIdAndMeetingId(string userId, int meetingId)
         {
-            return this.GetAll().Where(x => x.UserID == userId && x.MeetingID == meetingId).Single();
+            return GetMeetingParticipantsByUserIdAndMeetingIdQueryable(userId, meetingId).Single();
         }
 
         public IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId)
         {
             return this.GetAll().Where(x => x.MeetingID == meetingId).Select(x => x.UserID);
+        }
+        
+        public IQueryable<MeetingParticipants> GetMeetingParticipantsByUserIdAndMeetingIdQueryable(string userId, int meetingId)
+        {
+            return this.GetAll().Where(x => x.UserID == userId && x.MeetingID == meetingId);
         }
     }
 }

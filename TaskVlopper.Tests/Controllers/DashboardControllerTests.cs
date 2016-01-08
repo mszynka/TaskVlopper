@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TaskVlopper.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Moq;
+﻿using Moq;
 using System.Web.Mvc;
+using TaskVlopper.Tests.Mocks;
+using Microsoft.Practices.Unity;
+using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Repository;
+using System.Data.Entity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TaskVlopper.Controllers.Tests
 {
@@ -13,16 +13,32 @@ namespace TaskVlopper.Controllers.Tests
     public class DashboardControllerTests
     {
 
-        [TestMethod, Ignore]
-        public void IndexLoggedUserTest()
+        [TestMethod]
+        public void IndexLoggedUserAngularTest()
         {
+            // Arrange
+            DashboardController controller = ControllersMocks.GetControllerAsLoggedUser<DashboardController>();
 
+            // Act
+            ViewResult action = controller.Index() as ViewResult;
+
+
+            // Assert
+            Assert.IsTrue(action.ViewBag.HasAngular);
         }
 
-        [TestMethod, Ignore]
-        public void IndexNotLoggedUserTest()
+        [TestMethod]
+        public void IndexNotLoggedUserAngularTest()
         {
+            // Arrange
+            DashboardController controller = ControllersMocks.GetControllerAsNotLoggedUser<DashboardController>();
 
+            // Act
+            ViewResult action = controller.Index() as ViewResult;
+
+
+            // Assert
+            Assert.IsFalse(action.ViewBag.HasAngular);
         }
     }
 }
