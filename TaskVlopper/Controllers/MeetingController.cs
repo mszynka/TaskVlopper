@@ -174,5 +174,47 @@ namespace TaskVlopper.Controllers
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
+
+        // GET: Meeting/Users/5
+        [HttpGet]
+        public ActionResult Users(int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    var viewmodel = logic.GetMeetingUsers(id).ToList();
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // POST: Meeting/Users/5
+        [HttpPost]
+        public ActionResult Users(int id, string userId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.AssignUserToMeeting(id, userId);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

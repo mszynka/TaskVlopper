@@ -174,5 +174,47 @@ namespace TaskVlopper.Controllers
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
+
+        // GET: Task/Users/5
+        [HttpGet]
+        public ActionResult Users(int projectId, int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var viewmodel = logic.GetTaskUsers(projectId, id).ToList();
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // POST: Task/Users/5
+        [HttpPost]
+        public ActionResult Users(int id, int projectId, string userId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.AssignUserToProjectTask(projectId, id, userId);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
