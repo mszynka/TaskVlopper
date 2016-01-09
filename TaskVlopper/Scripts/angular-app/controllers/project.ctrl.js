@@ -69,9 +69,20 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
 
     $scope.projectHandler.createProject = function () {
         Pace.restart();
-        $scope.projectHandler.bindUsersToProject(temp_model.ID);
         ProjectService.create($scope.model).then(function (response) {
-            $state.go('project/list');
+            ProjectService.getAll().then(function (response) {
+                angular.forEach(response, function (project) {
+                    if (project.Name == $scope.model.Name
+                        && project.Description == $scope.model.Description
+                        && project.EstimatedTimeInHours == $scope.model.EstimatedTimeInHours) {
+                        $scope.currentProjectId = project.ID;
+                        $scope.projectHandler.bindUsersToProject();
+                    }
+                })
+            })
+            .then(function () {
+                $state.go('project/list');
+            })
         })
     };
 
@@ -84,7 +95,7 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
         Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
-        $scope.projectHandler.bindUsersToProject(temp_model.ID);
+        $scope.projectHandler.bindUsersToProject();
         ProjectService.update(temp_model).then(function (response) {
             $state.go('project/list');
         });
@@ -99,7 +110,6 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
     };
 
     $scope.projectHandler.getUsers = function (projectId) {
-        //while (!$scope.users) { }
         $timeout(function () {
             if ($scope.users != null) {
                 ProjectService.getUsers(projectId)

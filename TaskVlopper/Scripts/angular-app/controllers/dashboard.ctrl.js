@@ -96,6 +96,7 @@
             });
         });
     };
+
     $scope.dashboardHandler.getAllUsers();
 
     $scope.dashboardHandler.triggerUserClick = function (user) {

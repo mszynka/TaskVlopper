@@ -132,4 +132,45 @@
             console.log($scope.status);
         });
     };
+
+    this.getUsers = function (meetingId) {
+        if (meetingId !== undefined || !isNaN(meetingId)) {
+            return $http.get('/Meeting/Users/' + meetingId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response.data;
+            })
+            .catch(function (error) {
+                $scope.status = '[MeetingService.getUsers] Unable to load data: ' + error.message;
+                console.log($scope.status);
+            });
+        }
+        else {
+            $scope.status = "[MeetingService.getUsers] MeetingID is invalid!";
+            console.log($scope.status);
+            return null;
+        }
+    }
+
+    this.bindUser = function (meetingId, userId) {
+        if (meetingId !== undefined || !isNaN(meetingId)) {
+            return $http.post('/Meeting/Users/' + meetingId + "?userId=" + userId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.bindUser] Unable to load data: ' + error.message);
+            });
+        }
+        else {
+            console.log("[MeetingService.bindUser] MeetingID is invalid!");
+            return null;
+        }
+    }
+
 }]);

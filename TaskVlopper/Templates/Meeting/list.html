@@ -28,14 +28,16 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Date and time</th>
+                <th>Participants</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="meeting in meetings">
+            <tr ng-repeat="meeting in (meetings | filter: { Title: controller.meetingSearchInput }) | orderBy: sortByDate : false">
                 <th scope="row">{{meeting.ID}}</th>
                 <td>{{meeting.Title}}</td>
                 <td>{{meeting.DateAndTime | aspDate | date: "HH:mm - MM/dd/yyyy"}}</td>
+                <td>{{meeting.participants}}</td>
                 <td>
                     <div class="btn-group-xs">
                         <button class="btn btn-default glyphicon glyphicon-align-justify" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/view({ meetingId: meeting.ID, taskId: currentTaskId, projectId: currentProjectId })"></button>

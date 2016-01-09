@@ -2,9 +2,7 @@
     <li class="list-group-item">Users</li>
 
     <li class="list-group-item"
-        ng-class="{active: user.isSelected, 'item-pointer': user.isSelectable}"
-        ng-click="user.isSelectable ? dashboardHandler.triggerUserClick(user) : null"
-        ng-repeat="user in (users | filter: { Email: controller.userSearchInput } | limitTo: 10)"
+        ng-repeat="user in (users | filter: { Email: controller.userSearchInput, isSelected: true } | limitTo: 10)"
         title="{{user.isOwner ? 'Owner: ' + user.Email : user.isCurrentUser ? 'You' : user.Email}}">
 
         <span class="glyphicon" ng-class="{'glyphicon-user': !user.isCurrentUser, 'glyphicon-play': user.isCurrentUser}">&nbsp;</span>
@@ -13,7 +11,7 @@
 
     </li>
 
-    <li class="list-group-item blank text-center" ng-show="(users | filter: { Email: controller.userSearchInput }).length > 10">...</li>
+    <li class="list-group-item blank text-center" ng-show="(users | filter: { Email: controller.userSearchInput, isSelected: true }).length > 10">...</li>
 
     <li class="list-group-item">
         <div class="input-group input-group-sm">
