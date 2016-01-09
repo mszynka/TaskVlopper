@@ -87,5 +87,6 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
             $scope.model = null;
             $state.go('project/list');
         });
-    }
+    };
+
 });

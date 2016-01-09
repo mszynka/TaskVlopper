@@ -1,8 +1,8 @@
 ﻿app
-    .directive('tvUserSelector', function () {
+    .directive('tvUserListSelector', function () {
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: "static/templates/user/selector.html"
+            templateUrl: "static/templates/user/list-selector.html"
         }
     });

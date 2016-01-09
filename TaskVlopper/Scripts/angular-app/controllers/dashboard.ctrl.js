@@ -1,10 +1,13 @@
-﻿app.controller('DashboardController', function ($scope) {
+﻿app.controller('DashboardController', function ($scope, UserService) {
 
     // Datepicker section
     // Disable weekend selection
     $scope.disabled = function (date, mode) {
         return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
     };
+
+    $scope.dashboardHandler = {}
+    $scope.users = []
 
     $scope.open = function ($event, element) {
         $event.preventDefault();
@@ -65,8 +68,29 @@
                 Pace.restart();
         });
 
-    $scope.$on('$viewContentLoaded',
-        function (event) {
-            Pace.stop();
+    //$scope.$on('$viewContentLoaded',
+    //    function (event) {
+    //        Pace.stop();
+    //    });
+
+    $scope.dashboardHandler.getAllUsers = function () {
+        UserService.getCurrentUser().then(function (currentUser) {
+            $scope.currentUser = currentUser;
+            UserService.getAllUsers().then(function (response) {
+                angular.forEach(response, function (response) {
+                    if (response.Email == currentUser) {
+                        response.isSelectable = false;
+                        response.isSelected = true;
+                        response.isCurrentUser = true;
+                    }
+                    else {
+                        response.isSelectable = true;
+                    }
+                    response.isOwner = false;
+                })
+                $scope.users = response;
+            });
         });
+    };
+    $scope.dashboardHandler.getAllUsers();
 });
