@@ -3,11 +3,12 @@
 /// <reference path="services/meeting.service.js" />
 /// <reference path="services/worklog.service.js" />
 
-app.controller('ProjectController', function ($scope, $state, $stateParams,
+app.controller('ProjectController', function ($scope, $timeout, $filter, $state, $stateParams,
     ProjectService,
     TaskService,
     MeetingService,
-    WorklogService) {
+    WorklogService,
+    UserService) {
 
     Pace.on("done",
         function () {
@@ -15,7 +16,7 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
                 format: "MM/DD/YYYY",
                 useCurrent: false
             });
-            if($("#modelStartDate") != [])
+            if ($("#modelStartDate") != [])
                 $("#modelStartDate").parent().on("dp.change", function (e) {
                     $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
                 });
@@ -24,7 +25,7 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
                     $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
                 });
         });
-    
+
 
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
@@ -37,13 +38,18 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
                         project.taskCount = response.length;
                     else
                         project.taskCount = 0;
-                    
                 });
                 MeetingService.getAll(project.ID, null).then(function (response) {
                     if (response != undefined)
                         project.futureMeetingCount = response.length;
                     else
                         project.futureMeetingCount = 0;
+                });
+                UserService.getProjectUsers(project.ID).then(function (response) {
+                    if (response != undefined)
+                        project.boundUsers = response.length;
+                    else
+                        project.boundUsers = 1;
                 });
             })
             $scope.projects = response;
@@ -54,15 +60,16 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
             $scope.model = response;
-            if($scope.model.StartDate != undefined)
+            if ($scope.model.StartDate != undefined)
                 $scope.model.StartDate = new Date(parseInt($scope.model.StartDate.split("(")[1]));
-            if($scope.model.Deadline != undefined)
+            if ($scope.model.Deadline != undefined)
                 $scope.model.Deadline = new Date(parseInt($scope.model.Deadline.split("(")[1]));
         })
     };
 
     $scope.projectHandler.createProject = function () {
-        Pace.start();
+        Pace.restart();
+        $scope.projectHandler.bindUsersToProject(temp_model.ID);
         ProjectService.create($scope.model).then(function (response) {
             $state.go('project/list');
         })
@@ -70,23 +77,64 @@ app.controller('ProjectController', function ($scope, $state, $stateParams,
 
     $scope.projectHandler.initEditor = function () {
         $scope.projectHandler.getProject($scope.currentProjectId);
+        $scope.projectHandler.getUsers($scope.currentProjectId);
     };
 
     $scope.projectHandler.editProject = function () {
-        Pace.start();
+        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
+        $scope.projectHandler.bindUsersToProject(temp_model.ID);
         ProjectService.update(temp_model).then(function (response) {
             $state.go('project/list');
         });
     };
 
     $scope.projectHandler.deleteProject = function () {
-        Pace.start();
+        Pace.restart();
         ProjectService.delete($scope.currentProjectId).then(function (response) {
             $scope.model = null;
             $state.go('project/list');
         });
+    };
+
+    $scope.projectHandler.getUsers = function (projectId) {
+        //while (!$scope.users) { }
+        $timeout(function () {
+            if ($scope.users != null) {
+                ProjectService.getUsers(projectId)
+                .then(function (response) {
+                    angular.forEach(response, function (pUser) {
+                        angular.forEach($scope.users, function (user) {
+                            if (pUser === user.Email) {
+                                user.isSelected = true;
+                            }
+                        });
+                    });
+                })
+            }
+            else {
+                $timeout(function () {
+                    ProjectService.getUsers(projectId)
+                    .then(function (response) {
+                        angular.forEach(response, function (pUser) {
+                            angular.forEach($scope.users, function (user) {
+                                if (pUser === user.Email) {
+                                    user.isSelected = true;
+                                }
+                            });
+                        });
+                    })
+                }, 50);
+            }
+        }, 50);
+    };
+
+    $scope.projectHandler.bindUsersToProject = function () {
+        angular.forEach($scope.users, function (user) {
+            if (user.isDirty && user.isSelectable)
+                ProjectService.bindUser($scope.currentProjectId, user.Email);
+        })
     };
 
 });

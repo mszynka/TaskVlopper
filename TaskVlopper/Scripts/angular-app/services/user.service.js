@@ -64,7 +64,7 @@
 
     this.getProjectUsers = function (projectId) {
         return $http.get('/Project/Users/' + projectId)
-        .then(function(resposne) {
+        .then(function(response) {
             if (response.data.HttpCode != undefined) {
                 console.log(response.data.HttpCode + " " + response.data.Message);
             }

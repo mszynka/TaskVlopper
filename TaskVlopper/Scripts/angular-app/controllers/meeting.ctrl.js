@@ -23,7 +23,7 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
     };
 
     $scope.meetingHandler.createMeeting = function () {
-        Pace.start();
+        Pace.restart();
         MeetingService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
         })
@@ -34,7 +34,7 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
     };
 
     $scope.meetingHandler.editMeeting = function () {
-        Pace.start();
+        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         MeetingService.update(temp_model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
@@ -43,7 +43,7 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
     };
 
     $scope.meetingHandler.deleteMeeting = function () {
-        Pace.start();
+        Pace.restart();
         MeetingService.delete($scope.currentMeetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = null;
             $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });

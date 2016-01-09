@@ -95,4 +95,46 @@
             }
         };
 
+        this.getUsers = function (projectId) {
+            if (projectId !== undefined || !isNaN(projectId)) {
+                return $http.get('/Project/Users/' + projectId)
+                .then(function (response) {
+                    if (response.data.HttpCode != undefined) {
+                        console.log(response.data.HttpCode + " " + response.data.Message);
+                    }
+                    return response.data;
+                })
+                .catch(function (error) {
+                    $scope.status = '[ProjectService.getUsers] Unable to load data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+            else {
+                $scope.status = "[ProjectService.getUsers] ProjectID is invalid!";
+                console.log($scope.status);
+                return null;
+            }
+        }
+
+        this.bindUser = function (projectId, userId) {
+            if (projectId !== undefined || !isNaN(projectId)) {
+                return $http.post('/Project/Users/' + projectId + "?userId=" + userId)
+                .then(function (response) {
+                    if (response.data.HttpCode != undefined) {
+                        console.log(response.data.HttpCode + " " + response.data.Message);
+                    }
+                    return response;
+                })
+                .catch(function (error) {
+                    $scope.status = '[ProjectService.bindUser] Unable to load data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+            else {
+                $scope.status = "[ProjectService.bindUser] ProjectID is invalid!";
+                console.log($scope.status);
+                return null;
+            }
+        }
+
     }]);

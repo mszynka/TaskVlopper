@@ -81,10 +81,15 @@ namespace TaskVlopper.Logic
 
         public void AssignUserToProject(int projectId, string userId)
         {
-            UserProjectAssignment assignment = new UserProjectAssignment();
-            assignment.ProjectID = projectId;
-            assignment.UserID = userId;
-            UserProjectAssignmentRepository.Add(assignment);
+            if (!UserProjectAssignmentRepository.GetAllUsersIDsForGivenProject(projectId)
+                    .Where(x => x == userId)
+                    .Any())
+            {
+                UserProjectAssignment assignment = new UserProjectAssignment();
+                assignment.ProjectID = projectId;
+                assignment.UserID = userId;
+                UserProjectAssignmentRepository.Add(assignment);
+            }
         }
 
     }

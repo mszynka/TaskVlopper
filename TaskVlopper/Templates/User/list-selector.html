@@ -3,7 +3,7 @@
 
     <li class="list-group-item"
         ng-class="{active: user.isSelected, 'item-pointer': user.isSelectable}"
-        ng-click="user.isSelectable ? user.isSelected = !user.isSelected : null"
+        ng-click="user.isSelectable ? dashboardHandler.triggerUserClick(user) : null"
         ng-repeat="user in (users | filter: { Email: controller.userSearchInput } | limitTo: 10)"
         title="{{user.isOwner ? 'Project owner: ' + user.Email : user.isCurrentUser ? 'You' : user.Email}}">
 
