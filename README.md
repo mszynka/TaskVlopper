@@ -15,4 +15,4 @@ Handling appointments when in developer mood keeps getting harder? Try our meeti
 
 ### Worklog
 
-Ever suspicious what your employees are doing? Now you can track every move and task with worklog module.
+Ever suspicious how your project progress is doing? Now you can track every move and task with worklog module.
