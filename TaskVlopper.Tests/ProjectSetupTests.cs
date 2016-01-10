@@ -9,6 +9,8 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Controllers;
 using System.Web.Mvc;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Repository.Base;
+using System.Threading.Tasks;
 
 namespace TaskVlopper.Tests
 {
@@ -318,6 +320,24 @@ namespace TaskVlopper.Tests
                 testRepo.RemoveMany(manyTests);
                 Assert.AreEqual(0, testRepo.GetAll().Count());
             }
+        }
+
+        [TestMethod]
+        public void LoggerAsyncTestMethod()
+        {
+            int[] test = new int[50];
+            for (int i = 0; i < 50; i++)
+                test[i] = i;
+
+            Dictionary<int, int> checker = new Dictionary<int, int>();
+            Parallel.ForEach(test.AsEnumerable(), (i) =>
+            {
+                Logger.Log(i.ToString(), Logger.LoggerSeverityEnum.Info);
+                checker.Add(i, i);
+            });
+
+            for (int i = 0; i < 50; i++)
+                if (checker[i] != i) Assert.Fail();
         }
     }
 }
