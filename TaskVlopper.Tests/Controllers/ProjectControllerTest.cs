@@ -15,11 +15,12 @@ using TaskVlopper.Models;
 using TaskVlopper.Helpers;
 using TaskVlopper.Repository;
 using TaskVlopper.Base.Model;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class ProjectControllerTest
+    public class ProjectControllerTest : TestsBase
     {
 
         [TestMethod()]

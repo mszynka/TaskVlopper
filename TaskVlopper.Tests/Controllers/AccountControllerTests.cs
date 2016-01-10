@@ -18,11 +18,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using TaskVlopper.Helpers;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class AccountControllerTests
+    public class AccountControllerTests : TestsBase
     {
 
         [TestMethod()]

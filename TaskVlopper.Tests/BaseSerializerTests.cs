@@ -13,7 +13,7 @@ using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Tests
 {
-    public class BaseSerializerTestModel : IBaseModel
+    public class BaseSerializerTestModel : TestsBase, IBaseModel
     {
         public int ID { get; set; }
 

@@ -11,11 +11,12 @@ using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class MeetingControllerTest
+    public class MeetingControllerTest : TestsBase
     {
 
         [TestMethod()]

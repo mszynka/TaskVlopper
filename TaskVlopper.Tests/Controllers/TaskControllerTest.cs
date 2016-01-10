@@ -12,11 +12,12 @@ using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Models;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class TaskControllerTest
+    public class TaskControllerTest : TestsBase
     {
 
         [TestMethod()]

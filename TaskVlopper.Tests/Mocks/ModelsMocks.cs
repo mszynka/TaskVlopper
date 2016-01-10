@@ -15,7 +15,7 @@ using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Tests.Mocks
 {
-    public static class ModelsMocks
+    public class ModelsMocks
     {
         public static void CleanUpBeforeTest()
         {

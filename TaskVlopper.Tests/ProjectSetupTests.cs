@@ -15,8 +15,9 @@ using System.Threading.Tasks;
 namespace TaskVlopper.Tests
 {
     [TestClass]
-    public class ProjectSetupTests
+    public class ProjectSetupTests : TestsBase
     {
+
         [TestMethod]
         public void SqlAndServiceLocatorInitializationTest()
         {
