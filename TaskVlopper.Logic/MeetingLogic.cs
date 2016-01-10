@@ -24,7 +24,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUser(string userId)
         {
             return MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
-                    .Select(meetingParticipants => 
+                    .Select(meetingParticipants =>
                         MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(meetingParticipants.MeetingID).Single())
                     .ToList();
         }
@@ -32,7 +32,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProject(string userId, int projectId)
         {
             return MeetingRepository.GetMeetingByProjectId(projectId)
-                .Where(meetingByProject => 
+                .Where(meetingByProject =>
                     MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
                         .Any(meetingParticipants => meetingParticipants.MeetingID == meetingByProject.ID)
                     )
@@ -42,7 +42,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
         {
             return MeetingRepository.GetMeetingByProjectIdAndTaskId(projectId, taskId)
-                .Where(meetingByProject => 
+                .Where(meetingByProject =>
                     MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
                         .Any(meetingParticipants => meetingParticipants.MeetingID == meetingByProject.ID)
                     )
@@ -78,7 +78,18 @@ namespace TaskVlopper.Logic
 
         public Meeting HandleMeetingGet(int projectId, int? taskId, int id)
         {
-            return MeetingRepository.GetMeetingByIdWithoutTracking(id);
+            if (taskId != null)
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId && x.TaskID == taskId).Single();
+            else
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId).Single();
+        }
+
+        public IQueryable<Meeting> HandleMeetingGetQueryable(int projectId, int? taskId, int id)
+        {
+            if (taskId != null)
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId && x.TaskID == taskId);
+            else
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId);
         }
 
         public void AssignUserToMeeting(int meetingId, string userId)

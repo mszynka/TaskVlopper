@@ -31,19 +31,19 @@ namespace TaskVlopper.Controllers.Tests
             JsonResult action = controller.Index(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
             var data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
 
             // Act
             action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
 
             // Act
             action = controller.Index() as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
         }
 
 

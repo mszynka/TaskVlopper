@@ -17,6 +17,7 @@ namespace TaskVlopper.Base.Logic
         void HandleMeetingDelete(int projectId, int? taskId, int id, string userId);
         void HandleMeetingAdd(Meeting meeting, int projectId, int? taskId, string userId);
         Meeting HandleMeetingGet(int projectId, int? taskId, int id);
+        IQueryable<Meeting> HandleMeetingGetQueryable(int projectId, int? taskId, int id);
         void AssignUserToMeeting(int meetingId, string userId);
         IEnumerable<string> GetMeetingUsers(int meetingId);
 

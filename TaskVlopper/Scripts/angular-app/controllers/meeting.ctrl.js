@@ -9,13 +9,7 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
 
     $scope.meetingHandler = {};
     $scope.meetingHandler.getMeetings = function () {
-        MeetingService.getAll($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
-            angular.forEach(response, function (meeting) {
-                MeetingService.getUsers(meeting.ID)
-                .then(function (users) {
-                    meeting.participants = users.length;
-                })
-            })
+        MeetingService.getAllWithStats($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.meetings = response;
         })
     };
@@ -48,11 +42,6 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
                 $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
             })
         })
-    };
-
-    $scope.meetingHandler.initEditor = function () {
-        $scope.meetingHandler.getMeeting($scope.currentMeetingId);
-        $scope.meetingHandler.getUsers($scope.currentMeetingId);
     };
 
     $scope.meetingHandler.editMeeting = function () {
@@ -112,7 +101,11 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
     };
 
     $scope.sortByDate = function (element) {
-        return new Date(parseInt(element.DateAndTime.substr(6)));
+        return new Date(parseInt(element.Meeting.DateAndTime.substr(6)));
     }
 
+    if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+        $scope.meetingHandler.getMeeting($scope.currentMeetingId);
+        $scope.meetingHandler.getUsers($scope.currentMeetingId);
+    }
 });
