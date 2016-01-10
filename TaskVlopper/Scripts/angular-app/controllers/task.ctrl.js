@@ -35,7 +35,7 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
     };
 
     $scope.taskHandler.createTask = function () {
-        Pace.start();
+        Pace.restart();
         TaskService.create($scope.model, $scope.currentProjectId).then(function (response) {
             $state.go('task/list', { projectId: $scope.currentProjectId });
         })
@@ -46,7 +46,7 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
     };
 
     $scope.taskHandler.editTask = function () {
-        Pace.start();
+        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         TaskService.update(temp_model, $scope.currentProjectId).then(function (response) {
@@ -55,7 +55,7 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
     };
 
     $scope.taskHandler.deleteTask = function () {
-        Pace.start();
+        Pace.restart();
         TaskService.delete($scope.currentTaskId, $scope.currentProjectId).then(function (response) {
             $scope.model = null;
             $state.go('task/list', { projectId: $scope.currentProjectId });

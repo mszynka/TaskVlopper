@@ -17,5 +17,11 @@ namespace TaskVlopper.Base.Logic
         
         void AssignUserToProjectTask(int projectId, int taskId, string userId);
         TaskVlopper.Base.Model.Task HandleTaskGet(int projectId, int id);
+        
+	#region Statistics
+
+	int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
+	
+	#endregion
     }
 }

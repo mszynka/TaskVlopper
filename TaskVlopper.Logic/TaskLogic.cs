@@ -84,5 +84,10 @@ namespace TaskVlopper.Logic
             assignment.ProjectID = projectId;
             UserTaskAssignmentRepository.Add(assignment);
         }
+
+        public int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
+        {
+            return GetAllTasksForGivenProjectAndCurrentUser(projectId, userId).Count();
+        }
     }
 }

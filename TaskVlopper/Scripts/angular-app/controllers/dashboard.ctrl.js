@@ -64,8 +64,11 @@
 
     $scope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams) {
-            if(toState != fromState && toParams != fromParams)
+            if (toState != fromState && toParams != fromParams) {
                 Pace.restart();
+                $scope.users = null;
+                //$scope.dashboardHandler.getAllUsers();
+            }
         });
 
     //$scope.$on('$viewContentLoaded',
@@ -74,7 +77,7 @@
     //    });
 
     $scope.dashboardHandler.getAllUsers = function () {
-        UserService.getCurrentUser().then(function (currentUser) {
+        return UserService.getCurrentUser().then(function (currentUser) {
             $scope.currentUser = currentUser;
             UserService.getAllUsers().then(function (response) {
                 angular.forEach(response, function (response) {
@@ -87,10 +90,17 @@
                         response.isSelectable = true;
                     }
                     response.isOwner = false;
+                    response.isDirty = false;
                 })
                 $scope.users = response;
             });
         });
     };
-    $scope.dashboardHandler.getAllUsers();
+
+    //$scope.dashboardHandler.getAllUsers();
+
+    $scope.dashboardHandler.triggerUserClick = function (user) {
+        user.isSelected = !user.isSelected;
+        user.isDirty = true;
+    };
 });

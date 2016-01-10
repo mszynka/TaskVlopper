@@ -269,7 +269,9 @@ namespace TaskVlopper.Tests.Mocks
                         var forDebugging = userManager.Users.ToList();
                     }
                 }
+                #pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
+                #pragma warning restore CS0168 // Variable is declared but never used
                 {
                     //User does not exist
                 }

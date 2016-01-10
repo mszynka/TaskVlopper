@@ -313,7 +313,9 @@ namespace TaskVlopper.Tests
                     testRepo.GetAll().Single(x => x.ID == test3.ID && test3.Name.Equals("7"));
                     testRepo.GetAll().Single(x => x.ID == test4.ID && test4.Name.Equals("8"));
                 }
+                #pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
+                #pragma warning restore CS0168 // Variable is declared but never used
                 {
                     Assert.Fail();
                 }

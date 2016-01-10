@@ -21,14 +21,14 @@
     Currently no projects available. Add a project.
 </div>
 
-<div class="form-horizontal" ng-hide="(projects | filter: { Name: controller.projectSearchInput }).length == 0">
+<div class="form-horizontal" ng-hide="(projects | filter: controller.projectSearchInput).length == 0">
     <div class="row project-row">
-        <div class="panel panel-default project-panel" ng-repeat="project in projects | filter: { Name: controller.projectSearchInput }">
+        <div class="panel panel-default project-panel" ng-repeat="object in projects | filter: controller.projectSearchInput">
             <tv-project-viewer></tv-project-viewer>
         </div>
     </div>
 </div>
 
-<div class="alert alert-warning" ng-show="(projects | filter: { Name: controller.projectSearchInput }).length == 0 && projects.length > 0">
+<div class="alert alert-warning" ng-show="(projects | filter: controller.projectSearchInput).length == 0 && projects.length > 0">
     No project satisfying the current query.
 </div>

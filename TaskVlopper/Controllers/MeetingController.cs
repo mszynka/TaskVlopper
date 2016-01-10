@@ -29,6 +29,7 @@ namespace TaskVlopper.Controllers
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     IEnumerable<Meeting> viewModel = new List<Meeting>();
+
                     if (projectId == null & taskId == null)
                         viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
                     else if (taskId == null)
@@ -36,7 +37,52 @@ namespace TaskVlopper.Controllers
                     else if (projectId != null & taskId != null)
                         viewModel =
                             logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, (int)projectId, (int)taskId);
+
                     return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: Meeting/GetAllWithStats
+        [HttpGet]
+        public ActionResult GetAllWithStats(int? projectId = null, int? taskId = null)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    IMeetingParticipantsRepository participants = container.Resolve<IMeetingParticipantsRepository>();
+
+                    IList<MeetingViewModel> meetingList = new List<MeetingViewModel>();
+                    MeetingsViewModel viewModel;
+
+                    if (projectId == null & taskId == null)
+                        meetingList = logic.GetAllMeetingsForCurrentUser(User.Identity.Name)
+                            .Select(x => new MeetingViewModel(x, new MeetingStatisticsViewModel(
+                                    participants.GetMeetingParticipantsByMeetingId(x.ID).Count()
+                                )))
+                            .ToList();
+                    else if (taskId == null)
+                        meetingList = logic.GetAllMeetingsForCurrentUserAndProject(User.Identity.Name, (int)projectId)
+                            .Select(x => new MeetingViewModel(x, new MeetingStatisticsViewModel(
+                                    participants.GetMeetingParticipantsByMeetingId(x.ID).Count())))
+                            .ToList();
+                    else if (projectId != null & taskId != null)
+                        meetingList = logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, (int)projectId, (int)taskId)
+                            .Select(x => new MeetingViewModel(x, new MeetingStatisticsViewModel(
+                                    participants.GetMeetingParticipantsByMeetingId(x.ID).Count()
+                                )))
+                            .ToList();
+
+                    viewModel = new MeetingsViewModel(meetingList);
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -56,6 +102,31 @@ namespace TaskVlopper.Controllers
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     var viewModel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: Meeting/DetailsWithStats/5
+        [HttpGet]
+        public ActionResult DetailsWithStats(int projectId, int? taskId, int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    IMeetingParticipantsRepository participants = container.Resolve<IMeetingParticipantsRepository>();
+
+                    var viewModel = logic.HandleMeetingGetQueryable(projectId, taskId, id)
+                        .Select(x => new MeetingViewModel(x, new MeetingStatisticsViewModel(
+                                participants.GetMeetingParticipantsByMeetingId(x.ID).Count())));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
@@ -212,6 +283,30 @@ namespace TaskVlopper.Controllers
 
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     logic.AssignUserToMeeting(id, userId);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // POST: Meeting/Users/5
+        [HttpPost]
+        public ActionResult UnbindUser(int id, string userId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var users = container.Resolve<ApplicationUserManager>();
+                    users.Users.First(x => x.Email == userId);
+
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.UnassignUserFromMeeting(id, userId);
 
                     return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
                 }

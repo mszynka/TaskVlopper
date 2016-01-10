@@ -420,6 +420,7 @@ namespace TaskVlopper.Controllers
                         applicationUsers
                             .Select(x => new UserViewModel(x.Email))
                             .AsEnumerable()
+                            .OrderBy(x => x.Email != User.Identity.GetUserName())
                         );
 
                     return Json(users, JsonRequestBehavior.AllowGet);

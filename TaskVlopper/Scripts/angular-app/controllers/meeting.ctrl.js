@@ -1,6 +1,7 @@
 ﻿/// <reference path="services/meeting.service.js" />
+/// <reference path="services/user.service.js" />
 
-app.controller('MeetingController', function ($scope, $state, $stateParams, MeetingService) {
+app.controller('MeetingController', function ($scope, $timeout, $state, $stateParams, MeetingService, UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -9,11 +10,14 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
 
     $scope.meetingHandler = {};
     $scope.meetingHandler.getMeetings = function () {
-        MeetingService.getAll($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
+        MeetingService.getAllWithStats($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.meetings = response;
         })
     };
-    $scope.meetingHandler.getMeetings();
+
+    if ($state.current.name == "meeting/list") {
+        $scope.meetingHandler.getMeetings();
+    }
 
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
@@ -23,30 +27,74 @@ app.controller('MeetingController', function ($scope, $state, $stateParams, Meet
     };
 
     $scope.meetingHandler.createMeeting = function () {
-        Pace.start();
+        Pace.restart();
         MeetingService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
-            $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
+            MeetingService.getAll($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
+                angular.forEach(response, function (meeting) {
+                    if (meeting.Title == $scope.model.Title
+                        && meeting.Description == $scope.model.Description
+                        && meeting.ProjectId == $scope.model.ProjectId) {
+                        $scope.currentMeetingId = meeting.ID;
+                        $scope.meetingHandler.bindUsersToMeeting();
+                    }
+                })
+            })
+            .then(function () {
+                $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
+            })
         })
     };
 
-    $scope.meetingHandler.initEditor = function () {
-        $scope.meetingHandler.getMeeting($scope.currentMeetingId);
-    };
-
     $scope.meetingHandler.editMeeting = function () {
-        Pace.start();
+        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
+        $scope.meetingHandler.bindUsersToMeeting();
         MeetingService.update(temp_model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
         });
     };
 
     $scope.meetingHandler.deleteMeeting = function () {
-        Pace.start();
+        Pace.restart();
         MeetingService.delete($scope.currentMeetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = null;
             $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
         });
+    }
+
+    $scope.meetingHandler.getUsers = function (meetingId) {
+        UserService.getAllUsersWithSelectors().then(function (allUsers) {
+            $scope.users = allUsers;
+            MeetingService.getUsers(meetingId).then(function (meetingUsers) {
+                angular.forEach(meetingUsers, function (meetingUser) {
+                    angular.forEach($scope.users, function (user) {
+                        if (meetingUser.Email === user.Email) {
+                            user.isSelected = true;
+                        }
+                    });
+                });
+            })
+        })
+    };
+
+    $scope.meetingHandler.bindUsersToMeeting = function () {
+        angular.forEach($scope.users, function (user) {
+            if (user.isDirty && user.isSelectable) {
+                if (user.isSelected)
+                    MeetingService.bindUser($scope.currentMeetingId, user.Email);
+                else if (!user.isSelected)
+                    MeetingService.unbindUser($scope.currentMeetingId, user.Email);
+            }
+        })
+    };
+
+    $scope.sortByDate = function (element) {
+        return new Date(parseInt(element.Meeting.DateAndTime.substr(6)));
+    }
+
+    if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+        $scope.meetingHandler.getMeeting($scope.currentMeetingId);
+        $scope.meetingHandler.getUsers($scope.currentMeetingId);
     }
 });

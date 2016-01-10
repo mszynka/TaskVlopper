@@ -17,5 +17,11 @@ namespace TaskVlopper.Base.Logic
         void HandleProjectAdd(Project project, string userId);
         void AssignUserToProject(int projectId, string userId);
         Project HandleProjectGet(int id);
+
+	#region Statistics
+        
+	int CountAllUsersForProject(int projectId);
+
+	#endregion
     }
 }

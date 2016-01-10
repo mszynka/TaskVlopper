@@ -12,30 +12,14 @@ namespace TaskVlopper.Helpers
         private Exception Ex { get; set; }
         public HttpCodeEnum HttpCode { get; private set; }
         public string Message { get; private set; }
+        public string ID { get; private set; }
 
-        public JsonDataHandler(Exception ex = null, HttpCodeEnum httpCode = HttpCodeEnum.InternalServerError, string message = null)
+        public JsonDataHandler(Exception ex = null, HttpCodeEnum httpCode = HttpCodeEnum.InternalServerError, string message = null, string id = null)
         {
             Ex = ex;
             HttpCode = httpCode;
-            Message = HttpCode.ToString();
-
-            if (message != null)
-                Message = string.Join(" ", Message, message);
-
-            if (Ex != null)
-                Message = string.Join(" ", Message, Ex.Message);
-
-            if (Message == null)
-                Message = "Internal Server Error";
-        }
-
-        private JsonHttpViewModel getHttpData()
-        {
-            JsonHttpViewModel viewModel = new JsonHttpViewModel();
-            viewModel.HttpCode = (int)HttpCode;
-            viewModel.Message = Message;
-
-            return viewModel;
+            ID = id;
+            messageGenerator(message);
         }
 
         public JsonHttpViewModel getError()
@@ -65,5 +49,32 @@ namespace TaskVlopper.Helpers
 
             return getHttpData();
         }
+
+        #region Helpers
+
+        private void messageGenerator(string message)
+        {
+            Message = HttpCode.ToString();
+
+            if (!string.IsNullOrWhiteSpace(message))
+                Message = string.Join(" ", Message, message);
+            else
+                Message = string.Join(" ", Message, "Internal Server Error");
+
+            if (Ex != null)
+                Message = string.Join(" ", Message, Ex.Message);
+        }
+
+        private JsonHttpViewModel getHttpData()
+        {
+            JsonHttpViewModel viewModel = new JsonHttpViewModel();
+            viewModel.HttpCode = (int)HttpCode;
+            viewModel.Message = Message;
+            viewModel.ID = ID;
+
+            return viewModel;
+        }
+
+        #endregion
     }
 }
