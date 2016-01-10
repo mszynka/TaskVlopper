@@ -11,11 +11,11 @@ namespace TaskVlopper.Base.Logic
     public interface IProjectLogic
     {
         IEnumerable<Project> GetAllProjectsForCurrentUser(string userId);
+        IEnumerable<string> GetProjectUsers(int projectId);
         void HandleProjectEdit(Project form, int projectId);
         void HandleProjectDelete(int projectId, string userId);
         void HandleProjectAdd(Project project, string userId);
-        Project HandleProjectGet(int id);
-        IEnumerable<string> GetProjectUsers(int projectId);
         void AssignUserToProject(int projectId, string userId);
+        Project HandleProjectGet(int id);
     }
 }

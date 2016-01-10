@@ -10,10 +10,11 @@ namespace TaskVlopper.Base.Repository
     public interface IMeetingParticipantsRepository : IBaseRepository<MeetingParticipants>
     {
         IEnumerable<MeetingParticipants> GetMeetingParticipantsByUserId(string userId);
-        IQueryable<MeetingParticipants> GetMeetingParticipantsByUserIdQueryable(string userId);
         IEnumerable<MeetingParticipants> GetMeetingParticipantsByMeetingId(int meetingId);
+        IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId);
+        IQueryable<MeetingParticipants> GetMeetingParticipantsByUserIdQueryable(string userId);
         IQueryable<MeetingParticipants> GetMeetingParticipantsByMeetingIdQueryable(int meetingId);
         MeetingParticipants GetMeetingParticipantsByUserIdAndMeetingId(string userId, int meetingId);
-        IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId);
+        
     }
 }

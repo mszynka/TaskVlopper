@@ -8,6 +8,7 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Helpers;
+using TaskVlopper.Identity;
 using TaskVlopper.Models;
 using TaskVlopper.Repository.Base;
 using TaskVlopper.ServiceLocator;
@@ -184,9 +185,11 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var viewmodel = logic.GetMeetingUsers(id).ToList();
+                    var queryMeetingUsers = logic.GetMeetingUsers(id);
 
-                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                    var viewModel = new UsersViewModel();
+                    viewModel.Users.AddRange(queryMeetingUsers.Select(x => new UserViewModel(x)));
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -204,6 +207,9 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    var users = container.Resolve<ApplicationUserManager>();
+                    users.Users.First(x => x.Email == userId);
+
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     logic.AssignUserToMeeting(id, userId);
 

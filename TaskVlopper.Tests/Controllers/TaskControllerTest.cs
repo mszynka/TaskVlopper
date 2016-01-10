@@ -373,6 +373,38 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(1, ModelsMocks.CountReigsteredUsers());
         }
 
+        [TestMethod()]
+        public void UsersPostLoggedUserTest_wrongUserIdInjection()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsLoggedUser<TaskController>(ControllersMocks.LoggedUser, true);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID,
+                "dsadsa123@dcxzczx@sdaas123.pl") as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            Assert.AreEqual(500, data.HttpCode);
+        }
+
+        [TestMethod()]
+        public void UsersPostNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            TaskController controller =
+                ControllersMocks.GetControllerAsLoggedUser<TaskController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID,
+                "anything") as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
+        }
 
     }
 }
