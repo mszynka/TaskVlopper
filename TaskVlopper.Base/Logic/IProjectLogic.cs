@@ -11,7 +11,7 @@ namespace TaskVlopper.Base.Logic
     public interface IProjectLogic
     {
         IEnumerable<Project> GetAllProjectsForCurrentUser(string userId);
-        IEnumerable<string> GetProjectUsers(int projectId);
+        IEnumerable<string> GetAllUsersForGivenProject(int projectId);
         void HandleProjectEdit(Project form, int projectId);
         void HandleProjectDelete(int projectId, string userId);
         void HandleProjectAdd(Project project, string userId);

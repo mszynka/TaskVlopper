@@ -185,7 +185,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
-                    var queryTaskUsers = logic.GetTaskUsers(projectId, id);
+                    var queryTaskUsers = logic.GetAllUsersForGivenTask(projectId, id);
 
                     var viewModel = new UsersViewModel();
                     viewModel.Users.AddRange(queryTaskUsers.Select(x => new UserViewModel(x)));

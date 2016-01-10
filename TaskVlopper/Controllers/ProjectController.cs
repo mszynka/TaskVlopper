@@ -189,7 +189,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
-                    var queryProjectUsers = logic.GetProjectUsers(id);
+                    var queryProjectUsers = logic.GetAllUsersForGivenProject(id);
 
                     var viewModel = new UsersViewModel();
                     viewModel.Users.AddRange(queryProjectUsers.Select(x => new UserViewModel(x)));

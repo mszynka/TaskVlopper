@@ -185,7 +185,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    var queryMeetingUsers = logic.GetMeetingUsers(id);
+                    var queryMeetingUsers = logic.GetAllUsersForGivenMeeting(id);
 
                     var viewModel = new UsersViewModel();
                     viewModel.Users.AddRange(queryMeetingUsers.Select(x => new UserViewModel(x)));

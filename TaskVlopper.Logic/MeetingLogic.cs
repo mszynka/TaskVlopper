@@ -96,7 +96,7 @@ namespace TaskVlopper.Logic
             MeetingParticipantsRepository.Add(participant);
         }
 
-        public IEnumerable<string> GetMeetingUsers(int meetingId)
+        public IEnumerable<string> GetAllUsersForGivenMeeting(int meetingId)
         {
             return MeetingParticipantsRepository.GetAllUsersIDsByMeeting(meetingId);
         }
