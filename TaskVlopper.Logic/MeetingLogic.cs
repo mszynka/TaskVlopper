@@ -94,5 +94,40 @@ namespace TaskVlopper.Logic
         {
             return MeetingParticipantsRepository.GetAllUsersIDsByMeeting(meetingId);
         }
+
+        public int CountAllUsersForMeeting(int meetingId)
+        {
+            return GetMeetingUsers(meetingId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUser(string userId)
+        {
+            return GetAllMeetingsForCurrentUser(userId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUserAndProject(string userId, int projectId)
+        {
+            return GetAllMeetingsForCurrentUserAndProject(userId, projectId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
+        {
+            return GetAllMeetingsForCurrentUserAndProjectAndTask(userId, projectId, taskId).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUser(string userId)
+        {
+            return GetAllMeetingsForCurrentUser(userId).Where(x => x.DateAndTime > DateTime.Now).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUserAndProject(string userId, int projectId)
+        {
+            return GetAllMeetingsForCurrentUserAndProject(userId, projectId).Where(x => x.DateAndTime > DateTime.Now).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
+        {
+            return GetAllMeetingsForCurrentUserAndProjectAndTask(userId, projectId, taskId).Where(x => x.DateAndTime > DateTime.Now).Count();
+        }
     }
 }

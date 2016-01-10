@@ -15,7 +15,10 @@ namespace TaskVlopper.Base.Logic
         void HandleProjectDelete(int projectId, string userId);
         void HandleProjectAdd(Project project, string userId);
         Project HandleProjectGet(int id);
-        IEnumerable<string> GetProjectUsers(int projectId);
+        IEnumerable<string> GetAllUsersForProject(int projectId);
         void AssignUserToProject(int projectId, string userId);
+
+        // Statistic methods
+        int CountAllUsersForProject(int projectId);
     }
 }

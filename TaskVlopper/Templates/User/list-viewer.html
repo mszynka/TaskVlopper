@@ -14,7 +14,7 @@
     <li class="list-group-item blank text-center" ng-show="(users | filter: { Email: controller.userSearchInput, isSelected: true }).length > 10">...</li>
 
     <li class="list-group-item">
-        <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" ng-show="(users | filter: { Email: controller.userSearchInput, isSelected: true }).length > 10">
             <input type="text" class="form-control form-control-sm" placeholder="Search users" ng-model="controller.userSearchInput">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-search"></span>

@@ -19,5 +19,15 @@ namespace TaskVlopper.Base.Logic
         Meeting HandleMeetingGet(int projectId, int? taskId, int id);
         void AssignUserToMeeting(int meetingId, string userId);
         IEnumerable<string> GetMeetingUsers(int meetingId);
+
+        // Statistic methods
+        int CountAllUsersForMeeting(int meetingId);
+        int CountAllMeetingsForCurrentUser(string userId);
+        int CountAllMeetingsForCurrentUserAndProject(string userId, int projectId);
+        int CountAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId);
+
+        int CountAllFutureMeetingsForCurrentUser(string userId);
+        int CountAllFutureMeetingsForCurrentUserAndProject(string userId, int projectId);
+        int CountAllFutureMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId);
     }
 }

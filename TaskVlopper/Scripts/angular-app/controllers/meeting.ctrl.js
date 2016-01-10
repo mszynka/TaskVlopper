@@ -19,7 +19,10 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
             $scope.meetings = response;
         })
     };
-    $scope.meetingHandler.getMeetings();
+
+    if ($state.current.name == "meeting/list") {
+        $scope.meetingHandler.getMeetings();
+    }
 
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {

@@ -40,9 +40,72 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        // GET: Project/GetAllWithStats
+        [HttpGet]
+        public ActionResult GetAllWithStats()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic projectLogic = container.Resolve<IProjectLogic>();
+                    ITaskLogic taskLogic = container.Resolve<ITaskLogic>();
+                    IMeetingLogic meetingLogic = container.Resolve<IMeetingLogic>();
+
+                    var projectLists = projectLogic.GetAllProjectsForCurrentUser(User.Identity.Name)
+                        .Select(x => new ProjectViewModel(
+                            x,
+                            new ProjectStatisticsViewModel(
+                                taskLogic.CountAllTasksForGivenProjectAndCurrentUser(x.ID, User.Identity.Name),
+                                meetingLogic.CountAllFutureMeetingsForCurrentUserAndProject(User.Identity.Name, x.ID),
+                                projectLogic.CountAllUsersForProject(x.ID)
+                            ))
+                        )
+                        .ToList();
+                    var viewModel = new ProjectsViewModel(projectLists);
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
         // GET: Project/Details/5
         [HttpGet]
         public ActionResult Details(int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic projectLogic = container.Resolve<IProjectLogic>();
+                    ITaskLogic taskLogic = container.Resolve<ITaskLogic>();
+                    IMeetingLogic meetingLogic = container.Resolve<IMeetingLogic>();
+
+                    var viewModel = new ProjectViewModel(projectLogic.HandleProjectGet(id), 
+                        new ProjectStatisticsViewModel(
+                                taskLogic.CountAllTasksForGivenProjectAndCurrentUser(id, User.Identity.Name),
+                                meetingLogic.CountAllFutureMeetingsForCurrentUserAndProject(User.Identity.Name, id),
+                                projectLogic.CountAllUsersForProject(id)
+                            ));
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // GET: Project/DetailsWithStats/5
+        [HttpGet]
+        public ActionResult DetailsWithStats(int id)
         {
             try
             {
@@ -83,7 +146,10 @@ namespace TaskVlopper.Controllers
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectAdd(collection, User.Identity.Name);
 
-                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Project successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                    return Json(new JsonDataHandler(
+                        httpCode: HttpCodeEnum.Created, 
+                        message: "Project successfully created!",
+                        id: collection.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -124,7 +190,7 @@ namespace TaskVlopper.Controllers
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.HandleProjectEdit(collection, id);
-                    
+
                     return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Accepted, message: "Project successfully updated!").getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
@@ -186,7 +252,7 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
-                    var viewmodel = logic.GetProjectUsers(id).ToList();
+                    var viewmodel = logic.GetAllUsersForProject(id).ToList();
 
                     return Json(viewmodel, JsonRequestBehavior.AllowGet);
                 }

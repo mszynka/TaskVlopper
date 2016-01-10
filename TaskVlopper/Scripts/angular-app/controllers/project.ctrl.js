@@ -26,36 +26,18 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
                 });
         });
 
-
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
 
     $scope.projectHandler.getProjects = function () {
-        ProjectService.getAll().then(function (response) {
-            angular.forEach(response, function (project) {
-                TaskService.getAll(project.ID).then(function (response) {
-                    if (response != undefined)
-                        project.taskCount = response.length;
-                    else
-                        project.taskCount = 0;
-                });
-                MeetingService.getAll(project.ID, null).then(function (response) {
-                    if (response != undefined)
-                        project.futureMeetingCount = response.length;
-                    else
-                        project.futureMeetingCount = 0;
-                });
-                UserService.getProjectUsers(project.ID).then(function (response) {
-                    if (response != undefined)
-                        project.boundUsers = response.length;
-                    else
-                        project.boundUsers = 1;
-                });
-            })
+        ProjectService.getAllWithStats().then(function (response) {
             $scope.projects = response;
         })
     };
-    $scope.projectHandler.getProjects();
+
+    if ($state.current.name == "project/list") {
+        $scope.projectHandler.getProjects();
+    }
 
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
@@ -69,26 +51,14 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
 
     $scope.projectHandler.createProject = function () {
         Pace.restart();
-        ProjectService.create($scope.model).then(function (response) {
-            ProjectService.getAll().then(function (response) {
-                angular.forEach(response, function (project) {
-                    if (project.Name == $scope.model.Name
-                        && project.Description == $scope.model.Description
-                        && project.EstimatedTimeInHours == $scope.model.EstimatedTimeInHours) {
-                        $scope.currentProjectId = project.ID;
-                        $scope.projectHandler.bindUsersToProject();
-                    }
-                })
+        ProjectService.create($scope.model)
+            .then(function (response) {
+                $scope.currentProjectId = response.data.ID;
+                $scope.projectHandler.bindUsersToProject();
             })
             .then(function () {
                 $state.go('project/list');
             })
-        })
-    };
-
-    $scope.projectHandler.initEditor = function () {
-        $scope.projectHandler.getProject($scope.currentProjectId);
-        $scope.projectHandler.getUsers($scope.currentProjectId);
     };
 
     $scope.projectHandler.editProject = function () {
@@ -146,5 +116,10 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
                 ProjectService.bindUser($scope.currentProjectId, user.Email);
         })
     };
+
+    if ($state.current.name == "project/edit") {
+        $scope.projectHandler.getProject($scope.currentProjectId);
+        $scope.projectHandler.getUsers($scope.currentProjectId);
+    }
 
 });

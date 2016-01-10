@@ -1,13 +1,13 @@
 ﻿<div>
     <div class="panel-body">
         <div class="pull-right">
-            <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: project.ID })"></button>
-            <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: project.ID })"></button>
+            <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: object.Project.ID })"></button>
+            <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: object.Project.ID })"></button>
         </div>
 
-        <strong style="font-size: 1.3em">{{project.Name}}</strong>
-        <div ng-show="project.Description.length > 0">
-            <div class="text-muted" style="margin-top: 5px; font-size: .95em"> {{project.Description}}</div>
+        <strong style="font-size: 1.3em">{{object.Project.Name}}</strong>
+        <div ng-show="object.Project.Description.length > 0">
+            <div class="text-muted" style="margin-top: 5px; font-size: .95em"> {{object.Project.Description}}</div>
         </div>
     </div>
 
@@ -22,22 +22,22 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <button class="icon-button clear-letter-spacing" title="Tasks" ui-sref="task/list({ projectId: project.ID })" style="margin-right: .8em;">
+                <button class="icon-button clear-letter-spacing" title="Tasks" ui-sref="task/list({ projectId: object.Project.ID })" style="margin-right: .8em;">
                     <span class="glyphicon glyphicon-check"></span>
-                    <span class="glyphicon-addon">{{project.taskCount}}</span>
+                    <span class="glyphicon-addon">{{object.Stats.TaskCount}}</span>
                 </button>
-                <button class="icon-button clear-letter-spacing" title="Meetings" ui-sref="meeting/list({ projectId: project.ID })" style="margin-right: .8em;">
+                <button class="icon-button clear-letter-spacing" title="Meetings" ui-sref="meeting/list({ projectId: object.Project.ID })" style="margin-right: .8em;">
                     <span class="glyphicon glyphicon-blackboard"></span>
-                    <span class="glyphicon-addon">{{project.futureMeetingCount}}</span>
+                    <span class="glyphicon-addon">{{object.Stats.FutureMeetingCount}}</span>
                 </button>
                 <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Users">
                     <span class="glyphicon glyphicon-user"></span>
-                    <span class="glyphicon-addon">{{project.boundUsers}}</span>
+                    <span class="glyphicon-addon">{{object.Stats.BoundUsers}}</span>
                 </span>
                 <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Estimated project time">
                     <span class="glyphicon glyphicon-time"></span>
                     <span class="glyphicon-addon">
-                        {{project.EstimatedTimeInHours}}h
+                        {{object.Project.EstimatedTimeInHours}}h
                     </span>
                 </span>
             </div>
@@ -45,7 +45,7 @@
         <!-- TODO: handle additional data, another fullviewer? -->
         <!--<div class="row">
             <div class="col-sm-6">
-                <label class="control-label">Datespan:</label> {{project.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{project.Deadline | aspDate | date : 'MM/dd/yyyy' }}
+                <label class="control-label">Datespan:</label> {{object.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{object.Deadline | aspDate | date : 'MM/dd/yyyy' }}
             </div>
         </div>-->
 
