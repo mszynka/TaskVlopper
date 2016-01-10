@@ -53,9 +53,10 @@ namespace TaskVlopper.Logic
             Base.Model.Task task = TaskRepository.GetTaskByIdWithTracking(id);
             TaskRepository.Remove(task);
 
-            UserTaskAssignment assignment = UserTaskAssignmentRepository.
-                GetTaskAssignmentByUserIdAndProjectIdAndTaskId(userId, projectId, id);
-            UserTaskAssignmentRepository.Remove(assignment);
+            var assignment = UserTaskAssignmentRepository.
+                GetTaskAssignmentByTaskId(id);
+
+            UserTaskAssignmentRepository.RemoveMany(assignment);
         }
 
         public void HandleTaskEdit(Base.Model.Task task, int projectId, int id)

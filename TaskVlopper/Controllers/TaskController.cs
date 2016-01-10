@@ -11,6 +11,7 @@ using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Repository.Base;
+using TaskVlopper.Identity;
 
 namespace TaskVlopper.Controllers
 {
@@ -184,9 +185,11 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
-                    var viewmodel = logic.GetTaskUsers(projectId, id).ToList();
+                    var queryTaskUsers = logic.GetTaskUsers(projectId, id);
 
-                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                    var viewModel = new UsersViewModel();
+                    viewModel.Users.AddRange(queryTaskUsers.Select(x => new UserViewModel(x)));
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -204,6 +207,9 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    var users = container.Resolve<ApplicationUserManager>();
+                    users.Users.First(x => x.Email == userId);
+
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
                     logic.AssignUserToProjectTask(projectId, id, userId);
 

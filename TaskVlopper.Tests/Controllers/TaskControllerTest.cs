@@ -11,13 +11,14 @@ using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Base.Logic;
+using TaskVlopper.Models;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
     public class TaskControllerTest
     {
-        
+
         [TestMethod()]
         public void IndexLoggedUserTest()
         {
@@ -236,7 +237,7 @@ namespace TaskVlopper.Controllers.Tests
             JsonResult action = controller.Edit(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID, ModelsMocks.TaskModelSecond) as JsonResult;
             var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
             // Assert
-            
+
             Assert.AreEqual(403, forbidden.HttpCode);
         }
 
@@ -290,9 +291,6 @@ namespace TaskVlopper.Controllers.Tests
                 // Assert
                 Assert.AreEqual(0, taskRepo.GetAll().Count() + taskAssignmentRepo.GetAll().Count());
             }
-
-
-                
         }
 
         [TestMethod]
@@ -308,5 +306,73 @@ namespace TaskVlopper.Controllers.Tests
 
             Assert.AreEqual(403, forbidden.HttpCode);
         }
+
+        [TestMethod()]
+        public void UsersGetLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsLoggedUser<TaskController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
+            ModelsMocks.AssignUserToProjectTask(ModelsMocks.FirstUser, ModelsMocks.TaskModelFirst);
+
+            //ModelsMocks.RegisterUser();
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
+            int count = ((UsersViewModel)action.Data).Users.Count();
+
+            // Assert
+            Assert.AreEqual(2, count);
+        }
+
+        [TestMethod()]
+        public void UsersGetNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsLoggedUser<TaskController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
+        }
+
+        [TestMethod()]
+        public void UsersPostLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            TaskController controller = ControllersMocks.GetControllerAsLoggedUser<TaskController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
+            ModelsMocks.AssignUserToProject(ModelsMocks.FirstUser, ModelsMocks.ProjectModelFirst);
+            ModelsMocks.AssignUserToProjectTask(ModelsMocks.FirstUser, ModelsMocks.TaskModelFirst);
+
+            ModelsMocks.RegisterUser();
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.TaskModelFirst.ID, ModelsMocks.ProjectModelFirst.ID,
+                ModelsMocks.RegisterTestUser.Email) as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projectRepo = container.Resolve<IUserTaskAssignmentRepository>();
+                var users = projectRepo.GetAllUsersIDsForGivenTaskProject(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID);
+                var ourUser = users.Single(x => x == ModelsMocks.RegisterTestUser.Email);
+                Assert.AreEqual(3, projectRepo.GetAll().Count());
+            }
+
+            Assert.AreEqual(200, data.HttpCode);
+            Assert.AreEqual(1, ModelsMocks.CountReigsteredUsers());
+        }
+
+
     }
 }

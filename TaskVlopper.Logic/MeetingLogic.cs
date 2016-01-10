@@ -64,8 +64,14 @@ namespace TaskVlopper.Logic
         public void HandleMeetingDelete(int projectId, int? taskId, int id, string userId)
         {
             var meeting = MeetingRepository.GetMeetingByIdWithTracking(id);
-            MeetingParticipantsRepository.Remove(MeetingParticipantsRepository.GetMeetingParticipantsByUserIdAndMeetingId(userId, meeting.ID));
             MeetingRepository.Remove(meeting);
+
+            var meetingParticipants = 
+                MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(id);
+
+            MeetingParticipantsRepository.RemoveMany(meetingParticipants);
+
+            
         }
 
         public void HandleMeetingEdit(Meeting meeting, int projectId, int? taskId, int id)

@@ -47,14 +47,13 @@ namespace TaskVlopper.Logic
 
         public void HandleProjectDelete(int projectId, string userId)
         {
-            Project proj = ProjectRepository.GetProjectByIdWithTracking(projectId);
+            var proj = ProjectRepository.GetProjectByIdWithTracking(projectId);
             ProjectRepository.Remove(proj);
 
-            UserProjectAssignment userProjectAssignment = UserProjectAssignmentRepository.
-                GetProjectAssignmentByUserIdAndProjectId(userId, projectId);
-            userProjectAssignment.UserID = userId;
-            userProjectAssignment.ProjectID = projectId;
-            UserProjectAssignmentRepository.Remove(userProjectAssignment);
+            var assignment = UserProjectAssignmentRepository.
+                GetProjectAssignmentByProjectId(projectId);
+
+            UserProjectAssignmentRepository.RemoveMany(assignment);
         }
 
         public void HandleProjectAdd(Project project, string userId)

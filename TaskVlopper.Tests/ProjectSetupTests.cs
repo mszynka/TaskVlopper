@@ -275,5 +275,49 @@ namespace TaskVlopper.Tests
                 Assert.Fail();
             }
         }
+
+        [TestMethod]
+        public void SqlManyMethodsTest()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var testRepo = container.Resolve<ITestRepository>();
+                testRepo.RemoveAll();
+
+                List<Test> manyTests = new List<Test>();
+                Test test1 = new Test() { Name = "1" };
+                Test test2 = new Test() { Name = "2" };
+                Test test3 = new Test() { Name = "3" };
+                Test test4 = new Test() { Name = "4" };
+
+                manyTests.Add(test1);
+                manyTests.Add(test2);
+                manyTests.Add(test3);
+                manyTests.Add(test4);
+
+                testRepo.AddMany(manyTests);
+                Assert.AreEqual(4, testRepo.GetAll().Count());
+
+                test1.Name = "5";
+                test2.Name = "6";
+                test3.Name = "7";
+                test4.Name = "8";
+                testRepo.UpdateMany(manyTests);
+                try
+                {
+                    testRepo.GetAll().Single(x => x.ID == test1.ID && test1.Name.Equals("5"));
+                    testRepo.GetAll().Single(x => x.ID == test2.ID && test2.Name.Equals("6"));
+                    testRepo.GetAll().Single(x => x.ID == test3.ID && test3.Name.Equals("7"));
+                    testRepo.GetAll().Single(x => x.ID == test4.ID && test4.Name.Equals("8"));
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail();
+                }
+
+                testRepo.RemoveMany(manyTests);
+                Assert.AreEqual(0, testRepo.GetAll().Count());
+            }
+        }
     }
 }

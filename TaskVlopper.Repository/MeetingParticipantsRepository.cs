@@ -12,17 +12,27 @@ namespace TaskVlopper.Repository
     {
         public IEnumerable<MeetingParticipants> GetMeetingParticipantsByMeetingId(int meetingId)
         {
+            return GetMeetingParticipantsByMeetingIdQueryable(meetingId).AsEnumerable();
+        }
+
+        public IQueryable<MeetingParticipants> GetMeetingParticipantsByMeetingIdQueryable(int meetingId)
+        {
             return this.GetAll().Where(x => x.MeetingID == meetingId);
         }
 
         public IEnumerable<MeetingParticipants> GetMeetingParticipantsByUserId(string userId)
+        {
+            return GetMeetingParticipantsByUserIdQueryable(userId).AsEnumerable();
+        }
+
+        public IQueryable<MeetingParticipants> GetMeetingParticipantsByUserIdQueryable(string userId)
         {
             return this.GetAll().Where(x => x.UserID == userId);
         }
 
         public MeetingParticipants GetMeetingParticipantsByUserIdAndMeetingId(string userId, int meetingId)
         {
-            return GetMeetingParticipantsByUserIdAndMeetingIdQueryable(userId, meetingId).Single();
+            return this.GetAll().Where(x => x.UserID == userId && x.MeetingID == meetingId).Single();
         }
 
         public IEnumerable<string> GetAllUsersIDsByMeeting(int meetingId)
@@ -30,9 +40,5 @@ namespace TaskVlopper.Repository
             return this.GetAll().Where(x => x.MeetingID == meetingId).Select(x => x.UserID);
         }
         
-        public IQueryable<MeetingParticipants> GetMeetingParticipantsByUserIdAndMeetingIdQueryable(string userId, int meetingId)
-        {
-            return this.GetAll().Where(x => x.UserID == userId && x.MeetingID == meetingId);
-        }
     }
 }

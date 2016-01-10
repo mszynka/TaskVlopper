@@ -11,6 +11,10 @@ using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
 using System.Data.Entity;
+using TaskVlopper.Models;
+using TaskVlopper.Helpers;
+using TaskVlopper.Repository;
+using TaskVlopper.Base.Model;
 
 namespace TaskVlopper.Controllers.Tests
 {
@@ -157,7 +161,7 @@ namespace TaskVlopper.Controllers.Tests
 
         [TestMethod]
         public void EditGetLoggedUserTest()
-         {
+        {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
                 var repository = container.Resolve<IProjectRepository>();
@@ -206,7 +210,7 @@ namespace TaskVlopper.Controllers.Tests
 
                 // Arrange
                 ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
-                
+
                 // Act
                 JsonResult action = controller.Edit(ModelsMocks.ProjectModelSecond.ID, ModelsMocks.ProjectModelFirst) as JsonResult;
 
@@ -266,25 +270,33 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(403, forbidden.HttpCode);
         }
 
+
+        //Its fucked up
         [TestMethod]
         public void DeletePostLoggedUserTest()
-        {
+         {
+            ModelsMocks.CleanUpBeforeTest();
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
                 var repository = container.Resolve<IProjectRepository>();
+                var assignmentRepo = container.Resolve<IUserProjectAssignmentRepository>();
                 repository.RemoveAll();
-
-
 
                 // Arrange
                 ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>();
 
                 JsonResult actionCreate = controller.Create(ModelsMocks.ProjectModelFirst) as JsonResult;
+
+                UserProjectAssignment test = new UserProjectAssignment();
+                test.ProjectID = ModelsMocks.ProjectModelFirst.ID;
+                test.UserID = "w@w.pl";
+                assignmentRepo.Add(test);
                 // Act
                 JsonResult actionDelete = controller.Delete(repository.GetAll().First().ID, ModelsMocks.Form) as JsonResult;
 
                 // Assert
                 Assert.AreEqual(0, repository.GetAll().Count());
+                Assert.AreEqual(0, assignmentRepo.GetAll().Count());
             }
         }
 
@@ -315,6 +327,100 @@ namespace TaskVlopper.Controllers.Tests
                 Assert.AreEqual(0, projRepository.GetAll().Count() + projAssignmentRepo.GetAll().Count());
 
             }
+        }
+
+        [TestMethod()]
+        public void UsersGetLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AssignUserToProject(ModelsMocks.FirstUser, ModelsMocks.ProjectModelFirst);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            int count = ((UsersViewModel)action.Data).Users.Count();
+
+            // Assert
+            Assert.AreEqual(2, count);
+        }
+
+        [TestMethod()]
+        public void UsersGetNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            ProjectController controller =
+                ControllersMocks.GetControllerAsLoggedUser<ProjectController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
+        }
+
+        [TestMethod()]
+        public void UsersPostLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AssignUserToProject(ModelsMocks.FirstUser, ModelsMocks.ProjectModelFirst);
+
+            ModelsMocks.RegisterUser();
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID,
+                ModelsMocks.RegisterTestUser.Email) as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var projectRepo = container.Resolve<IUserProjectAssignmentRepository>();
+                var users = projectRepo.GetAllUsersIDsForGivenProject(ModelsMocks.ProjectModelFirst.ID);
+                var ourUser = users.Single(x => x == ModelsMocks.RegisterTestUser.Email);
+            }
+
+            Assert.AreEqual(200, data.HttpCode);
+            Assert.AreEqual(1, ModelsMocks.CountReigsteredUsers());
+        }
+
+        [TestMethod()]
+        public void UsersPostLoggedUserTest_wrongUserIdInjection()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            ProjectController controller = ControllersMocks.GetControllerAsLoggedUser<ProjectController>(ControllersMocks.LoggedUser, true);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID,
+                "dsadsa123@dcxzczx@sdaas123.pl") as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            Assert.AreEqual(500, data.HttpCode);
+        }
+
+        [TestMethod()]
+        public void UsersPostNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            ProjectController controller =
+                ControllersMocks.GetControllerAsLoggedUser<ProjectController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.ProjectModelFirst.ID, "anything") as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
         }
     }
 }

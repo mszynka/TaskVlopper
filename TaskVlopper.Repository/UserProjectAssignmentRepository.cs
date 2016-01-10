@@ -12,10 +12,20 @@ namespace TaskVlopper.Repository
     {
         public IEnumerable<UserProjectAssignment> GetProjectAssignmentByUserId(string userId)
         {
+            return GetProjectAssignmentByUserIdQueryable(userId).AsEnumerable();
+        }
+
+        public IQueryable<UserProjectAssignment> GetProjectAssignmentByUserIdQueryable(string userId)
+        {
             return this.GetAll().Where(x => x.UserID == userId);
         }
 
         public IEnumerable<UserProjectAssignment> GetProjectAssignmentByProjectId(int projectId)
+        {
+            return GetProjectAssignmentByProjectIdQueryable(projectId).AsEnumerable();
+        }
+
+        public IQueryable<UserProjectAssignment> GetProjectAssignmentByProjectIdQueryable(int projectId)
         {
             return this.GetAll().Where(x => x.ProjectID == projectId);
         }

@@ -16,6 +16,10 @@ namespace TaskVlopper.Base.Repository
         IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectId(string userId, int porjectId);
         IEnumerable<string> GetAllUsersIDsForGivenTaskProject(int projectId, int taskId);
 
-        IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectIdAndTaskIdQueryable(string userId, int projectId, int taskId);
+        IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdQueryable(string userId);
+        IQueryable<UserTaskAssignment> GetTaskAssignmentByTaskIdQueryable(int taskId);
+        IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdAndTaskIdQueryable(string userId, int taskId);
+        IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectIdQueryable(string userId, int porjectId);
+        IQueryable<string> GetAllUsersIDsForGivenTaskProjectQueryable(int projectId, int taskId);
     }
 }
