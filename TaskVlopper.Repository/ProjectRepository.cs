@@ -14,25 +14,25 @@ namespace TaskVlopper.Repository
 
     public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
+        #region Queryables
+        public IQueryable<Project> GetProjectByIdWithoutTrackingQueryable(int id)
+        {
+            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
+        }
+        public IQueryable<Project> GetProjectByIdWithTrackingQueryable(int id)
+        {
+            return this.GetAll().Where(x => x.ID == id);
+        }
+        #endregion
 
         public Project GetProjectByIdWithoutTracking(int id)
         {
             return GetProjectByIdWithoutTrackingQueryable(id).Single();
         }
 
-        public IQueryable<Project> GetProjectByIdWithoutTrackingQueryable(int id)
-        {
-            return this.GetAll().AsNoTracking().Where(x => x.ID == id);
-        }
-
         public Project GetProjectByIdWithTracking(int id)
         {
             return this.GetProjectByIdWithTrackingQueryable(id).Single();
-        }
-
-        public IQueryable<Project> GetProjectByIdWithTrackingQueryable(int id)
-        {
-            return this.GetAll().Where(x => x.ID == id);
-        }
+        }     
     }
 }

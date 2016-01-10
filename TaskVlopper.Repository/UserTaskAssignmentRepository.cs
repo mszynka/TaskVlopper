@@ -10,6 +10,7 @@ namespace TaskVlopper.Repository
 {
     public class UserTaskAssignmentRepository : BaseRepository<UserTaskAssignment>, IUserTaskAssignmentRepository
     {
+        #region Enumerables
         public IEnumerable<UserTaskAssignment> GetTaskAssignmentByTaskId(int taskId)
         {
             return GetTaskAssignmentByTaskIdQueryable(taskId).AsEnumerable();
@@ -25,11 +26,6 @@ namespace TaskVlopper.Repository
             return GetTaskAssignmentByUserIdAndTaskId(userId, taskId).AsEnumerable();
         }
 
-        public UserTaskAssignment GetTaskAssignmentByUserIdAndProjectIdAndTaskId(string userId, int projectId, int taskId)
-        {
-            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId && x.UserID == userId).Single();
-        }
-
         public IEnumerable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectId(string userId, int projectId)
         {
             return GetTaskAssignmentByUserIdAndProjectIdQueryable(userId, projectId).AsEnumerable();
@@ -39,8 +35,13 @@ namespace TaskVlopper.Repository
         {
             return GetAllUsersIDsForGivenTaskProjectQueryable(projectId, taskId).AsEnumerable();
         }
+        #endregion
+        public UserTaskAssignment GetTaskAssignmentByUserIdAndProjectIdAndTaskId(string userId, int projectId, int taskId)
+        {
+            return GetTaskAssignmentByUserIdAndProjectIdAndTaskIdQueryable(userId, projectId, taskId).Single();
+        }
 
-        //Queryables
+        #region Queryables
         public IQueryable<UserTaskAssignment> GetTaskAssignmentByTaskIdQueryable(int taskId)
         {
             return this.GetAll().Where(x => x.TaskID == taskId);
@@ -65,5 +66,11 @@ namespace TaskVlopper.Repository
         {
             return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId).Select(x => x.UserID);
         }
+
+        public IQueryable<UserTaskAssignment> GetTaskAssignmentByUserIdAndProjectIdAndTaskIdQueryable(string userId, int projectId, int taskId)
+        {
+            return this.GetAll().Where(x => x.ProjectID == projectId && x.TaskID == taskId && x.UserID == userId);
+        }
+        #endregion
     }
 }
