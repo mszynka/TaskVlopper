@@ -9,12 +9,15 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Controllers;
 using System.Web.Mvc;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Repository.Base;
+using System.Threading.Tasks;
 
 namespace TaskVlopper.Tests
 {
     [TestClass]
-    public class ProjectSetupTests
+    public class ProjectSetupTests : TestsBase
     {
+
         [TestMethod]
         public void SqlAndServiceLocatorInitializationTest()
         {
@@ -274,6 +277,70 @@ namespace TaskVlopper.Tests
                 string debuggerMessage = ex.Message;
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        public void SqlManyMethodsTest()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var testRepo = container.Resolve<ITestRepository>();
+                testRepo.RemoveAll();
+
+                List<Test> manyTests = new List<Test>();
+                Test test1 = new Test() { Name = "1" };
+                Test test2 = new Test() { Name = "2" };
+                Test test3 = new Test() { Name = "3" };
+                Test test4 = new Test() { Name = "4" };
+
+                manyTests.Add(test1);
+                manyTests.Add(test2);
+                manyTests.Add(test3);
+                manyTests.Add(test4);
+
+                testRepo.AddMany(manyTests);
+                Assert.AreEqual(4, testRepo.GetAll().Count());
+
+                test1.Name = "5";
+                test2.Name = "6";
+                test3.Name = "7";
+                test4.Name = "8";
+                testRepo.UpdateMany(manyTests);
+                try
+                {
+                    testRepo.GetAll().Single(x => x.ID == test1.ID && test1.Name.Equals("5"));
+                    testRepo.GetAll().Single(x => x.ID == test2.ID && test2.Name.Equals("6"));
+                    testRepo.GetAll().Single(x => x.ID == test3.ID && test3.Name.Equals("7"));
+                    testRepo.GetAll().Single(x => x.ID == test4.ID && test4.Name.Equals("8"));
+                }
+                #pragma warning disable CS0168 // Variable is declared but never used
+                catch (Exception ex)
+                #pragma warning restore CS0168 // Variable is declared but never used
+                {
+                    Assert.Fail();
+                }
+
+                testRepo.RemoveMany(manyTests);
+                Assert.AreEqual(0, testRepo.GetAll().Count());
+            }
+        }
+
+        [TestMethod]
+        public void LoggerAsyncTestMethod()
+        {
+            int[] test = new int[50];
+            for (int i = 0; i < 50; i++)
+                test[i] = i;
+
+            Dictionary<int, int> checker = new Dictionary<int, int>();
+            Parallel.ForEach(test.AsEnumerable(), (i) =>
+            {
+                Logger.Log(i.ToString(), Logger.LoggerSeverityEnum.Info);
+                checker.Add(i, i);
+            });
+
+            for (int i = 0; i < 50; i++)
+                if (checker[i] != i) Assert.Fail();
         }
     }
 }

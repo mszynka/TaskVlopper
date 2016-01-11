@@ -18,11 +18,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using TaskVlopper.Helpers;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class AccountControllerTests
+    public class AccountControllerTests : TestsBase
     {
 
         [TestMethod()]
@@ -53,72 +54,9 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(403, code);
         }
 
-        //[TestMethod()]
-        //public void UsersByProjectLoggedUserTest()
-        //{
-        //    ModelsMocks.CleanUpBeforeTest();
-        //    // Arrange
-        //    AccountController controller = ControllersMocks.CreateAccountControllerAs(ControllersMocks.LoggedUser, true);
+       
 
-        //    ModelsMocks.AddTestProject(true);
-        //    ModelsMocks.AssignUserToProject(ModelsMocks.FirstUser, ModelsMocks.ProjectModelFirst);
-
-        //    // Act
-        //    JsonResult action = controller.UsersByProject(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
-        //    int count = ((UsersViewModel)action.Data).Users.Count();
-
-        //    // Assert
-        //    Assert.AreEqual(2, count);
-        //}
-
-        //[TestMethod()]
-        //public void UsersByProjectNotLoggedUserTest()
-        //{
-        //    ModelsMocks.CleanUpBeforeTest();
-        //    // Arrange
-        //    AccountController controller = ControllersMocks.CreateAccountControllerAs(ControllersMocks.NotloggedUser, false);
-
-        //    // Act
-        //    JsonResult action = controller.UsersByProject(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
-        //    int code = ((JsonHttpViewModel)action.Data).HttpCode;
-
-        //    // Assert
-        //    Assert.AreEqual(403, code);
-        //}
-
-        //[TestMethod()]
-        //public void UsersByProjectTaskLoggedUserTest()
-        //{
-        //    ModelsMocks.CleanUpBeforeTest();
-        //    // Arrange
-        //    AccountController controller = ControllersMocks.CreateAccountControllerAs(ControllersMocks.LoggedUser, true);
-
-        //    ModelsMocks.AddTestProject(true);
-        //    ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
-        //    ModelsMocks.AssignUserToProjectTask(ModelsMocks.FirstUser, ModelsMocks.TaskModelFirst);
-
-        //    // Act
-        //    JsonResult action = controller.UsersByProjectTask(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
-        //    int count = ((UsersViewModel)action.Data).Users.Count();
-
-        //    // Assert
-        //    Assert.AreEqual(2, count);
-        //}
-
-        //[TestMethod()]
-        //public void UsersByProjectTaskNotLoggedUserTest()
-        //{
-        //    ModelsMocks.CleanUpBeforeTest();
-        //    // Arrange
-        //    AccountController controller = ControllersMocks.CreateAccountControllerAs(ControllersMocks.NotloggedUser, false);
-
-        //    // Act
-        //    JsonResult action = controller.UsersByProjectTask(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
-        //    int code = ((JsonHttpViewModel)action.Data).HttpCode;
-
-        //    // Assert
-        //    Assert.AreEqual(403, code);
-        //}
+        
 
         //[TestMethod()]
         //public void UsersByMeetingLoggedUserTest()

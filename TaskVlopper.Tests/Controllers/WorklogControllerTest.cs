@@ -13,11 +13,12 @@ using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class WorklogControllerTest
+    public class WorklogControllerTest : TestsBase
     {
 
         [TestMethod()]

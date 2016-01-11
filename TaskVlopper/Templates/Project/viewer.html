@@ -30,10 +30,10 @@
                     <span class="glyphicon glyphicon-blackboard"></span>
                     <span class="glyphicon-addon">{{object.Stats.FutureMeetingCount}}</span>
                 </button>
-                <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Users">
+                <button class="icon-button clear-letter-spacing" ui-sref="project/edit({ projectId: object.Project.ID })" style="margin-right: .8em" title="Users">
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="glyphicon-addon">{{object.Stats.BoundUsers}}</span>
-                </span>
+                </button>
                 <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Estimated project time">
                     <span class="glyphicon glyphicon-time"></span>
                     <span class="glyphicon-addon">

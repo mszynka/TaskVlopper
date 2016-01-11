@@ -67,7 +67,7 @@
             if (toState != fromState && toParams != fromParams) {
                 Pace.restart();
                 $scope.users = null;
-                $scope.dashboardHandler.getAllUsers();
+                //$scope.dashboardHandler.getAllUsers();
             }
         });
 
@@ -97,7 +97,7 @@
         });
     };
 
-    $scope.dashboardHandler.getAllUsers();
+    //$scope.dashboardHandler.getAllUsers();
 
     $scope.dashboardHandler.triggerUserClick = function (user) {
         user.isSelected = !user.isSelected;

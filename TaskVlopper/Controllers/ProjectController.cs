@@ -11,6 +11,7 @@ using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Repository.Base;
+using TaskVlopper.Identity;
 
 namespace TaskVlopper.Controllers
 {
@@ -22,6 +23,7 @@ namespace TaskVlopper.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            
             try
             {
                 if (User.Identity.IsAuthenticated)
@@ -163,6 +165,7 @@ namespace TaskVlopper.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            
             try
             {
                 if (User.Identity.IsAuthenticated)
@@ -252,9 +255,12 @@ namespace TaskVlopper.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
-                    var viewmodel = logic.GetAllUsersForProject(id).ToList();
+                    var queryProjectUsers = logic.GetAllUsersForGivenProject(id);
 
-                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                    var viewModel = new UsersViewModel();
+                    viewModel.Users.AddRange(queryProjectUsers.Select(x => new UserViewModel(x)));
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -272,6 +278,9 @@ namespace TaskVlopper.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    var userManager = container.Resolve<ApplicationUserManager>();
+                    userManager.Users.First(x => x.Email == userId);
+
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
                     logic.AssignUserToProject(id, userId);
 
@@ -283,6 +292,11 @@ namespace TaskVlopper.Controllers
             {
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult UnbindUser(int id , string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

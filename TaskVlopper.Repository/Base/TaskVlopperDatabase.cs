@@ -8,14 +8,36 @@
     using Base;
     using TaskVlopper.Base.Model;
 
+    public static class DatabasePicker
+    {
+        private static bool databaseForTests = false;
+        public static void PickTestDatabase()
+        {
+            databaseForTests = true;
+        }
+
+        public static void PickNormalDatabase()
+        {
+            databaseForTests = false;
+        }
+
+        public static string GetConnectionStringName()
+        {
+            if (!databaseForTests)
+                return "TaskVlopperDatabase";
+            else return "TaskVlopperDatabaseForTests";
+        }
+    }
+
     public class TaskVlopperDatabase<T> : DbContext
     {
-
+        
         static bool _init = false;
         static object _initLock = new object();
 
+
         public TaskVlopperDatabase()
-            : base("TaskVlopperDatabase")
+            : base(DatabasePicker.GetConnectionStringName())
         {
             if (!_init)
             {

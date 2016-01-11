@@ -2,6 +2,7 @@
 /// <reference path="services/task.service.js" />
 /// <reference path="services/meeting.service.js" />
 /// <reference path="services/worklog.service.js" />
+/// <reference path="services/user.service.js" />
 
 app.controller('ProjectController', function ($scope, $timeout, $filter, $state, $stateParams,
     ProjectService,
@@ -80,40 +81,28 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
     };
 
     $scope.projectHandler.getUsers = function (projectId) {
-        $timeout(function () {
-            if ($scope.users != null) {
-                ProjectService.getUsers(projectId)
-                .then(function (response) {
-                    angular.forEach(response, function (pUser) {
-                        angular.forEach($scope.users, function (user) {
-                            if (pUser === user.Email) {
-                                user.isSelected = true;
-                            }
-                        });
+        UserService.getAllUsersWithSelectors().then(function (allUsers) {
+            $scope.users = allUsers;
+            ProjectService.getUsers(projectId).then(function (projectUsers) {
+                angular.forEach(projectUsers.Users, function (projectUser) {
+                    angular.forEach($scope.users, function (user) {
+                        if (projectUser.Email === user.Email) {
+                            user.isSelected = true;
+                        }
                     });
-                })
-            }
-            else {
-                $timeout(function () {
-                    ProjectService.getUsers(projectId)
-                    .then(function (response) {
-                        angular.forEach(response, function (pUser) {
-                            angular.forEach($scope.users, function (user) {
-                                if (pUser === user.Email) {
-                                    user.isSelected = true;
-                                }
-                            });
-                        });
-                    })
-                }, 50);
-            }
-        }, 50);
+                });
+            })
+        })
     };
 
     $scope.projectHandler.bindUsersToProject = function () {
         angular.forEach($scope.users, function (user) {
-            if (user.isDirty && user.isSelectable)
-                ProjectService.bindUser($scope.currentProjectId, user.Email);
+            if (user.isDirty && user.isSelectable) {
+                if (user.isSelected)
+                    ProjectService.bindUser($scope.currentProjectId, user.Email);
+                else if (!user.isSelected)
+                    ProjectService.unbindUser($scope.currentProjectId, user.Email);
+            }
         })
     };
 

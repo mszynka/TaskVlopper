@@ -155,7 +155,7 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data;
+                return response.data.Users;
             })
             .catch(function (error) {
                 console.log('[MeetingService.getUsers] Unable to load data: ' + error.message);
@@ -170,6 +170,25 @@
     this.bindUser = function (meetingId, userId) {
         if (meetingId !== undefined || !isNaN(meetingId)) {
             return $http.post('/Meeting/Users/' + meetingId + "?userId=" + userId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.bindUser] Unable to load data: ' + error.message);
+            });
+        }
+        else {
+            console.log("[MeetingService.bindUser] MeetingID is invalid!");
+            return null;
+        }
+    }
+
+    this.unbindUser = function (meetingId, userId) {
+        if (meetingId !== undefined || !isNaN(meetingId)) {
+            return $http.post('/Meeting/UnbindUser/' + meetingId + "?userId=" + userId)
             .then(function (response) {
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);

@@ -139,4 +139,23 @@
             }
         }
 
+        this.unbindUser = function (projectId, userId) {
+            if (projectId !== undefined || !isNaN(projectId)) {
+                return $http.post('/Project/UnbindUser/' + projectId + "?userId=" + userId)
+                .then(function (response) {
+                    if (response.data.HttpCode != undefined) {
+                        console.log(response.data.HttpCode + " " + response.data.Message);
+                    }
+                    return response;
+                })
+                .catch(function (error) {
+                    console.log('[ProjectService.unbindUser] Unable to load data: ' + error.message);
+                });
+            }
+            else {
+                console.log("[ProjectService.unbindUser] ProjectID is invalid!");
+                return null;
+            }
+        }
+
     }]);

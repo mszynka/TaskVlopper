@@ -10,14 +10,18 @@ namespace TaskVlopper.Base.Logic
     public interface ITaskLogic
     {
         IEnumerable<TaskVlopper.Base.Model.Task> GetAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
+        IEnumerable<string> GetAllUsersForGivenTask(int projectId, int taskId);
         void HandleTaskEdit(Model.Task task, int projectId, int id);
         void HandleTaskDelete(int projectId, int id, string userId);
         void HandleTaskAdd(Model.Task task, int projectId, string userId);
-        TaskVlopper.Base.Model.Task HandleTaskGet(int projectId, int id);
-        IEnumerable<string> GetTaskUsers(int projectId, int taskId);
+        
         void AssignUserToProjectTask(int projectId, int taskId, string userId);
+        TaskVlopper.Base.Model.Task HandleTaskGet(int projectId, int id);
+        
+	#region Statistics
 
-        // Statistic methods
-        int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
+	int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
+	
+	#endregion
     }
 }

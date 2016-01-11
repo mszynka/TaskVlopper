@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskVlopper.Base;
 using System.Web;
+using System.Threading;
+
 namespace TaskVlopper.Repository.Base
 {
     public static class Logger
@@ -39,38 +41,42 @@ namespace TaskVlopper.Repository.Base
             [Repr("LOG")]
             Log
         }
+        private static Object LogLock = new Object();
 
         public static void Log(string message, LoggerSeverityEnum severity = LoggerSeverityEnum.Log)
         {
-            try
+            lock (LogLock)
             {
-                if (!Directory.Exists(HttpContext.Current.Server.MapPath("~\\Logger")))
+                try
                 {
-                    Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~\\Logger"));
-                }
+                    if (!Directory.Exists(HttpContext.Current.Server.MapPath("~\\Logger")))
+                    {
+                        Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~\\Logger"));
+                    }
 
-                using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(HttpContext.Current.Server.MapPath("~\\Logger\\" + DateTime.Now.ToShortDateString().ToString().Replace("/", "_") + ".txt"), true))
-                {
-                    file.WriteLine("[" + severity.ToString() + "] " + DateTime.Now.ToString());
-                    file.WriteLine(message + "\n");
+                    using (System.IO.StreamWriter file =
+                        new System.IO.StreamWriter(HttpContext.Current.Server.MapPath("~\\Logger\\" + DateTime.Now.ToShortDateString().ToString().Replace("/", "_") + ".txt"), true))
+                    {
+                        file.WriteLine("[" + severity.ToString() + "] " + DateTime.Now.ToString());
+                        file.WriteLine(message + "\n");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!Directory.Exists(@"C:\Temp\Logger"))
+                catch (Exception ex)
                 {
-                    Directory.CreateDirectory(@"C:\Temp\Logger");
-                }
+                    if (!Directory.Exists(@"C:\Temp\Logger"))
+                    {
+                        Directory.CreateDirectory(@"C:\Temp\Logger");
+                    }
 
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(string.Join("", "C:\\Temp\\Logger\\", DateTime.Now.ToShortDateString().ToString().Replace("/", "_") + ".txt"), true))
-                {
-                    file.WriteLine("[" + severity.ToString() + "] " + DateTime.Now.ToString());
-                    file.WriteLine(message + "\n");
-                    file.WriteLine("[EXCEPTION] While handling exception another occured!");
-                    file.WriteLine(ex.Message.ToString() + "\n");
+                    using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(string.Join("", "C:\\Temp\\Logger\\", DateTime.Now.ToShortDateString().ToString().Replace("/", "_") + ".txt"), true))
+                    {
+                        file.WriteLine("[" + severity.ToString() + "] " + DateTime.Now.ToString());
+                        file.WriteLine(message + "\n");
+                        file.WriteLine("[EXCEPTION] While handling exception another occured!");
+                        file.WriteLine(ex.Message.ToString() + "\n");
 
+                    }
                 }
             }
         }

@@ -6,11 +6,12 @@ using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class DashboardControllerTests
+    public class DashboardControllerTests : TestsBase
     {
 
         [TestMethod]

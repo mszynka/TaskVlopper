@@ -19,10 +19,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Estimated time (h)</th>
-                <th>Storypoints</th>
-                <th>Status</th>
+                <th>Description</th>
+                <th>Hours</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,8 +29,6 @@
                 <th scope="row">{{worklog.ID}}</th>
                 <td title="{{worklog.Description}}">{{worklog.Description}}</td>
                 <td>{{worklog.Hours}}</td>
-                <td>-</td>
-                <td>-</td>
                 <td>
                     <div class="btn-group-xs">
                         <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/edit({ taskId: currentTaskId, projectId: currentProjectId, worklogId: worklog.ID })"></button>

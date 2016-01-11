@@ -64,8 +64,14 @@ namespace TaskVlopper.Logic
         public void HandleMeetingDelete(int projectId, int? taskId, int id, string userId)
         {
             var meeting = MeetingRepository.GetMeetingByIdWithTracking(id);
-            MeetingParticipantsRepository.Remove(MeetingParticipantsRepository.GetMeetingParticipantsByUserIdAndMeetingId(userId, meeting.ID));
             MeetingRepository.Remove(meeting);
+
+            var meetingParticipants = 
+                MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(id);
+
+            MeetingParticipantsRepository.RemoveMany(meetingParticipants);
+
+            
         }
 
         public void HandleMeetingEdit(Meeting meeting, int projectId, int? taskId, int id)
@@ -94,21 +100,33 @@ namespace TaskVlopper.Logic
 
         public void AssignUserToMeeting(int meetingId, string userId)
         {
-            MeetingParticipants participant = new MeetingParticipants();
-            participant.MeetingID = meetingId;
-            participant.UserID = userId;
+            if (!MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId).Any(x => x.UserID == userId))
+            {
+                MeetingParticipants participant = new MeetingParticipants();
+                participant.MeetingID = meetingId;
+                participant.UserID = userId;
 
-            MeetingParticipantsRepository.Add(participant);
+                MeetingParticipantsRepository.Add(participant);
+            }
         }
 
-        public IEnumerable<string> GetMeetingUsers(int meetingId)
+        public void UnassignUserFromMeeting(int meetingId, string userId)
+        {
+            var model = MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId).Where(x => x.UserID == userId);
+            if (model.Any())
+            {
+                MeetingParticipantsRepository.Remove(model.Single());
+            }
+        }
+
+        public IEnumerable<string> GetAllUsersForGivenMeeting(int meetingId)
         {
             return MeetingParticipantsRepository.GetAllUsersIDsByMeeting(meetingId);
         }
 
         public int CountAllUsersForMeeting(int meetingId)
         {
-            return GetMeetingUsers(meetingId).Count();
+            return GetAllUsersForGivenMeeting(meetingId).Count();
         }
 
         public int CountAllMeetingsForCurrentUser(string userId)

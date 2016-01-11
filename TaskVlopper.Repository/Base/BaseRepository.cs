@@ -23,13 +23,23 @@ namespace TaskVlopper.Repository.Base
         {
             using (var transaction = new TransactionScope())
             {
-                //Ctx.Entry<T>(element).State = EntityState.Added;
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Added;
                 Ctx.SaveChanges();
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }
+
+        public void AddMany(IEnumerable<T> elements)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                Ctx.Set<T>().AddRange(elements);
+                Ctx.SaveChanges();
+                transaction.Complete();
+            }
+        }
+
         public void Dispose()
         {
             if (Ctx != null)
@@ -42,6 +52,16 @@ namespace TaskVlopper.Repository.Base
         public IQueryable<T> GetAll()
         {
             return Ctx.Set<T>().AsQueryable();
+        }
+
+        public void RemoveMany(IEnumerable<T> elements)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                Ctx.Set<T>().RemoveRange(elements);
+                Ctx.SaveChanges();
+                transaction.Complete();
+            }
         }
 
         public void Remove(T element)
@@ -74,6 +94,16 @@ namespace TaskVlopper.Repository.Base
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Modified;
                 Ctx.SaveChanges();
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
+                transaction.Complete();
+            }
+        }
+
+        public void UpdateMany(IEnumerable<T> elements)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                var elementsToUpdate = Ctx.Set<T>().SelectMany<T, T>(x => elements);
+                Ctx.SaveChanges();
                 transaction.Complete();
             }
         }
