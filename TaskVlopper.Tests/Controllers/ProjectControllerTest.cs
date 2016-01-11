@@ -423,5 +423,42 @@ namespace TaskVlopper.Controllers.Tests
             // Assert
             Assert.AreEqual(403, code);
         }
+
+        [TestMethod(), Ignore]
+        public void GetAllWithStatsLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void GetAllWithStatsNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void DetailsWithStatsLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void DetailsWithStatsNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void UnbindUserLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void UnbindUserNotLoggedUserTest()
+        {
+
+        }
     }
+
 }

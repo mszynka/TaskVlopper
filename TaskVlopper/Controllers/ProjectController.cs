@@ -293,5 +293,10 @@ namespace TaskVlopper.Controllers
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult UnbindUser(int id , string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
