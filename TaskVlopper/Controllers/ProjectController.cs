@@ -139,19 +139,19 @@ namespace TaskVlopper.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        public ActionResult Create(Project collection)
+        public ActionResult Create(Project project)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
                     IProjectLogic logic = container.Resolve<IProjectLogic>();
-                    logic.HandleProjectAdd(collection, User.Identity.Name);
+                    logic.HandleProjectAdd(project, User.Identity.Name);
 
                     return Json(new JsonDataHandler(
                         httpCode: HttpCodeEnum.Created, 
                         message: "Project successfully created!",
-                        id: collection.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
+                        id: project.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }

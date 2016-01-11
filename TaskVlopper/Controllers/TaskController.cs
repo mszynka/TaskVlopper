@@ -84,7 +84,10 @@ namespace TaskVlopper.Controllers
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
                     logic.HandleTaskAdd(task, projectId, User.Identity.Name);
 
-                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Task successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                    return Json(new JsonDataHandler(
+                        httpCode: HttpCodeEnum.Created, 
+                        message: "Task successfully created!",
+                        id: task.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
