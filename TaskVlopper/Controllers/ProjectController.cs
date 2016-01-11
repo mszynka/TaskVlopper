@@ -296,7 +296,24 @@ namespace TaskVlopper.Controllers
 
         public ActionResult UnbindUser(int id , string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var users = container.Resolve<ApplicationUserManager>();
+                    users.Users.First(x => x.Email == userId);
+
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    logic.UnassignUserFromProject(id, userId);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

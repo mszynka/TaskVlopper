@@ -112,7 +112,8 @@ namespace TaskVlopper.Logic
 
         public void UnassignUserFromMeeting(int meetingId, string userId)
         {
-            var model = MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId).Where(x => x.UserID == userId);
+            var model = MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId)
+                .Where(x => x.UserID == userId);
             if (model.Any())
             {
                 MeetingParticipantsRepository.Remove(model.Single());

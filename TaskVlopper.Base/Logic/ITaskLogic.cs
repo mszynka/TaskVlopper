@@ -14,14 +14,15 @@ namespace TaskVlopper.Base.Logic
         void HandleTaskEdit(Model.Task task, int projectId, int id);
         void HandleTaskDelete(int projectId, int id, string userId);
         void HandleTaskAdd(Model.Task task, int projectId, string userId);
-        
-        void AssignUserToProjectTask(int projectId, int taskId, string userId);
-        TaskVlopper.Base.Model.Task HandleTaskGet(int projectId, int id);
-        
-	#region Statistics
 
-	int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
-	
-	#endregion
+        void AssignUserToProjectTask(int projectId, int taskId, string userId);
+        void UnassignUserFromTask(int id, string userId);
+        TaskVlopper.Base.Model.Task HandleTaskGet(int projectId, int id);
+
+        #region Statistics
+
+        int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
+
+        #endregion
     }
 }

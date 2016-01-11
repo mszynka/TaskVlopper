@@ -225,5 +225,29 @@ namespace TaskVlopper.Controllers
                 return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
+
+        // POST: Task/UnbindUser/5
+        [HttpPost]
+        public ActionResult UnbindUser(int id, string userId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var users = container.Resolve<ApplicationUserManager>();
+                    users.Users.First(x => x.Email == userId);
+
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.UnassignUserFromTask(id, userId);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User successfully assigned!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

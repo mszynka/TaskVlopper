@@ -35,6 +35,8 @@ namespace TaskVlopper.Logic
                 .Select(assingment => TaskRepository.GetTaskByIdWithTracking(assingment.TaskID));
         }
 
+        #region Voids
+
         public void HandleTaskAdd(Base.Model.Task task, int projectId, string userId)
         {
             //Base.Model.Task task = Serializer.Serialize(form);
@@ -66,6 +68,27 @@ namespace TaskVlopper.Logic
             TaskRepository.Update(task);
         }
 
+        public void AssignUserToProjectTask(int projectId, int taskId, string userId)
+        {
+            UserTaskAssignment assignment = new UserTaskAssignment();
+            assignment.TaskID = taskId;
+            assignment.UserID = userId;
+            assignment.ProjectID = projectId;
+            UserTaskAssignmentRepository.Add(assignment);
+        }
+
+        public void UnassignUserFromTask(int id, string userId)
+        {
+            var model = UserTaskAssignmentRepository.GetAll()
+                .Where(x => x.TaskID == id && x.UserID == userId);
+            if (model.Any())
+            {
+                UserTaskAssignmentRepository.Remove(model.Single());
+            }
+        }
+
+        #endregion
+
         public Base.Model.Task HandleTaskGet(int projectId, int id)
         {
             return TaskRepository.GetTaskByIdWithoutTracking(id);
@@ -74,15 +97,6 @@ namespace TaskVlopper.Logic
         public IEnumerable<string> GetAllUsersForGivenTask(int projectId, int taskId)
         {
             return UserTaskAssignmentRepository.GetAllUsersIDsForGivenTaskProject(projectId, taskId);
-        }
-
-        public void AssignUserToProjectTask(int projectId, int taskId, string userId)
-        {
-            UserTaskAssignment assignment = new UserTaskAssignment();
-            assignment.TaskID = taskId;
-            assignment.UserID = userId;
-            assignment.ProjectID = projectId;
-            UserTaskAssignmentRepository.Add(assignment);
         }
 
         public int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
