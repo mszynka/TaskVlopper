@@ -9,14 +9,17 @@ namespace TaskVlopper.Controllers
     public class DashboardController : Controller
     {
         // GET: Dashboard
+        [HttpGet]
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Manage");
+                ViewBag.HasAngular = true;
+                return View("Private");
             }
 
-            return RedirectToAction("Index", "Home");
+            ViewBag.HasAngular = false;
+            return View("Public");
         }
     }
 }

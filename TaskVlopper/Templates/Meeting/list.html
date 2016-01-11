@@ -1,0 +1,53 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">Meetings</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <input type="text" placeholder="Search by meeting title..." class="form-control searchInput" ng-model="controller.meetingSearchInput" />
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <button type="button" class="btn btn-primary pull-right" ui-sref="meeting/create({ projectId: currentProjectId, taskId: currentTaskId })">
+                <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-right searchButton">
+                <span class="glyphicon glyphicon-search" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" ng-hide="meetings.length > 0">
+    Currently no meetings available. Arrange a meeting.
+</div>
+
+<div class="form-horizontal" ng-hide="(meetings | filter: { Title: controller.meetingSearchInput }).length == 0">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Date and time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="meeting in meetings">
+                <th scope="row">{{meeting.ID}}</th>
+                <td>{{meeting.Title}}</td>
+                <td>{{meeting.DateAndTime | aspDate | date: "HH:mm - MM/dd/yyyy"}}</td>
+                <td>
+                    <div class="btn-group-xs">
+                        <button class="btn btn-default glyphicon glyphicon-align-justify" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/view({ meetingId: meeting.ID, taskId: currentTaskId, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/edit({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/delete({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.ID })"></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="alert alert-warning" ng-show="(meetings | filter: { Title: controller.meetingSearchInput }).length == 0 && meetings.length > 0">
+    No meeting satisfying the current query.
+</div>

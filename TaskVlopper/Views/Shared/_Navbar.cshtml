@@ -4,11 +4,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    @Html.ActionLink("TaskVlopper", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    @Html.ActionLink("TaskVlopper", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })
 </div>
 <div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+    <ul class="nav navbar-nav" ng-cloak>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li><a href="/#/project/list" role="button">Projects</a></li>
+            @*<li><a href="#" role="button">Task</a></li>
+            <li><a href="#" role="button">Meeting</a></li>
+            <li><a href="#" role="button">Worklog</a></li>*@
+        }
     </ul>
-    @Html.Partial("Partials/_Login")
+    <ul class="nav navbar-nav">
+        <li role="separator" class="divider"></li>
+    </ul>
+    @Html.Partial("_Login")
 </div>

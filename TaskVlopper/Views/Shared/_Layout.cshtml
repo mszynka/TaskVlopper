@@ -4,19 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - TaskVlopper</title>
-    @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/jquery.modal.css")
+    @Styles.Render("~/bundles/styles")
+    @if (ViewBag.HasAngular != null && ViewBag.HasAngular == true)
+    {
+        @Styles.Render("~/bundles/pace")
+    }
     @Scripts.Render("~/bundles/modernizr")
-
+    <style>
+        /*
+         Allow angular.js to be loaded in body, hiding cloaked elements until
+         templates compile.  The !important is important given that there may be
+         other selectors that are more specific or come later and might alter display.
+        */
+        [ng\:cloak], [ng-cloak], .ng-cloak {
+            display: none !important;
+        }
+    </style>
 </head>
-<body>
+
+<body ng-app="taskVlopperApp">
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             @Html.Partial("_Navbar")
         </div>
     </div>
-    <div class="container body-content">
+
+    <div class="container-fluid body-content">
+
         @RenderBody()
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - TaskVlopper</p>
@@ -24,8 +40,12 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @if (ViewBag.HasAngular != null && ViewBag.HasAngular == true)
+    {
+        @Scripts.Render("~/bundles/angular")
+    }
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/Scripts/jquery.modal.js")
+    @Scripts.Render("~/bundles/plugins")
     @Scripts.Render("~/Scripts/initializers.js")
     @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)

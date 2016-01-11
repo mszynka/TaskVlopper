@@ -4,105 +4,174 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskVlopper.Base.Logic;
+using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Helpers;
 using TaskVlopper.Models;
+using TaskVlopper.Repository.Base;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Controllers
 {
     public class MeetingController : Controller
     {
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        
+        // GET: Meeting/Index
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? projectId = null, int? taskId = null)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IMeetingRepository>();
-                    var viewModel = new MeetingsViewModel(repository.GetAll().ToList());
-
-                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    IEnumerable<Meeting> viewModel = new List<Meeting>();
+                    if (projectId == null & taskId == null)
+                        viewModel = logic.GetAllMeetingsForCurrentUser(User.Identity.Name);
+                    else if (taskId == null)
+                        viewModel = logic.GetAllMeetingsForCurrentUserAndProject(User.Identity.Name, (int)projectId);
+                    else if (projectId != null & taskId != null)
+                        viewModel =
+                            logic.GetAllMeetingsForCurrentUserAndProjectAndTask(User.Identity.Name, (int)projectId, (int)taskId);
+                    return Json(new MeetingsViewModel(viewModel.ToList()), JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Meeting/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult Details(int projectId, int? taskId, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IMeetingRepository>();
-                    var viewModel = new MeetingViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    var viewModel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Meeting/Create
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult Create(int projectId, int? taskId)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User authenticated!").getInfo(), JsonRequestBehavior.AllowGet);
+            }
+            return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getError(), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Meeting/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Meeting meeting, int projectId, int? taskId)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.HandleMeetingAdd(meeting, projectId, taskId, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Meeting successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Meeting/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult Edit(int projectId, int? taskId, int id)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
+
+                return Json(viewmodel, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Meeting/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Meeting meeting, int projectId, int? taskId, int id)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.HandleMeetingEdit(meeting, projectId, taskId, id);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Accepted, message: "Meeting successfully updated!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Meeting/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult Delete(int projectId, int? taskId, int id)
         {
-            return Json(HttpNotFound());
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    var viewmodel = new MeetingViewModel(logic.HandleMeetingGet(projectId, taskId, id));
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Meeting/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(Meeting meeting, int projectId, int? taskId, int id)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    logic.HandleMeetingDelete(projectId, taskId, id, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "Meeting successfully removed!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -28,7 +28,6 @@
                             _init = true;
                             this.Database.CreateIfNotExists();
                             noTransaction.Complete();
-                            _init = false;
                         }
                     }
                 }
@@ -42,7 +41,7 @@
             modelBuilder.Entity<Test>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Meeting>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Project>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Tasks>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Task>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Worklog>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<MeetingParticipants>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserProjectAssignment>().Property(i => i.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

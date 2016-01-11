@@ -10,17 +10,27 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TaskVlopper.Models;
 using TaskVlopper.Identity;
+using System.Collections.Generic;
+using TaskVlopper.Helpers;
+using Microsoft.Practices.Unity;
+using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Logic;
 
 namespace TaskVlopper.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+
         private readonly ApplicationUserManager userManager;
         private readonly ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager)
+
+        public AccountController(ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -30,6 +40,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/Login
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -70,6 +81,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/VerifyCode
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -118,6 +130,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/Register
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -145,7 +158,7 @@ namespace TaskVlopper.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 AddErrors(result);
             }
@@ -156,6 +169,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ConfirmEmail
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -169,6 +183,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ForgotPassword
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
@@ -205,6 +220,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ForgotPasswordConfirmation
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
@@ -213,6 +229,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ResetPassword
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
@@ -247,6 +264,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
@@ -266,6 +284,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/SendCode
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -301,6 +320,7 @@ namespace TaskVlopper.Controllers
 
         //
         // GET: /Account/ExternalLoginCallback
+        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -374,20 +394,125 @@ namespace TaskVlopper.Controllers
         public ActionResult LogOff()
         {
             authenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         //
         // GET: /Account/ExternalLoginFailure
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
         }
 
+        //
+        // GET: /Account/Users
+        [HttpGet]
+        public ActionResult Users()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    List<ApplicationUser> applicationUsers = userManager.Users.ToList();
+                    UsersViewModel users = new UsersViewModel();
+                    users.Users.AddRange(
+                        applicationUsers
+                            .Select(x => new UserViewModel(x.Email))
+                            .AsEnumerable()
+                        );
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UsersByProject(int projectId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    IEnumerable<string> usersIds = logic.GetProjectUsers(projectId);
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        [HttpGet]
+        public ActionResult UsersByProjectTask(int projectId, int taskId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    IEnumerable<string> usersIds = logic.GetTaskUsers(projectId, taskId);
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UsersByMeeting(int meetingId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
+                    IEnumerable<string> usersIds = logic.GetMeetingUsers(meetingId);
+                    UsersViewModel users = getUsersQueryHelper(usersIds);
+
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
+
+        private UsersViewModel getUsersQueryHelper(IEnumerable<string> queryIds)
+        {
+            UsersViewModel users = new UsersViewModel();
+
+            users.Users.AddRange(
+                userManager.Users
+                    .Select(user => new UserViewModel(user.Email))
+                    .Where(user => queryIds
+                                       .Any(id => id == user.Email))
+                );
+
+            return users;
+        }
 
         //private IAuthenticationManager AuthenticationManager
         //{
@@ -411,7 +536,7 @@ namespace TaskVlopper.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

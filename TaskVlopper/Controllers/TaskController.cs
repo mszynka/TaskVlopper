@@ -9,102 +9,169 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Model;
+using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Controllers
 {
     public class TaskController : Controller
     {
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+        
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int projectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITasksRepository>();
-                    var viewModel = new TasksViewModel(repository.GetAll().ToList());
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var model = logic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name);
+
+                    var viewModel = new TasksViewModel(model.ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Task/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult Details(int projectId, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<ITasksRepository>();
-                    var viewModel = new TaskViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var viewModel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Task/Create
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult Create(int projectId)
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User authenticated!").getInfo(), JsonRequestBehavior.AllowGet);
+            }
+            return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Task/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(int projectId, Base.Model.Task task)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.HandleTaskAdd(task, projectId, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Task successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Task/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult Edit(int projectId, int id)
         {
-            return Json(HttpNotFound());
+            try {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var viewmodel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Task/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int projectId, int id, Base.Model.Task task)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.HandleTaskEdit(task, projectId, id);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Accepted, message: "Task successfully updated!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Task/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult Delete(int projectId, int id)
         {
-            return Json(HttpNotFound());
+            try {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var viewmodel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getError(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Task/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int projectId, int id, Base.Model.Task task)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    logic.HandleTaskDelete(projectId, id, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "Task successfully removed!"), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getError(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 
 namespace TaskVlopper.Base.Model
 {
@@ -16,8 +15,10 @@ namespace TaskVlopper.Base.Model
         [Column(Order = 1)]
         public int ID { get; set; }
 
-        public int UserID {get; set;}
+        public string UserID {get; set;}
 
         public int TaskID { get; set; }
+
+        public int ProjectID { get; set; }
     }
 }

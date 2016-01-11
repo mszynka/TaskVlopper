@@ -1,0 +1,80 @@
+﻿<div>
+    <div class="panel-body">
+        <input type="text" placeholder="Name" class="form-control"
+               ng-model="model.Name"
+               ng-required="true" autofocus />
+    </div>
+
+    <div class="panel-footer">
+        <div class="form-group">
+            <div class="col-xs-12">
+                <textarea class="form-control" placeholder="Description" rows="3" ng-model="model.Description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <p class="input-group">
+                    <input type="text" class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="model.StartDate"
+                           is-open="status.opened1"
+                           max-date="{{ model.Deadline }}"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="open($event, 1)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+                <!--<p class="input-group date hasDatepicker">
+                    <input type="text" class="form-control" id="modelStartDate"
+                           ng-model="model.StartDate"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </p>-->
+            </div>
+
+            <div class="col-xs-6">
+                <!--<p class="input-group date">
+                    <input type="text" class="form-control" id="modelDeadline"
+                           ng-model="model.Deadline" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </p>-->
+                <p class="input-group">
+                    <input type="text" class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="model.Deadline"
+                           is-open="status.opened2"
+                           min-date="{{ model.StartDate }}"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="open($event, 2)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label" for="EstimatedTimeInHours">Estimated time: </label>
+            <div class="col-xs-9">
+                <div class="input-group">
+                    <input type="number" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                           min="0"
+                           ng-model="model.EstimatedTimeInHours"
+                           ng-required="true" />
+                    <span class="input-group-addon">h</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

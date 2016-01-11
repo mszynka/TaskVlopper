@@ -1,0 +1,17 @@
+﻿<!--model TaskVlopper.Models.IndexViewModel-->
+
+<h2 ng-init="userHandler.manageInit()">Manage account</h2>
+
+<p class="alert alert-success" ng-show="model.StatusMessage">{{model.StatusMessage}}</p>
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+                <a ui-sref="user/manage/changepassword">Change your password</a>
+            ]
+        </dd>
+    </dl>
+</div>

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
-using TaskVlopper.Base.Base;
+using TaskVlopper.Base;
 using TaskVlopper.Base.Repository;
 
 namespace TaskVlopper.Repository.Base
 {
-    public abstract class BaseRepository<T> : TaskVlopper.Base.Base.IBaseRepository<T>, IDisposable
+    public abstract class BaseRepository<T> : TaskVlopper.Base.IBaseRepository<T>, IDisposable
         where T : class
     {
 
@@ -24,9 +23,10 @@ namespace TaskVlopper.Repository.Base
         {
             using (var transaction = new TransactionScope())
             {
-                Ctx.Entry<T>(element).State = EntityState.Added;
+                //Ctx.Entry<T>(element).State = EntityState.Added;
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Added;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }
@@ -39,9 +39,9 @@ namespace TaskVlopper.Repository.Base
             }
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return Ctx.Set<T>().AsEnumerable();
+            return Ctx.Set<T>().AsQueryable();
         }
 
         public void Remove(T element)
@@ -50,7 +50,7 @@ namespace TaskVlopper.Repository.Base
             {
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Deleted;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }
@@ -73,7 +73,7 @@ namespace TaskVlopper.Repository.Base
             {
                 Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Modified;
                 Ctx.SaveChanges();
-
+                Ctx.Entry<T>(element).State = System.Data.Entity.EntityState.Detached;
                 transaction.Complete();
             }
         }

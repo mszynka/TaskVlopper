@@ -2,6 +2,7 @@
     padding-top: 50px;
     padding-bottom: 20px;
     height: 100vh;
+    font-size: 12px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -18,9 +19,125 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
+/* Set resize on textareas to vertical only */
 textarea {
-    max-width: 280px;
+    resize: vertical;
+}
+
+/* Fix for form-horizontal clearfix bug */
+.form-horizontal:after {
+    clear: both;
+    display: block;
+    content: "";
+}
+
+/* Addon for icons as action buttons */
+.icon-button {
+    padding: 0 .2em;
+    cursor: pointer;
+    background: none !important;
+    border: none;
+    letter-spacing: 3px;
+}
+
+    .icon-button:disabled {
+        cursor: not-allowed;
+        text-decoration: none;
+        color: rgba(30,30,30,.3);
+    }
+
+/* Fix for row and panel */
+.project-panel {
+    padding: 0;
+    margin: .5em;
+    width: calc(20% - 1em);
+}
+
+    .project-panel .panel-body {
+        min-height: 8em;
+    }
+
+    .project-panel .progress {
+        margin-bottom: 0;
+        position: relative;
+        border-radius: 0;
+        height: 1px;
+    }
+
+    .project-panel .panel-body {
+        padding: 10px 5px 10px 15px;
+    }
+
+@media all and (max-width: 1200px) {
+    .project-panel {
+        width: calc(25% - 1em);
+    }
+}
+
+@media all and (max-width: 800px) {
+    .project-panel {
+        width: calc(33% - 1em);
+    }
+}
+
+@media all and (max-width: 650px) {
+    .project-panel {
+        width: calc(50% - 1em);
+    }
+
+    .searchInput, .searchInput + .input-group-addon {
+        display: none !important;
+    }
+
+    .searchButton {
+        display: block !important;
+    }
+}
+
+@media all and (max-width: 450px) {
+    .project-panel {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.project-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+/* Flat design styles */
+.panel, .alert, .btn, input, .form-control, .input-group, .input-group-addon {
+    border-radius: 0 !important;
+}
+
+/* Glyphicon font size fix */
+.glyphicon, .glyphicon-addon {
+    font-size: .85em;
+}
+
+/* Straight inheritance panel fix */
+.panel-default .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+
+/* Letter spacing fix for multiple numbers */
+.clear-letter-spacing {
+    letter-spacing: 0;
+}
+
+/* Search button for smaller screens */
+.searchButton {
+    display: none;
+}
+/* Fix for router links */
+a[ui-sref] {
+    cursor: pointer;
 }

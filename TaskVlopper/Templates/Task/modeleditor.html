@@ -1,0 +1,83 @@
+﻿<div>
+    <!--@Html.TextBoxFor(p => p.Task.ProjectID, new { @class = "form-control", placeholder = "ProjectID" })-->
+    <span ng-init="model.ProjectID = currentProjectId"></span>
+
+    <div class="panel-heading">
+        <input type="text" placeholder="Name" class="form-control"
+               ng-model="model.Name"
+               ng-required="true" autofocus />
+    </div>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <div class="col-xs-12">
+                <textarea class="form-control" placeholder="Description" rows="3" ng-model="model.Description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <p class="input-group date hasDatepicker">
+                    <input type="text" class="form-control" id="modelStartDate"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </p>
+            </div>
+
+            <div class="col-xs-6">
+                <p class="input-group date">
+                    <input type="text" class="form-control" id="modelEndDate"
+                           ng-model="model.EndDate"/>
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label" for="EstimatedTimeInHours">Estimated time: </label>
+            <div class="col-xs-9">
+                <div class="input-group">
+                    <input type="number" id="EstimatedTimeInHours" placeholder="Estimated time" class="form-control"
+                           min="0"
+                           ng-model="model.EstimatedTimeInHours"
+                           ng-required="true" />
+                    <span class="input-group-addon">h</span>
+                </div>
+            </div>
+        </div>
+
+        <!--@* TODO: Create crazy select enumeration *@
+        @*<div class="form-group">
+            @Html.LabelFor(p => p.Task.Status, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Task.Status, new { @class = "form-control", placeholder = "Status" })
+                @Html.ValidationMessageFor(p => p.Task.Status)
+            </div>
+        </div>*@-->
+
+        <!-- TODO: Create autocomplete input via users table
+            <div class="form-group">
+            @Html.LabelFor(p => p.Task.ExecutiveUserID, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Task.ExecutiveUserID, new { @class = "form-control", placeholder = "ExecutiveUserID" })
+                @Html.ValidationMessageFor(p => p.Task.ExecutiveUserID)
+            </div>
+        </div>-->
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label" for="Storypoints">Storypoints: </label>
+            <div class="col-xs-9">
+                <div class="input-group">
+                    <input type="number" id="Storypoints" placeholder="Storypoints" class="form-control"
+                           min="0"
+                           ng-model="model.Storypoints"
+                           ng-required="true" />
+                    <span class="input-group-addon">pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

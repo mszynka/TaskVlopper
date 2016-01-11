@@ -1,0 +1,57 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">Tasks</h2>
+
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <input type="text" placeholder="Search by project name..." class="form-control searchInput" ng-model="controller.taskSearchInput" />
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <button type="button" class="btn btn-primary pull-right" ui-sref="task/create({ projectId: currentProjectId })">
+                <span class="glyphicon glyphicon-plus" style="font-size: smaller;"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-right searchButton">
+                <span class="glyphicon glyphicon-search" style="font-size: smaller;"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" ng-hide="tasks.length > 0">
+    Currently no tasks available. Add a task.
+</div>
+
+<div class="form-horizontal" ng-hide="(tasks | filter: { Name: controller.taskSearchInput }).length == 0">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Estimated time (h)</th>
+                <th>Storypoints</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="task in tasks | filter: { Name: controller.taskSearchInput }">
+                <th scope="row">{{task.ID}}</th>
+                <td title="{{task.Description}}">{{task.Name}}</td>
+                <td>{{task.EstimatedTimeInHours}}</td>
+                <td>{{task.Storypoints}}</td>
+                <td>{{task.Status}}</td>
+                <td>
+                    <div class="btn-group-xs">
+                        <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: task.ID, projectId: currentProjectId })"></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="alert alert-warning" ng-show="(tasks | filter: { Name: controller.taskSearchInput }).length == 0 && tasks.length > 0">
+    No task satisfying the current query.
+</div>

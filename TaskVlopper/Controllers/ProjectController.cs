@@ -9,90 +9,151 @@ using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Repository;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
+using TaskVlopper.Base.Model;
+using TaskVlopper.Repository.Base;
 
 namespace TaskVlopper.Controllers
 {
     public class ProjectController : Controller
     {
+        public IUnityContainer container = UnityConfig.GetConfiguredContainer();
+
         // GET: Project
         [HttpGet]
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using(IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IProjectsRepository>();
-                    var viewModel = new ProjectsViewModel(repository.GetAll().ToList());
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    var model = logic.GetAllProjectsForCurrentUser(User.Identity.Name);
+                    var viewModel = new ProjectsViewModel(model.ToList());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Project/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+                if (User.Identity.IsAuthenticated)
                 {
-                    var repository = container.Resolve<IProjectsRepository>();
-                    var viewModel = new ProjectViewModel(repository.GetAll().ToList().Find(p => p.ID == id));
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    var viewModel = new ProjectViewModel(logic.HandleProjectGet(id));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 403;
-            return View("Error");
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Project/Create
+        [HttpGet]
         public ActionResult Create()
         {
-            return Json(HttpNotFound());
+            if (User.Identity.IsAuthenticated)
+            {
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "User authenticated!").getInfo(), JsonRequestBehavior.AllowGet);
+            }
+            return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Project/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Project collection)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    logic.HandleProjectAdd(collection, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Project successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Edit/5
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            return Json(HttpNotFound());
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Project/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Project collection)
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    logic.HandleProjectEdit(collection, id);
+                    
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Accepted, message: "Project successfully updated!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
 
         // GET: Project/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            return Json(HttpNotFound());
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    var viewmodel = new ProjectViewModel(logic.HandleProjectGet(id));
+
+                    return Json(viewmodel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Project/Delete/5
@@ -101,11 +162,18 @@ namespace TaskVlopper.Controllers
         {
             try
             {
-                return RedirectToAction("Index");
+                if (User.Identity.IsAuthenticated)
+                {
+                    IProjectLogic logic = container.Resolve<IProjectLogic>();
+                    logic.HandleProjectDelete(id, User.Identity.Name);
+
+                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.OK, message: "Project successfully removed!").getInfo(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(HttpNotFound());
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
             }
         }
     }

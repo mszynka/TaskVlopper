@@ -1,9 +1,10 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model TaskVlopper.Models.ErrorViewModel
 
 @{
-    ViewBag.Title = "Error";
+    ViewBag.Title = string.Join(" ", Model.HttpCode, Model.Message);
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h1 class="text-danger">@ViewBag.Title</h1>
+<h4 class="text-danger">An error occurred while processing your request.</h4>
 
+<button onclick="window.history.back(); return false;" class="btn btn-primary">Go back</button>

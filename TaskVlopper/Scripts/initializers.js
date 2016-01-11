@@ -7,3 +7,15 @@
     });
   return false;
 });
+
+Pace.on("done",
+        function () {
+            $(".hasDatepicker").datetimepicker({
+                format: "MM/DD/YYYY",
+            });
+        });
+
+paceOptions = {
+    restartOnPushState: false,
+    restartOnRequestAfter: false
+}
