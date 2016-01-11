@@ -81,7 +81,7 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
     };
 
     $scope.projectHandler.getUsers = function (projectId) {
-        UserService.getAllUsers().then(function (allUsers) {
+        UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
             ProjectService.getUsers(projectId).then(function (projectUsers) {
                 angular.forEach(projectUsers.Users, function (projectUser) {

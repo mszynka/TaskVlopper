@@ -28,21 +28,14 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
 
     $scope.meetingHandler.createMeeting = function () {
         Pace.restart();
-        MeetingService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
-            MeetingService.getAll($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
-                angular.forEach(response, function (meeting) {
-                    if (meeting.Title == $scope.model.Title
-                        && meeting.Description == $scope.model.Description
-                        && meeting.ProjectId == $scope.model.ProjectId) {
-                        $scope.currentMeetingId = meeting.ID;
-                        $scope.meetingHandler.bindUsersToMeeting();
-                    }
-                })
+        MeetingService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId)
+            .then(function (meeting) {
+                $scope.currentMeetingId = meeting.data.ID;
+                $scope.meetingHandler.bindUsersToMeeting();
             })
             .then(function () {
                 $state.go('meeting/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
             })
-        })
     };
 
     $scope.meetingHandler.editMeeting = function () {
@@ -96,5 +89,11 @@ app.controller('MeetingController', function ($scope, $timeout, $state, $statePa
     if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
         $scope.meetingHandler.getMeeting($scope.currentMeetingId);
         $scope.meetingHandler.getUsers($scope.currentMeetingId);
+    }
+
+    if ($state.current.name == "meeting/create") {
+        UserService.getAllUsersWithSelectors().then(function (allUsers) {
+            $scope.users = allUsers;
+        })
     }
 });

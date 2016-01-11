@@ -68,22 +68,24 @@
             if (response.data.HttpCode != undefined) {
                 console.log(response.data.HttpCode + " " + response.data.Message);
             }
-            $http.get('/Account/CurrentUser').then(function (currentUser) {
-                angular.forEach(response.data.Users, function (response) {
-                    if (response.Email == currentUser) {
-                        response.isSelectable = false;
-                        response.isSelected = true;
-                        response.isCurrentUser = true;
+            return $http.get('/Account/CurrentUser').then(function (currentUser) {
+                angular.forEach(response.data.Users, function (user) {
+                    if (user.Email == currentUser.data) {
+                        user.isSelectable = false;
+                        user.isSelected = true;
+                        user.isCurrentUser = true;
                     }
                     else {
-                        response.isSelectable = true;
+                        user.isSelectable = true;
                     }
-                    response.isOwner = false;
-                    response.isDirty = false;
+                    user.isOwner = false;
+                    user.isDirty = false;
                 })
+                return response;
             })
+        })
+        .then(function (response) {
             return response.data.Users;
-            
         })
         .catch(function (error) {
             $scope.status = '[UserService.getAllUsersWithSelectors] Unable to load data: ' + error.data.message;

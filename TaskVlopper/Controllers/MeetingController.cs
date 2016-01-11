@@ -160,7 +160,10 @@ namespace TaskVlopper.Controllers
                     IMeetingLogic logic = container.Resolve<IMeetingLogic>();
                     logic.HandleMeetingAdd(meeting, projectId, taskId, User.Identity.Name);
 
-                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Meeting successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                    return Json(new JsonDataHandler(
+                        httpCode: HttpCodeEnum.Created, 
+                        message: "Meeting successfully created!",
+                        id: meeting.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
