@@ -39,7 +39,7 @@
                 <td title="{{task.Description}}">{{task.Name}}</td>
                 <td>{{task.EstimatedTimeInHours}}</td>
                 <td>{{task.Storypoints}}</td>
-                <td>{{task.Status}}</td>
+                <td>{{task.statusName}}</td>
                 <td>
                     <div class="btn-group-xs">
                         <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: task.ID, projectId: currentProjectId })"></button>

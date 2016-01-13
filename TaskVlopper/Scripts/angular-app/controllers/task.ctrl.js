@@ -5,11 +5,16 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
     $scope.tasks = [];
+    $scope.taskStatus = [];
 
     $scope.taskHandler = {};
     $scope.taskHandler.getTasks = function () {
         TaskService.getAll($scope.currentProjectId).then(function (response) {
-            $scope.tasks = response;
+            $scope.tasks = response.Tasks;
+            $scope.taskStatus = response.Statuses;
+            angular.forEach($scope.tasks, function (task) {
+                task.statusName = $scope.taskStatus[task.Status];
+            })
         })
     };
     $scope.taskHandler.getTasks();

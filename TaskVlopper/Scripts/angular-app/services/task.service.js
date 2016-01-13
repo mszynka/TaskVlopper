@@ -6,7 +6,7 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data.Tasks;
+                return response.data;
             })
             .catch(function (error) {
                 console.log('[TaskService.getAll] Unable to load data: ' + error.data.message);

@@ -54,6 +54,20 @@
         </div>
 
         <div class="form-group">
+            <label class="col-xs-3 control-label" for="Status">Status: </label>
+            <div class="col-xs-9">
+                <select type="number" id="Status" placeholder="Status" class="form-control"
+                        ng-model="model.Status">
+                    <option ng-repeat="option in taskStatus"
+                            value="{{$index}}"
+                            ng-selected="$index == model.Status">
+                        {{option}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-xs-3 control-label" for="EstimatedTimeInHours">Estimated time: </label>
             <div class="col-xs-9">
                 <div class="input-group">
@@ -74,7 +88,6 @@
                 @Html.ValidationMessageFor(p => p.Task.Status)
             </div>
         </div>*@-->
-
         <!-- TODO: Create autocomplete input via users table
             <div class="form-group">
             @Html.LabelFor(p => p.Task.ExecutiveUserID, new { @class = "col-sm-4 control-label" })
