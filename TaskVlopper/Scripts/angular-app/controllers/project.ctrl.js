@@ -11,22 +11,6 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
     WorklogService,
     UserService) {
 
-    Pace.on("done",
-        function () {
-            $('#modelDeadline').parent().datetimepicker({
-                format: "MM/DD/YYYY",
-                useCurrent: false
-            });
-            if ($("#modelStartDate") != [])
-                $("#modelStartDate").parent().on("dp.change", function (e) {
-                    $('#modelDeadline').parent().data("DateTimePicker").minDate(e.date);
-                });
-            if ($("#modelDeadline") != [])
-                $("#modelDeadline").parent().on("dp.change", function (e) {
-                    $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
-                });
-        });
-
     $scope.currentProjectId = $stateParams.projectId;
     $scope.projectHandler = {};
 
