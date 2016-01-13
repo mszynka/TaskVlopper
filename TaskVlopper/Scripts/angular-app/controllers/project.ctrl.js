@@ -95,4 +95,8 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
         $scope.projectHandler.getUsers($scope.currentProjectId);
     }
 
+    if ($state.current.name == "project/create") {
+        $scope.projectHandler.getUsers($scope.currentProjectId);
+    }
+
 });
