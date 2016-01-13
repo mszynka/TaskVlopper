@@ -12,21 +12,28 @@
             </div>
         </div>
 
-        <div class="input-group">
-            <input type="text" class="form-control"
-                   placeholder="Date"
-                   uib-datepicker-popup="{{format}}"
-                   ng-model="model.DateAndTime"
-                   is-open="status.opened1"
-                   max-date="{{ model.DateAndTime }}"
-                   datepicker-options="dateOptions"
-                   date-disabled="disabled(date, mode)" required />
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default"
-                        ng-click="open($event, 1)">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                </button>
-            </span>
+        <div class="form-group">
+            <div class="col-xs-6">
+                <uib-timepicker ng-model="model.DateAndTime" hour-step="1" minute-step="1" show-meridian="false" style="margin-left: auto; margin-right: auto;"></uib-timepicker>
+            </div>
+            <div class="col-xs-6">
+                <div class="input-group" style="margin-top: 33px;">
+                    <input type="text" class="form-control"
+                           placeholder="Date"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="model.DateAndTime"
+                           is-open="status.opened1"
+                           max-date="{{ model.DateAndTime }}"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" required />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="open($event, 1)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

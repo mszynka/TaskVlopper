@@ -1,20 +1,6 @@
 ﻿/// <reference path="services/task.service.js" />
 
 app.controller('TaskController', function ($scope, $state, $stateParams, TaskService) {
-    
-    Pace.on("done",
-        function () {
-            $('#modelEndDate').parent().datetimepicker({
-                format: "MM/DD/YYYY",
-                useCurrent: false
-            });
-            $("#modelStartDate").parent().on("dp.change", function (e) {
-                $('#modelEndDate').parent().data("DateTimePicker").minDate(e.date);
-            });
-            $("#modelEndDate").parent().on("dp.change", function (e) {
-                $('#modelStartDate').parent().data("DateTimePicker").maxDate(e.date);
-            });
-        });
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -31,6 +17,10 @@ app.controller('TaskController', function ($scope, $state, $stateParams, TaskSer
     $scope.taskHandler.getTask = function (taskId) {
         TaskService.get(taskId, $scope.currentProjectId).then(function (response) {
             $scope.model = response;
+            if ($scope.model.StartDate != undefined)
+                $scope.model.StartDate = new Date(parseInt($scope.model.StartDate.split("(")[1]));
+            if ($scope.model.EndDate != undefined)
+                $scope.model.EndDate = new Date(parseInt($scope.model.EndDate.split("(")[1]));
         })
     };
 
