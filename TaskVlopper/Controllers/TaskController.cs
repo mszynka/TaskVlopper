@@ -29,7 +29,7 @@ namespace TaskVlopper.Controllers
                     ITaskLogic logic = container.Resolve<ITaskLogic>();
                     var model = logic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name);
 
-                    var viewModel = new TasksViewModel(model.ToList());
+                    var viewModel = new TasksViewModel(model.ToList(), logic.GetTaskStatuses());
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);
                 }

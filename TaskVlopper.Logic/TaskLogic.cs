@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskVlopper.Base.Enums;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
@@ -102,6 +103,15 @@ namespace TaskVlopper.Logic
         public int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
         {
             return GetAllTasksForGivenProjectAndCurrentUser(projectId, userId).Count();
+        }
+
+        public IEnumerable<string> GetTaskStatuses()
+        {
+            List<string> statuses = new List<string>();
+            foreach (var status in Enum.GetValues(typeof(TaskStatusEnum)))
+                statuses.Add(status.ToString());
+
+            return statuses;
         }
     }
 }

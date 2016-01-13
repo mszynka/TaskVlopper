@@ -7,12 +7,20 @@ namespace TaskVlopper.Models
 {
     public class TasksViewModel
     {
+        public TasksViewModel(IList<Base.Model.Task> tasks, IEnumerable<string> statuses)
+        {
+            Tasks = tasks;
+            Statuses = statuses;
+        }
+
         public TasksViewModel(IList<Base.Model.Task> tasks)
         {
             Tasks = tasks;
         }
 
         public IList<Base.Model.Task> Tasks { get; private set; }
+        public IEnumerable<string> Statuses { get; private set; }
+
     }
 
     public class TaskViewModel
