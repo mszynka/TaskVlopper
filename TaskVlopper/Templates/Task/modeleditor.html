@@ -57,7 +57,7 @@
             <label class="col-xs-3 control-label" for="Status">Status: </label>
             <div class="col-xs-9">
                 <select type="number" id="Status" placeholder="Status" class="form-control"
-                        ng-model="model.Status">
+                        ng-model="model.Status" convert-to-number>
                     <option ng-repeat="option in taskStatus"
                             value="{{$index}}"
                             ng-selected="$index == model.Status">
