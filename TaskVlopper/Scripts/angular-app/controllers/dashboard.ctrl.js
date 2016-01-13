@@ -15,7 +15,7 @@
         if (element == 1)
             $scope.status.opened1 = true;
         if (element == 2)
-            $scope.status.opened1 = true;
+            $scope.status.opened2 = true;
     };
 
     $scope.dateOptions = {
