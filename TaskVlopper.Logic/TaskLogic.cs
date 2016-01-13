@@ -19,14 +19,16 @@ namespace TaskVlopper.Logic
         private readonly IUserTaskAssignmentRepository UserTaskAssignmentRepository;
         private readonly ITaskSerialize Serializer;
         private readonly IProjectRepository ProjectRepository;
+        private readonly IWorklogRepository WorklogRepository;
 
         public TaskLogic(ITaskRepository taskRepository, IUserTaskAssignmentRepository userTaskAssignmentRepository,
-            ITaskSerialize serializer, IProjectRepository projectRepository)
+            ITaskSerialize serializer, IProjectRepository projectRepository, IWorklogRepository worklogRepository)
         {
             TaskRepository = taskRepository;
             UserTaskAssignmentRepository = userTaskAssignmentRepository;
             Serializer = serializer;
             ProjectRepository = projectRepository;
+            WorklogRepository = worklogRepository;
         }
 
 
@@ -112,6 +114,11 @@ namespace TaskVlopper.Logic
                 statuses.Add(status.ToString());
 
             return statuses;
+        }
+
+        public int GetHoursWorkedOnTask(int projectId, int taskId)
+        {
+            return WorklogRepository.GetAll().Where(x => x.TaskID == taskId).Sum(x => x.Hours);
         }
     }
 }
