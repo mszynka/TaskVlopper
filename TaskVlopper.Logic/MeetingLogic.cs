@@ -24,7 +24,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUser(string userId)
         {
             return MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
-                    .Select(meetingParticipants => 
+                    .Select(meetingParticipants =>
                         MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(meetingParticipants.MeetingID).Single())
                     .ToList();
         }
@@ -32,7 +32,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProject(string userId, int projectId)
         {
             return MeetingRepository.GetMeetingByProjectId(projectId)
-                .Where(meetingByProject => 
+                .Where(meetingByProject =>
                     MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
                         .Any(meetingParticipants => meetingParticipants.MeetingID == meetingByProject.ID)
                     )
@@ -42,7 +42,7 @@ namespace TaskVlopper.Logic
         public IEnumerable<Meeting> GetAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
         {
             return MeetingRepository.GetMeetingByProjectIdAndTaskId(projectId, taskId)
-                .Where(meetingByProject => 
+                .Where(meetingByProject =>
                     MeetingParticipantsRepository.GetMeetingParticipantsByUserId(userId)
                         .Any(meetingParticipants => meetingParticipants.MeetingID == meetingByProject.ID)
                     )
@@ -64,8 +64,14 @@ namespace TaskVlopper.Logic
         public void HandleMeetingDelete(int projectId, int? taskId, int id, string userId)
         {
             var meeting = MeetingRepository.GetMeetingByIdWithTracking(id);
-            MeetingParticipantsRepository.Remove(MeetingParticipantsRepository.GetMeetingParticipantsByUserIdAndMeetingId(userId, meeting.ID));
             MeetingRepository.Remove(meeting);
+
+            var meetingParticipants = 
+                MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(id);
+
+            MeetingParticipantsRepository.RemoveMany(meetingParticipants);
+
+            
         }
 
         public void HandleMeetingEdit(Meeting meeting, int projectId, int? taskId, int id)
@@ -78,21 +84,80 @@ namespace TaskVlopper.Logic
 
         public Meeting HandleMeetingGet(int projectId, int? taskId, int id)
         {
-            return MeetingRepository.GetMeetingByIdWithoutTracking(id);
+            if (taskId != null)
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId && x.TaskID == taskId).Single();
+            else
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId).Single();
+        }
+
+        public IQueryable<Meeting> HandleMeetingGetQueryable(int projectId, int? taskId, int id)
+        {
+            if (taskId != null)
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId && x.TaskID == taskId);
+            else
+                return MeetingRepository.GetMeetingByIdWithoutTrackingQueryable(id).Where(x => x.ProjectID == projectId);
         }
 
         public void AssignUserToMeeting(int meetingId, string userId)
         {
-            MeetingParticipants participant = new MeetingParticipants();
-            participant.MeetingID = meetingId;
-            participant.UserID = userId;
+            if (!MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId).Any(x => x.UserID == userId))
+            {
+                MeetingParticipants participant = new MeetingParticipants();
+                participant.MeetingID = meetingId;
+                participant.UserID = userId;
 
-            MeetingParticipantsRepository.Add(participant);
+                MeetingParticipantsRepository.Add(participant);
+            }
         }
 
-        public IEnumerable<string> GetMeetingUsers(int meetingId)
+        public void UnassignUserFromMeeting(int meetingId, string userId)
+        {
+            var model = MeetingParticipantsRepository.GetMeetingParticipantsByMeetingId(meetingId)
+                .Where(x => x.UserID == userId);
+            if (model.Any())
+            {
+                MeetingParticipantsRepository.Remove(model.Single());
+            }
+        }
+
+        public IEnumerable<string> GetAllUsersForGivenMeeting(int meetingId)
         {
             return MeetingParticipantsRepository.GetAllUsersIDsByMeeting(meetingId);
+        }
+
+        public int CountAllUsersForMeeting(int meetingId)
+        {
+            return GetAllUsersForGivenMeeting(meetingId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUser(string userId)
+        {
+            return GetAllMeetingsForCurrentUser(userId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUserAndProject(string userId, int projectId)
+        {
+            return GetAllMeetingsForCurrentUserAndProject(userId, projectId).Count();
+        }
+
+        public int CountAllMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
+        {
+            return GetAllMeetingsForCurrentUserAndProjectAndTask(userId, projectId, taskId).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUser(string userId)
+        {
+            return GetAllMeetingsForCurrentUser(userId).Where(x => x.DateAndTime > DateTime.Now).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUserAndProject(string userId, int projectId)
+        {
+            return GetAllMeetingsForCurrentUserAndProject(userId, projectId).Where(x => x.DateAndTime > DateTime.Now).Count();
+        }
+
+        public int CountAllFutureMeetingsForCurrentUserAndProjectAndTask(string userId, int projectId, int taskId)
+        {
+            return GetAllMeetingsForCurrentUserAndProjectAndTask(userId, projectId, taskId).Where(x => x.DateAndTime > DateTime.Now).Count();
         }
     }
 }

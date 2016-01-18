@@ -158,6 +158,7 @@
     <Compile Include="Mocks\ModelsMocks.cs" />
     <Compile Include="ProjectSetupTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

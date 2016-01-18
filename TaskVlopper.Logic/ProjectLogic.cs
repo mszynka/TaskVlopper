@@ -37,6 +37,8 @@ namespace TaskVlopper.Logic
                     .Select(x => ProjectRepository.GetProjectByIdWithoutTrackingQueryable(x.ProjectID).Single());
         }
 
+        #region Voids
+
         public void HandleProjectEdit(Project form, int projectId)
         {
             //Project project = Serializer.Serialize(form);
@@ -47,14 +49,13 @@ namespace TaskVlopper.Logic
 
         public void HandleProjectDelete(int projectId, string userId)
         {
-            Project proj = ProjectRepository.GetProjectByIdWithTracking(projectId);
+            var proj = ProjectRepository.GetProjectByIdWithTracking(projectId);
             ProjectRepository.Remove(proj);
 
-            UserProjectAssignment userProjectAssignment = UserProjectAssignmentRepository.
-                GetProjectAssignmentByUserIdAndProjectId(userId, projectId);
-            userProjectAssignment.UserID = userId;
-            userProjectAssignment.ProjectID = projectId;
-            UserProjectAssignmentRepository.Remove(userProjectAssignment);
+            var assignment = UserProjectAssignmentRepository.
+                GetProjectAssignmentByProjectId(projectId);
+
+            UserProjectAssignmentRepository.RemoveMany(assignment);
         }
 
         public void HandleProjectAdd(Project project, string userId)
@@ -69,23 +70,44 @@ namespace TaskVlopper.Logic
             UserProjectAssignmentRepository.Add(userProjectAssignment);
         }
 
+        public void AssignUserToProject(int projectId, string userId)
+        {
+            if (!UserProjectAssignmentRepository.GetAllUsersIDsForGivenProject(projectId)
+                    .Where(x => x == userId)
+                    .Any())
+            {
+                UserProjectAssignment assignment = new UserProjectAssignment();
+                assignment.ProjectID = projectId;
+                assignment.UserID = userId;
+                UserProjectAssignmentRepository.Add(assignment);
+            }
+        }
+
+        public void UnassignUserFromProject(int id, string userId)
+        {
+            var model = UserProjectAssignmentRepository.GetAll()
+                .Where(x => x.ID == id && x.UserID == userId);
+            if (model.Any())
+            {
+                UserProjectAssignmentRepository.Remove(model.Single());
+            }
+        }
+
+        #endregion
+
         public Project HandleProjectGet(int id)
         {
             return ProjectRepository.GetProjectByIdWithoutTracking(id);
         }
 
-        public IEnumerable<string> GetProjectUsers(int projectId)
+        public IEnumerable<string> GetAllUsersForGivenProject(int projectId)
         {
             return UserProjectAssignmentRepository.GetAllUsersIDsForGivenProject(projectId);
         }
 
-        public void AssignUserToProject(int projectId, string userId)
+        public int CountAllUsersForProject(int projectId)
         {
-            UserProjectAssignment assignment = new UserProjectAssignment();
-            assignment.ProjectID = projectId;
-            assignment.UserID = userId;
-            UserProjectAssignmentRepository.Add(assignment);
+            return GetAllUsersForGivenProject(projectId).Count();
         }
-
     }
 }

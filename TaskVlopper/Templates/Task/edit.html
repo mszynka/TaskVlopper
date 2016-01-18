@@ -3,15 +3,15 @@
         <h2 class="pull-left">Edit task</h2>
 
         <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
-            <button type="button" class="btn btn-primary pull-right" ui-sref="task/list">
+            <button type="button" class="btn btn-primary pull-right" ui-sref="task/list({ projectId: currentProjectId })">
                 <span class="glyphicon glyphicon-list" style="font-size: smaller;"></span>
             </button>
         </div>
     </div>
 </div>
 
-<form name="modelEditorForm" ng-init="taskHandler.initEditor()">
-    <div class="form-horizontal col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+<form name="modelEditorForm">
+    <div class="form-horizontal col-md-4 col-md-push-2 col-sm-7 col-xs-12">
         <div class="panel panel-default">
             <tv-task-modeleditor></tv-task-modeleditor>
             <div class="panel-footer">
@@ -30,5 +30,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-md-4 col-md-push-2 col-sm-5 col-xs-12">
+        <tv-user-list-selector></tv-user-list-selector>
     </div>
 </form>

@@ -15,5 +15,7 @@ namespace TaskVlopper.Base.Logic
         void HandleWorklogDelete(int projectId, int taskId, int id, string userId);
         void HandleWorklogAdd(Worklog worklog, int projectId,  int taskId,  string userId);
         TaskVlopper.Base.Model.Worklog HandleWorklogGet(int projectId, int taskId,  int id);
+
+        int GetHoursCountForGivenTaskId(int taskId);
     }
 }

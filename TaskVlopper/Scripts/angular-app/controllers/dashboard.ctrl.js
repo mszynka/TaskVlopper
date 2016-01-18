@@ -1,4 +1,4 @@
-﻿app.controller('DashboardController', function ($scope) {
+﻿app.controller('DashboardController', function ($scope, UserService) {
 
     // Datepicker section
     // Disable weekend selection
@@ -6,13 +6,16 @@
         return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
     };
 
+    $scope.dashboardHandler = {}
+    $scope.users = []
+
     $scope.open = function ($event, element) {
         $event.preventDefault();
         $event.stopPropagation();
         if (element == 1)
             $scope.status.opened1 = true;
         if (element == 2)
-            $scope.status.opened1 = true;
+            $scope.status.opened2 = true;
     };
 
     $scope.dateOptions = {
@@ -61,12 +64,43 @@
 
     $scope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams) {
-            if(toState != fromState && toParams != fromParams)
+            if (toState != fromState && toParams != fromParams) {
                 Pace.restart();
+                $scope.users = null;
+                //$scope.dashboardHandler.getAllUsers();
+            }
         });
 
-    $scope.$on('$viewContentLoaded',
-        function (event) {
-            Pace.stop();
+    //$scope.$on('$viewContentLoaded',
+    //    function (event) {
+    //        Pace.stop();
+    //    });
+
+    $scope.dashboardHandler.getAllUsers = function () {
+        return UserService.getCurrentUser().then(function (currentUser) {
+            $scope.currentUser = currentUser;
+            UserService.getAllUsers().then(function (response) {
+                angular.forEach(response, function (response) {
+                    if (response.Email == currentUser) {
+                        response.isSelectable = false;
+                        response.isSelected = true;
+                        response.isCurrentUser = true;
+                    }
+                    else {
+                        response.isSelectable = true;
+                    }
+                    response.isOwner = false;
+                    response.isDirty = false;
+                })
+                $scope.users = response;
+            });
         });
+    };
+
+    //$scope.dashboardHandler.getAllUsers();
+
+    $scope.dashboardHandler.triggerUserClick = function (user) {
+        user.isSelected = !user.isSelected;
+        user.isDirty = true;
+    };
 });

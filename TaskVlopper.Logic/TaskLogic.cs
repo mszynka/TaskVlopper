@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskVlopper.Base.Enums;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
@@ -18,14 +19,16 @@ namespace TaskVlopper.Logic
         private readonly IUserTaskAssignmentRepository UserTaskAssignmentRepository;
         private readonly ITaskSerialize Serializer;
         private readonly IProjectRepository ProjectRepository;
+        private readonly IWorklogRepository WorklogRepository;
 
         public TaskLogic(ITaskRepository taskRepository, IUserTaskAssignmentRepository userTaskAssignmentRepository,
-            ITaskSerialize serializer, IProjectRepository projectRepository)
+            ITaskSerialize serializer, IProjectRepository projectRepository, IWorklogRepository worklogRepository)
         {
             TaskRepository = taskRepository;
             UserTaskAssignmentRepository = userTaskAssignmentRepository;
             Serializer = serializer;
             ProjectRepository = projectRepository;
+            WorklogRepository = worklogRepository;
         }
 
 
@@ -34,6 +37,8 @@ namespace TaskVlopper.Logic
             return UserTaskAssignmentRepository.GetTaskAssignmentByUserIdAndProjectId(userId, projectId)
                 .Select(assingment => TaskRepository.GetTaskByIdWithTracking(assingment.TaskID));
         }
+
+        #region Voids
 
         public void HandleTaskAdd(Base.Model.Task task, int projectId, string userId)
         {
@@ -53,9 +58,10 @@ namespace TaskVlopper.Logic
             Base.Model.Task task = TaskRepository.GetTaskByIdWithTracking(id);
             TaskRepository.Remove(task);
 
-            UserTaskAssignment assignment = UserTaskAssignmentRepository.
-                GetTaskAssignmentByUserIdAndProjectIdAndTaskId(userId, projectId, id);
-            UserTaskAssignmentRepository.Remove(assignment);
+            var assignment = UserTaskAssignmentRepository.
+                GetTaskAssignmentByTaskId(id);
+
+            UserTaskAssignmentRepository.RemoveMany(assignment);
         }
 
         public void HandleTaskEdit(Base.Model.Task task, int projectId, int id)
@@ -65,16 +71,6 @@ namespace TaskVlopper.Logic
             TaskRepository.Update(task);
         }
 
-        public Base.Model.Task HandleTaskGet(int projectId, int id)
-        {
-            return TaskRepository.GetTaskByIdWithoutTracking(id);
-        }
-
-        public IEnumerable<string> GetTaskUsers(int projectId, int taskId)
-        {
-            return UserTaskAssignmentRepository.GetAllUsersIDsForGivenTaskProject(projectId, taskId);
-        }
-
         public void AssignUserToProjectTask(int projectId, int taskId, string userId)
         {
             UserTaskAssignment assignment = new UserTaskAssignment();
@@ -82,6 +78,47 @@ namespace TaskVlopper.Logic
             assignment.UserID = userId;
             assignment.ProjectID = projectId;
             UserTaskAssignmentRepository.Add(assignment);
+        }
+
+        public void UnassignUserFromTask(int id, string userId)
+        {
+            var model = UserTaskAssignmentRepository.GetAll()
+                .Where(x => x.TaskID == id && x.UserID == userId);
+            if (model.Any())
+            {
+                UserTaskAssignmentRepository.Remove(model.Single());
+            }
+        }
+
+        #endregion
+
+        public Base.Model.Task HandleTaskGet(int projectId, int id)
+        {
+            return TaskRepository.GetTaskByIdWithoutTracking(id);
+        }
+
+        public IEnumerable<string> GetAllUsersForGivenTask(int projectId, int taskId)
+        {
+            return UserTaskAssignmentRepository.GetAllUsersIDsForGivenTaskProject(projectId, taskId);
+        }
+
+        public int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId)
+        {
+            return GetAllTasksForGivenProjectAndCurrentUser(projectId, userId).Count();
+        }
+
+        public IEnumerable<string> GetTaskStatuses()
+        {
+            List<string> statuses = new List<string>();
+            foreach (var status in Enum.GetValues(typeof(TaskStatusEnum)))
+                statuses.Add(status.ToString());
+
+            return statuses;
+        }
+
+        public int GetHoursWorkedOnTask(int projectId, int taskId)
+        {
+            return WorklogRepository.GetAll().Where(x => x.TaskID == taskId).Sum(x => x.Hours);
         }
     }
 }

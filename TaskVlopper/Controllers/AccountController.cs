@@ -151,7 +151,6 @@ namespace TaskVlopper.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -421,6 +420,7 @@ namespace TaskVlopper.Controllers
                         applicationUsers
                             .Select(x => new UserViewModel(x.Email))
                             .AsEnumerable()
+                            .OrderBy(x => x.Email != User.Identity.GetUserName())
                         );
 
                     return Json(users, JsonRequestBehavior.AllowGet);
@@ -433,40 +433,16 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        //
+        // GET: /Account/CurrentUser
         [HttpGet]
-        public ActionResult UsersByProject(int projectId)
+        public ActionResult CurrentUser()
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    IProjectLogic logic = container.Resolve<IProjectLogic>();
-                    IEnumerable<string> usersIds = logic.GetProjectUsers(projectId);
-                    UsersViewModel users = getUsersQueryHelper(usersIds);
-
-                    return Json(users, JsonRequestBehavior.AllowGet);
-                }
-                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
-            }
-
-        }
-
-        [HttpGet]
-        public ActionResult UsersByProjectTask(int projectId, int taskId)
-        {
-            try
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    ITaskLogic logic = container.Resolve<ITaskLogic>();
-                    IEnumerable<string> usersIds = logic.GetTaskUsers(projectId, taskId);
-                    UsersViewModel users = getUsersQueryHelper(usersIds);
-
-                    return Json(users, JsonRequestBehavior.AllowGet);
+                    return Json(User.Identity.GetUserName(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }
@@ -476,26 +452,6 @@ namespace TaskVlopper.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult UsersByMeeting(int meetingId)
-        {
-            try
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    IMeetingLogic logic = container.Resolve<IMeetingLogic>();
-                    IEnumerable<string> usersIds = logic.GetMeetingUsers(meetingId);
-                    UsersViewModel users = getUsersQueryHelper(usersIds);
-
-                    return Json(users, JsonRequestBehavior.AllowGet);
-                }
-                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
-            }
-        }
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

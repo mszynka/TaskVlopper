@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <connectionStrings>
-  <add name="DefaultConnection" connectionString="data source=.\SQLEXPRESS;initial catalog=TaskVlopperDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
+  <add name="TaskVlopperDatabase" connectionString="data source=.\SQLEXPRESS;initial catalog=TaskVlopperDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
+  <add name="TaskVlopperDatabaseForTests" connectionString="data source=.\SQLEXPRESS;initial catalog=TaskVlopperDatabaseTests;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
 </connectionStrings>

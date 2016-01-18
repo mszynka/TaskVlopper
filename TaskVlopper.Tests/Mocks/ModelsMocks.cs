@@ -9,12 +9,13 @@ using System.Web.Mvc;
 using TaskVlopper.Base.Logic;
 using TaskVlopper.Base.Model;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Identity;
 using TaskVlopper.Models;
 using TaskVlopper.ServiceLocator;
 
 namespace TaskVlopper.Tests.Mocks
 {
-    public static class ModelsMocks
+    public class ModelsMocks
     {
         public static void CleanUpBeforeTest()
         {
@@ -39,6 +40,8 @@ namespace TaskVlopper.Tests.Mocks
                 taskAssignmentRepo.RemoveAll();
                 worklogRepo.RemoveAll();
             }
+
+            DeleteUser();
         }
 
         public static List<ApplicationUser> GetApplicationUserList()
@@ -51,9 +54,16 @@ namespace TaskVlopper.Tests.Mocks
         }
 
         public static string FirstUserEmail = "one@x.pl";
+        public static string UserBeingRegisteredEmail = "test@test1.pl";
         public static ApplicationUser FirstUser = new ApplicationUser
         {
             Email = FirstUserEmail
+        };
+
+        public static ApplicationUser RegisterTestUser = new ApplicationUser
+        {
+            Email = UserBeingRegisteredEmail,
+            UserName = "Wololo"
         };
 
         public static ApplicationUser LoggedUser = new ApplicationUser
@@ -66,7 +76,7 @@ namespace TaskVlopper.Tests.Mocks
             Email = ControllersMocks.NotloggedUser
         };
 
-public static void AssignUserToProject(ApplicationUser user, TaskVlopper.Base.Model.Project project)
+        public static void AssignUserToProject(ApplicationUser user, TaskVlopper.Base.Model.Project project)
         {
             using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
             {
@@ -230,5 +240,51 @@ public static void AssignUserToProject(ApplicationUser user, TaskVlopper.Base.Mo
             {"Project.StartDate", new DateTime(2015, 01, 01).ToString() }
         };
 
+        public static string passwordForUsers = "test123";
+
+        public static void RegisterUser()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var userManager = container.Resolve<ApplicationUserManager>();
+                var result = userManager.CreateAsync(ModelsMocks.RegisterTestUser, passwordForUsers);
+                if (result.Result.Succeeded)
+                {
+                    var forDebugging = userManager.Users.ToList();
+                }
+            }
+        }
+
+        public static void DeleteUser()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var userManager = container.Resolve<ApplicationUserManager>();
+                try
+                {
+                    var userToDelete = userManager.Users.Single(x => x.Email == RegisterTestUser.Email);
+                    var result = userManager.Delete(userToDelete);
+                    if (result.Succeeded)
+                    {
+                        var forDebugging = userManager.Users.ToList();
+                    }
+                }
+                #pragma warning disable CS0168 // Variable is declared but never used
+                catch (Exception ex)
+                #pragma warning restore CS0168 // Variable is declared but never used
+                {
+                    //User does not exist
+                }
+            }
+        }
+
+        public static int CountReigsteredUsers()
+        {
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var userManager = container.Resolve<ApplicationUserManager>();
+                return userManager.Users.Count();
+            }
+        }
     }
 }

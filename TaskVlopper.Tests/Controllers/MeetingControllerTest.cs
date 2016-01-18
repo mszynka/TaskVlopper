@@ -10,11 +10,13 @@ using TaskVlopper.Tests.Mocks;
 using Microsoft.Practices.Unity;
 using TaskVlopper.ServiceLocator;
 using TaskVlopper.Base.Repository;
+using TaskVlopper.Models;
+using TaskVlopper.Tests;
 
 namespace TaskVlopper.Controllers.Tests
 {
     [TestClass()]
-    public class MeetingControllerTest
+    public class MeetingControllerTest : TestsBase
     {
 
         [TestMethod()]
@@ -31,19 +33,19 @@ namespace TaskVlopper.Controllers.Tests
             JsonResult action = controller.Index(ModelsMocks.ProjectModelFirst.ID, ModelsMocks.TaskModelFirst.ID) as JsonResult;
             var data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
 
             // Act
             action = controller.Index(ModelsMocks.ProjectModelFirst.ID) as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
 
             // Act
             action = controller.Index() as JsonResult;
             data = (Models.MeetingsViewModel)action.Data;
             // Assert
-            Assert.AreEqual(1, data.Meeting.Count());
+            Assert.AreEqual(1, data.Meetings.Count());
         }
 
 
@@ -344,6 +346,139 @@ namespace TaskVlopper.Controllers.Tests
 
             var forbidden = (TaskVlopper.Models.JsonHttpViewModel)action.Data;
             Assert.AreEqual(403, forbidden.HttpCode);
+        }
+
+        [TestMethod()]
+        public void UsersGetLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
+            ModelsMocks.AddTestMeeting(true, ModelsMocks.MeetingModelFirst, ModelsMocks.TaskModelFirst);
+            ModelsMocks.AssignUserToMeeting(ModelsMocks.FirstUser, ModelsMocks.MeetingModelFirst);
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.MeetingModelFirst.ID) as JsonResult;
+            int count = ((UsersViewModel)action.Data).Users.Count();
+
+            // Assert
+            Assert.AreEqual(2, count);
+        }
+
+        [TestMethod()]
+        public void UsersGetNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.MeetingModelFirst.ID) as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
+        }
+
+        [TestMethod()]
+        public void UsersPostLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>(ControllersMocks.LoggedUser, true);
+
+            ModelsMocks.AddTestProject(true);
+            ModelsMocks.AddTestTask(true, ModelsMocks.ProjectModelFirst);
+            ModelsMocks.AddTestMeeting(true, ModelsMocks.MeetingModelFirst, ModelsMocks.TaskModelFirst);
+            ModelsMocks.AssignUserToMeeting(ModelsMocks.FirstUser, ModelsMocks.MeetingModelFirst);
+            ModelsMocks.RegisterUser();
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.MeetingModelFirst.ID,
+                ModelsMocks.RegisterTestUser.Email) as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            using (IUnityContainer container = UnityConfig.GetConfiguredContainer())
+            {
+                var participantsRepo = container.Resolve<IMeetingParticipantsRepository>();
+                var users = participantsRepo.GetAllUsersIDsByMeeting(ModelsMocks.MeetingModelFirst.ID);
+                var ourUser = users.Single(x => x == ModelsMocks.RegisterTestUser.Email);
+                Assert.AreEqual(3, participantsRepo.GetAll().Count());
+            }
+
+            Assert.AreEqual(200, data.HttpCode);
+            Assert.AreEqual(1, ModelsMocks.CountReigsteredUsers());
+        }
+
+        [TestMethod()]
+        public void UsersPostLoggedUserTest_wrongUserIdInjection()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            MeetingController controller = ControllersMocks.GetControllerAsLoggedUser<MeetingController>(ControllersMocks.LoggedUser, true);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.MeetingModelFirst.ID,
+                "dsadsa123@dcxzczx@sdaas123.pl") as JsonResult;
+            var data = ((JsonHttpViewModel)action.Data);
+
+            // Assert
+            Assert.AreEqual(500, data.HttpCode);
+        }
+
+        [TestMethod()]
+        public void UsersPostNotLoggedUserTest()
+        {
+            ModelsMocks.CleanUpBeforeTest();
+            // Arrange
+            MeetingController controller =
+                ControllersMocks.GetControllerAsLoggedUser<MeetingController>(ControllersMocks.NotloggedUser, false);
+
+            // Act
+            JsonResult action = controller.Users(ModelsMocks.MeetingModelFirst.ID,
+                "anything") as JsonResult;
+            int code = ((JsonHttpViewModel)action.Data).HttpCode;
+
+            // Assert
+            Assert.AreEqual(403, code);
+        }
+
+        [TestMethod(), Ignore]
+        public void GetAllWithStatsLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void GetAllWithStatsNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void DetailsWithStatsLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void DetailsWithStatsNotLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void UnbindUserLoggedUserTest()
+        {
+
+        }
+
+        [TestMethod(), Ignore]
+        public void UnbindUserNotLoggedUserTest()
+        {
+
         }
     }
 }

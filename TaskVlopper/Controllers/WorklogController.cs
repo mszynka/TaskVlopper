@@ -82,7 +82,10 @@ namespace TaskVlopper.Controllers
                     IWorklogLogic logic = container.Resolve<IWorklogLogic>();
                     logic.HandleWorklogAdd(worklog, projectId, taskId, User.Identity.Name);
 
-                    return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Created, message: "Worklog successfully created!").getInfo(), JsonRequestBehavior.AllowGet);
+                    return Json(new JsonDataHandler(
+                        httpCode: HttpCodeEnum.Created, 
+                        message: "Worklog successfully created!",
+                        id: worklog.ID.ToString()).getInfo(), JsonRequestBehavior.AllowGet);
                 }
                 return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
             }

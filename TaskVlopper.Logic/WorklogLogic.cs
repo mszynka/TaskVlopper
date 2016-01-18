@@ -26,7 +26,9 @@ namespace TaskVlopper.Logic
 
         public IEnumerable<Worklog> GetAllWorklogForGivenProjectAndTaskAndUser(int projectId, int taskId, string userId)
         {
-            return WorklogRepository.GetAll().Where(x => x.TaskID == taskId && x.UserID == userId);
+            return WorklogRepository
+                .GetAll()
+                .Where(x => x.TaskID == taskId && x.UserID == userId);
         }
 
         public void HandleWorklogAdd(Worklog worklog, int projectId, int taskId, string userId)
@@ -52,6 +54,17 @@ namespace TaskVlopper.Logic
             worklog.TaskID = taskId;
             worklog.ID = id;
             WorklogRepository.Update(worklog);
+        }
+
+        public int GetHoursCountForGivenTaskId(int taskId)
+        {
+            if (!WorklogRepository.GetAll().Any())
+                return 0;
+
+            return WorklogRepository
+                .GetAll()
+                .Where(x => x.TaskID == taskId)
+                .Sum(x => x.Hours);
         }
     }
 }

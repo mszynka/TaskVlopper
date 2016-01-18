@@ -17,22 +17,67 @@
 
         <div class="form-group">
             <div class="col-xs-6">
-                <p class="input-group date hasDatepicker">
-                    <input type="text" class="form-control" id="modelStartDate"/>
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-calendar"></i>
+                <p class="input-group">
+                    <input type="text" class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="model.StartDate"
+                           is-open="status.opened1"
+                           max-date="{{ model.EndDate }}"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="open($event, 1)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
                     </span>
                 </p>
             </div>
 
             <div class="col-xs-6">
                 <p class="input-group date">
-                    <input type="text" class="form-control" id="modelEndDate"
-                           ng-model="model.EndDate"/>
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-calendar"></i>
+                    <input type="text" class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="model.EndDate"
+                           is-open="status.opened2"
+                           min-date="{{ model.StartDate }}"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="open($event, 2)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
                     </span>
                 </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label" for="Status">Status: </label>
+            <div class="col-xs-9">
+                <select type="number" id="Status" placeholder="Status" class="form-control"
+                        ng-model="model.Status" ng-init="(model.Status == undefined) ? model.Status = 0 : return" convert-to-number>
+                    <option ng-repeat="option in taskStatus"
+                            value="{{$index}}"
+                            ng-selected="$index == model.Status">
+                        {{option}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label" for="ExecutiveUserID">Executive user: </label>
+            <div class="col-xs-9">
+                <select type="number" id="ExecutiveUserID" placeholder="Executive user" class="form-control"
+                        ng-model="model.ExecutiveUserID">
+                    <option ng-repeat="option in users"
+                            value="{{option.Email}}"
+                            ng-selected="option.Email == model.ExecutiveUserID">
+                        {{option.Email}}
+                    </option>
+                </select>
             </div>
         </div>
 
@@ -57,7 +102,6 @@
                 @Html.ValidationMessageFor(p => p.Task.Status)
             </div>
         </div>*@-->
-
         <!-- TODO: Create autocomplete input via users table
             <div class="form-group">
             @Html.LabelFor(p => p.Task.ExecutiveUserID, new { @class = "col-sm-4 control-label" })

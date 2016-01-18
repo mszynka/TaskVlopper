@@ -21,30 +21,34 @@
     Currently no tasks available. Add a task.
 </div>
 
-<div class="form-horizontal" ng-hide="(tasks | filter: { Name: controller.taskSearchInput }).length == 0">
+<div class="form-horizontal" ng-hide="(tasks | filter: controller.taskSearchInput ).length == 0">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Estimated time (h)</th>
+                <th title="Worked/estimated time">W/E time (h)</th>
                 <th>Storypoints</th>
                 <th>Status</th>
+                <th>Executive user</th>
+                <th title="No. of users watching task">Watching</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="task in tasks | filter: { Name: controller.taskSearchInput }">
-                <th scope="row">{{task.ID}}</th>
-                <td title="{{task.Description}}">{{task.Name}}</td>
-                <td>{{task.EstimatedTimeInHours}}</td>
-                <td>{{task.Storypoints}}</td>
-                <td>{{task.Status}}</td>
+            <tr ng-repeat="object in tasks | filter: controller.taskSearchInput">
+                <th scope="row">{{object.Task.ID}}</th>
+                <td title="{{object.Task.Description}}">{{object.Task.Name}}</td>
+                <td>{{object.Stats.LoggedHours}}/{{object.Task.EstimatedTimeInHours}}</td>
+                <td>{{object.Task.Storypoints}}</td>
+                <td>{{object.Task.statusName}}</td>
+                <td>{{object.Task.ExecutiveUserID}}</td>
+                <td>{{object.Stats.Watchers}}</td>
                 <td>
                     <div class="btn-group-xs">
-                        <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: task.ID, projectId: currentProjectId })"></button>
-                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: task.ID, projectId: currentProjectId })"></button>
-                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-time" style="font-size: .8em; margin-top: -5px" ui-sref="worklog/list({ taskId: object.Task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="task/edit({ taskId: object.Task.ID, projectId: currentProjectId })"></button>
+                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="task/delete({ taskId: object.Task.ID, projectId: currentProjectId })"></button>
                     </div>
                 </td>
             </tr>
@@ -52,6 +56,6 @@
     </table>
 </div>
 
-<div class="alert alert-warning" ng-show="(tasks | filter: { Name: controller.taskSearchInput }).length == 0 && tasks.length > 0">
+<div class="alert alert-warning" ng-show="(tasks | filter: controller.taskSearchInput ).length == 0 && tasks.length > 0">
     No task satisfying the current query.
 </div>

@@ -12,14 +12,21 @@ namespace TaskVlopper.Repository
 {
     public class WorklogRepository : BaseRepository<Worklog>, IWorklogRepository
     {
-        public Worklog GetWorklogByIdWithoutTracking(int id)
+        #region Queryables
+        public IQueryable<Worklog> GetWorklogByIdWithTrackingQueryable(int id)
         {
-            return this.GetWorklogByIdWithoutTrackingQueryable(id).Single();
+            return this.GetAll().Where(x => x.ID == id);
         }
 
         public IQueryable<Worklog> GetWorklogByIdWithoutTrackingQueryable(int id)
         {
             return this.GetAll().AsNoTracking().Where(x => x.ID == id);
+        }
+        #endregion
+
+        public Worklog GetWorklogByIdWithoutTracking(int id)
+        {
+            return this.GetWorklogByIdWithoutTrackingQueryable(id).Single();
         }
 
         public Worklog GetWorklogByIdWithTracking(int id)
@@ -27,9 +34,6 @@ namespace TaskVlopper.Repository
             return this.GetWorklogByIdWithTrackingQueryable(id).Single();
         }
 
-        public IQueryable<Worklog> GetWorklogByIdWithTrackingQueryable(int id)
-        {
-            return this.GetAll().Where(x => x.ID == id);
-        }
+        
     }
 }

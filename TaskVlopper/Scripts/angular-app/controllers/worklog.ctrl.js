@@ -1,10 +1,11 @@
 ﻿/// <reference path="services/worklog.service.js" />
 
-app.controller('WorklogController', function ($scope, $state, $stateParams, WorklogService) {
+app.controller('WorklogController', function ($scope, $rootScope, $state, $stateParams, WorklogService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
     $scope.currentWorklogId = $stateParams.worklogId;
+    $rootScope.currentView = "worklog";
     $scope.worklog = [];
 
     $scope.worklogHandler = {};
@@ -23,7 +24,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.createWorklog = function () {
-        Pace.start();
+        Pace.restart();
         WorklogService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $state.go('worklog/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });
         })
@@ -34,7 +35,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.editWorklog = function () {
-        Pace.start();
+        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         WorklogService.update(temp_model, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
@@ -43,7 +44,7 @@ app.controller('WorklogController', function ($scope, $state, $stateParams, Work
     };
 
     $scope.worklogHandler.deleteWorklog = function () {
-        Pace.start();
+        Pace.restart();
         WorklogService.delete($scope.currentWorklogId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = null;
             $state.go('worklog/list', { projectId: $scope.currentProjectId, taskId: $scope.currentTaskId });

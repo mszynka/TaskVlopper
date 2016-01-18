@@ -6,7 +6,7 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data.Meeting;
+                return response.data.Meetings;
             })
             .catch(function (error) {
                 console.log('[MeetingService.getAllForCurrentUser] Unable to load data: ' + error.data.message);
@@ -24,10 +24,28 @@
                 if (response.data.HttpCode != undefined) {
                     console.log(response.data.HttpCode + " " + response.data.Message);
                 }
-                return response.data.Meeting;
+                return response.data.Meetings;
             })
             .catch(function (error) {
                 console.log('[MeetingService.getAll] Unable to load data: ' + error.data.message);
+            });
+    };
+
+    this.getAllWithStats = function (projectId, taskId) {
+        var taskData = "";
+        if (taskId != undefined && taskId != null) {
+            taskData = '&taskId=' + taskId;
+        }
+
+        return $http.get('/Meeting/GetAllWithStats?projectId=' + projectId + taskData)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response.data.Meetings;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.getAllWithStats] Unable to load data: ' + error.data.message);
             });
     };
 
@@ -77,8 +95,7 @@
                 return response;
             })
             .catch(function (error) {
-                $scope.status = '[MeetingService.create] Unable to load data: ' + error.message;
-                console.log($scope.status);
+                console.log('[MeetingService.create] Unable to load data: ' + error.message);
             });
     };
 
@@ -101,8 +118,7 @@
             return response;
         })
         .catch(function (error) {
-            $scope.status = '[MeetingService.update] Unable to load data: ' + error.message;
-            console.log($scope.status);
+            console.log('[MeetingService.update] Unable to load data: ' + error.message);
         });
     };
 
@@ -128,8 +144,65 @@
             return response;
         })
         .catch(function (error) {
-            $scope.status = '[MeetingService.delete] Unable to load data: ' + error.message;
-            console.log($scope.status);
+            console.log('[MeetingService.delete] Unable to load data: ' + error.message);
         });
     };
+
+    this.getUsers = function (meetingId) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
+            return $http.get('/Meeting/Users/' + meetingId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response.data.Users;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.getUsers] Unable to load data: ' + error.message);
+            });
+        }
+        else {
+            console.log("[MeetingService.getUsers] MeetingID is invalid!");
+            return null;
+        }
+    }
+
+    this.bindUser = function (meetingId, userId) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
+            return $http.post('/Meeting/Users/' + meetingId + "?userId=" + userId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.bindUser] Unable to load data: ' + error.message);
+            });
+        }
+        else {
+            console.log("[MeetingService.bindUser] MeetingID is invalid!");
+            return null;
+        }
+    }
+
+    this.unbindUser = function (meetingId, userId) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
+            return $http.post('/Meeting/UnbindUser/' + meetingId + "?userId=" + userId)
+            .then(function (response) {
+                if (response.data.HttpCode != undefined) {
+                    console.log(response.data.HttpCode + " " + response.data.Message);
+                }
+                return response;
+            })
+            .catch(function (error) {
+                console.log('[MeetingService.bindUser] Unable to load data: ' + error.message);
+            });
+        }
+        else {
+            console.log("[MeetingService.bindUser] MeetingID is invalid!");
+            return null;
+        }
+    }
+
 }]);

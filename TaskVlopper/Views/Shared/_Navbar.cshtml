@@ -10,10 +10,9 @@
     <ul class="nav navbar-nav" ng-cloak>
         @if (User.Identity.IsAuthenticated)
         {
-            <li><a href="/#/project/list" role="button">Projects</a></li>
-            @*<li><a href="#" role="button">Task</a></li>
-            <li><a href="#" role="button">Meeting</a></li>
-            <li><a href="#" role="button">Worklog</a></li>*@
+            <li ng-class="{active: projectView}"><a ui-sref="project/list" role="button">Projects</a></li>
+            <li ng-class="{active: taskView}" ng-show="currentProjectId"><a ui-sref="task/list({ projectId: currentProjectId })" role="button">Tasks</a></li>
+            <li ng-class="{active: meetingView}" ng-show="currentProjectId"><a ui-sref="meeting/list({ projectId: currentProjectId })" role="button">Meetings</a></li>
         }
     </ul>
     <ul class="nav navbar-nav">
