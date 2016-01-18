@@ -4,7 +4,7 @@
 /// <reference path="services/worklog.service.js" />
 /// <reference path="services/user.service.js" />
 
-app.controller('ProjectController', function ($scope, $timeout, $filter, $state, $stateParams,
+app.controller('ProjectController', function ($scope, $rootScope, $timeout, $filter, $state, $stateParams,
     ProjectService,
     TaskService,
     MeetingService,
@@ -12,6 +12,12 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
     UserService) {
 
     $scope.currentProjectId = $stateParams.projectId;
+
+    $rootScope.currentProjectId = null;
+    $rootScope.projectView = true;
+    $rootScope.taskView = false;
+    $rootScope.meetingView = false;
+
     $scope.projectHandler = {};
 
     $scope.projectHandler.getProjects = function () {
@@ -19,10 +25,6 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
             $scope.projects = response;
         })
     };
-
-    if ($state.current.name == "project/list") {
-        $scope.projectHandler.getProjects();
-    }
 
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
@@ -90,12 +92,14 @@ app.controller('ProjectController', function ($scope, $timeout, $filter, $state,
         })
     };
 
-    if ($state.current.name == "project/edit") {
+    if ($state.current.name == "project/list") {
+        $scope.projectHandler.getProjects();
+    }
+    else if ($state.current.name == "project/edit") {
         $scope.projectHandler.getProject($scope.currentProjectId);
         $scope.projectHandler.getUsers($scope.currentProjectId);
     }
-
-    if ($state.current.name == "project/create") {
+    else if ($state.current.name == "project/create") {
         $scope.projectHandler.getUsers($scope.currentProjectId);
     }
 

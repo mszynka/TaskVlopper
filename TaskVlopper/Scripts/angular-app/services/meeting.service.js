@@ -149,7 +149,7 @@
     };
 
     this.getUsers = function (meetingId) {
-        if (meetingId !== undefined || !isNaN(meetingId)) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
             return $http.get('/Meeting/Users/' + meetingId)
             .then(function (response) {
                 if (response.data.HttpCode != undefined) {
@@ -168,7 +168,7 @@
     }
 
     this.bindUser = function (meetingId, userId) {
-        if (meetingId !== undefined || !isNaN(meetingId)) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
             return $http.post('/Meeting/Users/' + meetingId + "?userId=" + userId)
             .then(function (response) {
                 if (response.data.HttpCode != undefined) {
@@ -187,7 +187,7 @@
     }
 
     this.unbindUser = function (meetingId, userId) {
-        if (meetingId !== undefined || !isNaN(meetingId)) {
+        if (meetingId !== undefined && !isNaN(meetingId)) {
             return $http.post('/Meeting/UnbindUser/' + meetingId + "?userId=" + userId)
             .then(function (response) {
                 if (response.data.HttpCode != undefined) {

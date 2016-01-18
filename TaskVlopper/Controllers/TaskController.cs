@@ -41,9 +41,59 @@ namespace TaskVlopper.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult GetAllWithStats(int projectId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic taskLogic = container.Resolve<ITaskLogic>();
+                    IWorklogLogic worklogLogic = container.Resolve<IWorklogLogic>();
+                    
+
+                    var model = taskLogic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name)
+                        .Select(task => new TaskViewModel(task,
+                            new TaskStatisticsViewModel(taskLogic.GetAllUsersForGivenTask(projectId, task.ID).Count(),
+                                worklogLogic.GetHoursCountForGivenTaskId(task.ID),
+                                taskLogic.GetAllUsersForGivenTask(projectId, task.ID).Count())
+                        ));
+
+                    var viewModel = new TasksViewModel(model.ToList(), taskLogic.GetTaskStatuses());
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
         // GET: Task/Details/5
         [HttpGet]
         public ActionResult Details(int projectId, int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    ITaskLogic logic = container.Resolve<ITaskLogic>();
+                    var viewModel = new TaskViewModel(logic.HandleTaskGet(projectId, id));
+
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonDataHandler(httpCode: HttpCodeEnum.Forbidden).getWarning(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonDataHandler(ex).getError(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DetailsWithStats(int projectId, int id)
         {
             try
             {

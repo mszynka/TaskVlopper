@@ -407,5 +407,16 @@ namespace TaskVlopper.Controllers.Tests
             Assert.AreEqual(403, code);
         }
 
+        [TestMethod(), Ignore]
+        public void GetAllWithStatsTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod(), Ignore]
+        public void DetailsWithStatsTest()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

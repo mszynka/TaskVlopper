@@ -102,7 +102,7 @@
         };
 
         this.getUsers = function (projectId) {
-            if (projectId !== undefined || !isNaN(projectId)) {
+            if (projectId !== undefined && !isNaN(projectId)) {
                 return $http.get('/Project/Users/' + projectId)
                 .then(function (response) {
                     if (response.data.HttpCode != undefined) {
@@ -121,7 +121,7 @@
         }
 
         this.bindUser = function (projectId, userId) {
-            if (projectId !== undefined || !isNaN(projectId)) {
+            if (projectId !== undefined && !isNaN(projectId)) {
                 return $http.post('/Project/Users/' + projectId + "?userId=" + userId)
                 .then(function (response) {
                     if (response.data.HttpCode != undefined) {
@@ -140,7 +140,7 @@
         }
 
         this.unbindUser = function (projectId, userId) {
-            if (projectId !== undefined || !isNaN(projectId)) {
+            if (projectId !== undefined && !isNaN(projectId)) {
                 return $http.post('/Project/UnbindUser/' + projectId + "?userId=" + userId)
                 .then(function (response) {
                     if (response.data.HttpCode != undefined) {

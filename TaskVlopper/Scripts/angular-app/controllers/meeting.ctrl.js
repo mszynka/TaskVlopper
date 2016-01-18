@@ -1,10 +1,16 @@
 ﻿/// <reference path="services/meeting.service.js" />
 /// <reference path="services/user.service.js" />
 
-app.controller('MeetingController', function ($scope, $timeout, $state, $stateParams, MeetingService, UserService) {
+app.controller('MeetingController', function ($scope, $rootScope, $timeout, $state, $stateParams, MeetingService, UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
+
+    $rootScope.currentProjectId = $stateParams.projectId;
+    $rootScope.projectView = false;
+    $rootScope.taskView = false;
+    $rootScope.meetingView = true;
+
     $scope.currentMeetingId = $stateParams.meetingId;
     $scope.meetings = [];
 

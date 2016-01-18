@@ -1,10 +1,11 @@
 ﻿/// <reference path="services/worklog.service.js" />
 
-app.controller('WorklogController', function ($scope, $state, $stateParams, WorklogService) {
+app.controller('WorklogController', function ($scope, $rootScope, $state, $stateParams, WorklogService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
     $scope.currentWorklogId = $stateParams.worklogId;
+    $rootScope.currentView = "worklog";
     $scope.worklog = [];
 
     $scope.worklogHandler = {};

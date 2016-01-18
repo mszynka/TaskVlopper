@@ -23,7 +23,6 @@ namespace TaskVlopper.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            
             try
             {
                 if (User.Identity.IsAuthenticated)
