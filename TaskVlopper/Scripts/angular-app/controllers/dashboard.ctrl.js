@@ -71,11 +71,6 @@
             }
         });
 
-    //$scope.$on('$viewContentLoaded',
-    //    function (event) {
-    //        Pace.stop();
-    //    });
-
     $scope.dashboardHandler.getAllUsers = function () {
         return UserService.getCurrentUser().then(function (currentUser) {
             $scope.currentUser = currentUser;
@@ -96,8 +91,6 @@
             });
         });
     };
-
-    //$scope.dashboardHandler.getAllUsers();
 
     $scope.dashboardHandler.triggerUserClick = function (user) {
         user.isSelected = !user.isSelected;

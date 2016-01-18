@@ -1,11 +1,11 @@
-﻿$('a[type="data-modal"]').click(function(event) {
+﻿$('a[type="data-modal"]').click(function (event) {
     $(this).modal({
         escapeClose: true,
         clickClose: true,
         showClose: false,
         fadeDuration: 250
     });
-  return false;
+    return false;
 });
 
 Pace.on("done",
@@ -14,8 +14,3 @@ Pace.on("done",
                 format: "MM/DD/YYYY",
             });
         });
-
-paceOptions = {
-    restartOnPushState: false,
-    restartOnRequestAfter: false
-}
