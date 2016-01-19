@@ -1,7 +1,7 @@
 ﻿<ul class="list-group">
     <li class="list-group-item">Users</li>
 
-    <li class="list-group-item"
+    <li class="list-group-item animation"
         ng-class="{active: user.isSelected, 'item-pointer': user.isSelectable}"
         ng-click="user.isSelectable ? dashboardHandler.triggerUserClick(user) : null"
         ng-repeat="user in (users | filter: { Email: controller.userSearchInput } | limitTo: 10)"

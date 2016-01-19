@@ -15,7 +15,8 @@ namespace TaskVlopper
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/jquery.modal.css",
                       "~/Content/ui-bootstrap-csp.css",
-                      "~/Content/Site.css"
+                      "~/Content/Site.css",
+                      "~/Content/angular.animate.css"
                 ));
 
             bundles.Add(new StyleBundle("~/bundles/pace")
