@@ -21,6 +21,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: urlPrepend + "project/list.html",
             controller: "ProjectController as controller"
         })
+        .state('project/view', {
+            url: "/project/view/:projectId",
+            templateUrl: urlPrepend + "project/viewer.html",
+            controller: "ProjectController as controller"
+        })
         .state('project/create', {
             url: "/project/create",
             templateUrl: urlPrepend + "project/create.html",

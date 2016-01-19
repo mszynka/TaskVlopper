@@ -59,7 +59,8 @@ namespace TaskVlopper.Controllers
                             new ProjectStatisticsViewModel(
                                 taskLogic.CountAllTasksForGivenProjectAndCurrentUser(x.ID, User.Identity.Name),
                                 meetingLogic.CountAllFutureMeetingsForCurrentUserAndProject(User.Identity.Name, x.ID),
-                                projectLogic.CountAllUsersForProject(x.ID)
+                                projectLogic.CountAllUsersForProject(x.ID),
+                                taskLogic.GetTaskProgress(x.ID)
                             ))
                         )
                         .ToList();
@@ -91,7 +92,8 @@ namespace TaskVlopper.Controllers
                         new ProjectStatisticsViewModel(
                                 taskLogic.CountAllTasksForGivenProjectAndCurrentUser(id, User.Identity.Name),
                                 meetingLogic.CountAllFutureMeetingsForCurrentUserAndProject(User.Identity.Name, id),
-                                projectLogic.CountAllUsersForProject(id)
+                                projectLogic.CountAllUsersForProject(id),
+                                taskLogic.GetTaskProgress(id)
                             ));
 
                     return Json(viewModel, JsonRequestBehavior.AllowGet);

@@ -61,7 +61,7 @@ textarea {
         margin-bottom: 0;
         position: relative;
         border-radius: 0;
-        height: 1px;
+        height: 2px;
     }
 
     .project-panel .panel-body {

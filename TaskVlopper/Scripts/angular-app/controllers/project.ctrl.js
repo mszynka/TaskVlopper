@@ -28,7 +28,8 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
 
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
-            $scope.model = response;
+            $scope.model = response.Project;
+            $scope.stats = response.Stats;
             if ($scope.model.StartDate != undefined)
                 $scope.model.StartDate = new Date(parseInt($scope.model.StartDate.split("(")[1]));
             if ($scope.model.Deadline != undefined)
@@ -89,12 +90,37 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
         })
     };
 
+    $scope.projectHandler.getTasks = function (projectId) {
+        TaskService.getAllWithStats($scope.currentProjectId).then(function (response) {
+            $scope.tasks = response.Tasks;
+            $scope.taskStatus = response.Statuses;
+            angular.forEach($scope.tasks, function (task) {
+                task.Task.statusName = $scope.taskStatus[task.Task.Status];
+            })
+        })
+    };
+
+    $scope.projectHandler.getMeetings = function (projectId) {
+        MeetingService.getAllWithStats($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
+            $scope.meetings = response;
+        })
+    };
+
     if ($state.current.name == "project/list") {
         $scope.projectHandler.getProjects();
     }
     else if ($state.current.name == "project/edit") {
         $scope.projectHandler.getProject($scope.currentProjectId);
         $scope.projectHandler.getUsers($scope.currentProjectId);
+    }
+    else if ($state.current.name == "project/view") {
+        $scope.tasks = [];
+        $scope.meetings = [];
+
+        $scope.projectHandler.getProject($scope.currentProjectId);
+        $scope.projectHandler.getUsers($scope.currentProjectId);
+        $scope.projectHandler.getTasks($scope.currentProjectId);
+        $scope.projectHandler.getMeetings($scope.currentProjectId);
     }
     else if ($state.current.name == "project/create") {
         $scope.projectHandler.getUsers($scope.currentProjectId);

@@ -21,10 +21,6 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
         })
     };
 
-    if ($state.current.name == "meeting/list") {
-        $scope.meetingHandler.getMeetings();
-    }
-
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = response;
@@ -89,12 +85,14 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
         return new Date(parseInt(element.Meeting.DateAndTime.substr(6)));
     }
 
-    if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+    if ($state.current.name == "meeting/list") {
+        $scope.meetingHandler.getMeetings();
+    }
+    else if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
         $scope.meetingHandler.getMeeting($scope.currentMeetingId);
         $scope.meetingHandler.getUsers($scope.currentMeetingId);
     }
-
-    if ($state.current.name == "meeting/create") {
+    else if ($state.current.name == "meeting/create") {
         UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
         })

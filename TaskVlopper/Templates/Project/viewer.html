@@ -1,27 +1,56 @@
-﻿<div>
-    <div class="panel-body">
-        <div class="pull-right">
-            <button class="glyphicon glyphicon-pencil icon-button" title="Edit project" ui-sref="project/edit({ projectId: object.Project.ID })"></button>
-            <button class="glyphicon glyphicon-trash icon-button alert-danger" title="Delete project" ui-sref="project/delete({ projectId: object.Project.ID })"></button>
-        </div>
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        <h2 class="pull-left">{{model.Name}}</h2>
 
-        <strong style="font-size: 1.3em">{{object.Project.Name}}</strong>
-        <div ng-show="object.Project.Description.length > 0">
-            <div class="text-muted" style="margin-top: 5px; font-size: .95em"> {{object.Project.Description}}</div>
+        <div class="input-group pull-right col-lg-3 col-md-4 col-sm-6" style="margin-top: 20px; max-width: 300px">
+            <button type="button" class="btn btn-danger pull-right" title="Delete project" ui-sref="project/delete({ projectId: currentProjectId })">
+                <span class="glyphicon glyphicon-trash" style="font-size: smaller;"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-right" title="Edit project" ui-sref="project/edit({ projectId: currentProjectId })">
+                <span class="glyphicon glyphicon-pencil" style="font-size: smaller;"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-right" ui-sref="project/list({ projectId: currentProjectId })">
+                <span class="glyphicon glyphicon-list" style="font-size: smaller;"></span>
+            </button>
+        </div>
+        <div class="clearfix"></div>
+        <h4 class="pull-left small text-muted" style="margin-top: 0" ng-show="model.StartDate || model.Deadline">
+            {{model.StartDate | date : 'MM/dd/yyyy'}}
+            -
+            {{model.Deadline | date : 'MM/dd/yyyy'}}
+        </h4>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-6 col-xs-12">
+        <div class="progress" style="height: 4px !important; border-radius: 0; margin-bottom: 0 !important">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{stats.Progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{stats.Progress}}%;">
+                <span class="sr-only">{{stats.Progress}}% Complete</span>
+            </div>
+        </div>
+        <div class="well col-xs-12" style="border-top-left-radius: 0;border-top-right-radius: 0;" ng-show="model.Description">
+            {{model.Description}}
+            <p ng-hide="model.Description">No description provided.</p>
         </div>
     </div>
-
-    <!-- TODO: project progress -->
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
-            <span class="sr-only">10% Complete</span>
-        </div>
+    <div class="col-sm-6 col-xs-12">
+        <tv-user-list-viewer></tv-user-list-viewer>
     </div>
+</div>
 
-    <div class="panel-footer">
+<uib-tabset>
+    <uib-tab heading="Tasks">
+        <tv-task-model-table-viewer></tv-task-model-table-viewer>
+    </uib-tab>
+    <uib-tab heading="Meetings">
+        <tv-meeting-model-table-viewer></tv-meeting-model-table-viewer>
+    </uib-tab>
+</uib-tabset>
 
-        <div class="row">
-            <div class="col-xs-12">
+
+
+<!--<div>
                 <button class="icon-button clear-letter-spacing" title="Tasks" ui-sref="task/list({ projectId: object.Project.ID })" style="margin-right: .8em;">
                     <span class="glyphicon glyphicon-check"></span>
                     <span class="glyphicon-addon">{{object.Stats.TaskCount}}</span>
@@ -39,15 +68,4 @@
                     <span class="glyphicon-addon">
                         {{object.Project.EstimatedTimeInHours}}h
                     </span>
-                </span>
-            </div>
-        </div>
-        <!-- TODO: handle additional data, another fullviewer? -->
-        <!--<div class="row">
-            <div class="col-sm-6">
-                <label class="control-label">Datespan:</label> {{object.StartDate | aspDate | date : 'MM/dd/yyyy' }}-{{object.Deadline | aspDate | date : 'MM/dd/yyyy' }}
-            </div>
-        </div>-->
-
-    </div>
-</div>
+</div>-->

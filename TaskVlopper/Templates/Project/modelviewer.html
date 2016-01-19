@@ -1,0 +1,64 @@
+﻿<div>
+    <div class="panel-body">
+        <div class="pull-right">
+            <span uib-dropdown>
+                <button class="icon-button" title="Options" id="simple-dropdown" uib-dropdown-toggle><span class="caret"></span></button>
+                <ul uib-dropdown-menu aria-labelledby="simple-dropdown" style="right: 0; min-width: auto">
+                    <li title="View project">
+                        <a  ui-sref="project/view({ projectId: object.Project.ID })">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;View project
+                        </a>
+                    </li>
+                    <li title="Edit project">
+                        <a ui-sref="project/edit({ projectId: object.Project.ID })">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit project
+                        </a>
+                    </li>
+                    <li title="Delete project">
+                        <a ui-sref="project/delete({ projectId: object.Project.ID })">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete project
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            
+        </div>
+
+        <strong style="font-size: 1.3em">{{object.Project.Name}}</strong>
+        <div ng-show="object.Project.Description.length > 0">
+            <div class="text-muted" style="margin-top: 5px; font-size: .95em"> {{object.Project.Description}}</div>
+        </div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{object.Stats.Progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{object.Stats.Progress}}%;">
+            <span class="sr-only">{{object.Stats.Progress}}% Complete</span>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="icon-button clear-letter-spacing" title="Tasks" ui-sref="task/list({ projectId: object.Project.ID })" style="margin-right: .8em;">
+                    <span class="glyphicon glyphicon-check"></span>
+                    <span class="glyphicon-addon">{{object.Stats.TaskCount}}</span>
+                </button>
+                <button class="icon-button clear-letter-spacing" title="Meetings" ui-sref="meeting/list({ projectId: object.Project.ID })" style="margin-right: .8em;">
+                    <span class="glyphicon glyphicon-blackboard"></span>
+                    <span class="glyphicon-addon">{{object.Stats.FutureMeetingCount}}</span>
+                </button>
+                <button class="icon-button clear-letter-spacing" ui-sref="project/edit({ projectId: object.Project.ID })" style="margin-right: .8em" title="Users">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="glyphicon-addon">{{object.Stats.BoundUsers}}</span>
+                </button>
+                <span class="icon-button clear-letter-spacing" style="cursor: default; margin-right: .8em" title="Estimated project time">
+                    <span class="glyphicon glyphicon-time"></span>
+                    <span class="glyphicon-addon">
+                        {{object.Project.EstimatedTimeInHours}}h
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

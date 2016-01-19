@@ -33,7 +33,7 @@
                     if (response.data.HttpCode != undefined) {
                         console.log(response.data.HttpCode + " " + response.data.Message);
                     }
-                    return response.data.Project;
+                    return response.data;
                 })
                 .catch(function (error) {
                     console.log('[ProjectService.get] Unable to load data: ' + error.message);
