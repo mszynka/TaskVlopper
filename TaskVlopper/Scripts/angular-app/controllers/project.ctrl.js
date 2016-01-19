@@ -37,7 +37,6 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     };
 
     $scope.projectHandler.createProject = function () {
-        Pace.restart();
         ProjectService.create($scope.model)
             .then(function (response) {
                 $scope.currentProjectId = response.data.ID;
@@ -49,7 +48,6 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     };
 
     $scope.projectHandler.editProject = function () {
-        Pace.restart();
         var temp_model = $scope.model;
         delete temp_model['$$hashkey'];
         $scope.projectHandler.bindUsersToProject();
@@ -59,7 +57,6 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     };
 
     $scope.projectHandler.deleteProject = function () {
-        Pace.restart();
         ProjectService.delete($scope.currentProjectId).then(function (response) {
             $scope.model = null;
             $state.go('project/list');
