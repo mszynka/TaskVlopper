@@ -1,6 +1,6 @@
 ﻿/// <reference path="services/task.service.js" />
 
-app.controller('TaskController', function ($scope, $rootScope, $state, $stateParams, TaskService, UserService) {
+app.controller('TaskController', function ($scope, $rootScope, $interval, $state, $stateParams, TaskService, UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -16,7 +16,8 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
     $scope.taskHandler = {};
     $scope.taskHandler.getTasks = function () {
         TaskService.getAllWithStats($scope.currentProjectId).then(function (response) {
-            $scope.tasks = response.Tasks;
+            if ($scope.tasks == undefined || !angular.equals($scope.tasks, response.Tasks))
+                $scope.tasks = response.Tasks;
             $scope.taskStatus = response.Statuses;
             angular.forEach($scope.tasks, function (task) {
                 task.Task.statusName = $scope.taskStatus[task.Task.Status];
@@ -47,10 +48,6 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
         TaskService.create($scope.model, $scope.currentProjectId).then(function (response) {
             $state.go('task/list', { projectId: $scope.currentProjectId });
         })
-    };
-
-    $scope.taskHandler.initEditor = function () {
-        $scope.taskHandler.getTask($scope.currentTaskId);
     };
 
     $scope.taskHandler.editTask = function () {
@@ -96,6 +93,7 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
     };
 
     if ($state.current.name == "task/list") {
+        $scope.interval = $interval(function () { $('body').css('ng-scope pace-done'); $scope.taskHandler.getTasks() }, 10000);
         $scope.taskHandler.getTasks();
     }
     else if ($state.current.name == "task/edit") {
@@ -109,5 +107,12 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
             $scope.users = allUsers;
         })
     }
+
+    $scope.$on("$destroy", function () {
+        if (angular.isDefined($scope.interval)) {
+            $interval.cancel($scope.interval);
+            $scope.interval = 0;
+        }
+    });
 
 });

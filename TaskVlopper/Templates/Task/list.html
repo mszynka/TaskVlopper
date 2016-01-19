@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="object in tasks | filter: controller.taskSearchInput" class="animation">
+            <tr ng-repeat="object in tasks | filter: controller.taskSearchInput">
                 <th scope="row">{{object.Task.ID}}</th>
                 <td title="{{object.Task.Description}}">{{object.Task.Name}}</td>
                 <td>{{object.Stats.LoggedHours}}/{{object.Task.EstimatedTimeInHours}}</td>

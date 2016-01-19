@@ -4,7 +4,7 @@
 /// <reference path="services/worklog.service.js" />
 /// <reference path="services/user.service.js" />
 
-app.controller('ProjectController', function ($scope, $rootScope, $timeout, $filter, $state, $stateParams,
+app.controller('ProjectController', function ($scope, $rootScope, $interval, $filter, $state, $stateParams,
     ProjectService,
     TaskService,
     MeetingService,
@@ -22,7 +22,8 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
 
     $scope.projectHandler.getProjects = function () {
         ProjectService.getAllWithStats().then(function (response) {
-            $scope.projects = response;
+            if ($scope.projects == undefined || !angular.equals($scope.projects, response))
+                $scope.projects = response;
         })
     };
 
@@ -90,6 +91,7 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     };
 
     if ($state.current.name == "project/list") {
+        $scope.interval = $interval(function () { $('body').css('ng-scope pace-done'); $scope.projectHandler.getProjects() }, 10000);
         $scope.projectHandler.getProjects();
     }
     else if ($state.current.name == "project/edit") {
@@ -99,5 +101,12 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     else if ($state.current.name == "project/create") {
         $scope.projectHandler.getUsers($scope.currentProjectId);
     }
+
+    $scope.$on("$destroy", function () {
+        if (angular.isDefined($scope.interval)) {
+            $interval.cancel($scope.interval);
+            $scope.interval = 0;
+        }
+    });
 
 });

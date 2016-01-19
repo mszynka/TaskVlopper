@@ -1,7 +1,7 @@
 ﻿/// <reference path="services/meeting.service.js" />
 /// <reference path="services/user.service.js" />
 
-app.controller('MeetingController', function ($scope, $rootScope, $timeout, $state, $stateParams, MeetingService, UserService) {
+app.controller('MeetingController', function ($scope, $rootScope, $interval, $state, $stateParams, MeetingService, UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -17,13 +17,10 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
     $scope.meetingHandler = {};
     $scope.meetingHandler.getMeetings = function () {
         MeetingService.getAllWithStats($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
-            $scope.meetings = response;
+            if ($scope.meetings == undefined || !angular.equals($scope.meetings, response))
+                $scope.meetings = response;
         })
     };
-
-    if ($state.current.name == "meeting/list") {
-        $scope.meetingHandler.getMeetings();
-    }
 
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
@@ -89,14 +86,25 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
         return new Date(parseInt(element.Meeting.DateAndTime.substr(6)));
     }
 
-    if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+    if ($state.current.name == "meeting/list") {
+        $scope.interval = $interval(function () { $('body').css('ng-scope pace-done'); $scope.meetingHandler.getMeetings() }, 10000);
+        $scope.meetingHandler.getMeetings();
+    }
+    else if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
         $scope.meetingHandler.getMeeting($scope.currentMeetingId);
         $scope.meetingHandler.getUsers($scope.currentMeetingId);
     }
-
-    if ($state.current.name == "meeting/create") {
+    else if ($state.current.name == "meeting/create") {
         UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
         })
     }
+
+    $scope.$on("$destroy", function () {
+        if (angular.isDefined($scope.interval)) {
+            $interval.cancel($scope.interval);
+            $scope.interval = 0;
+        }
+    });
+
 });
