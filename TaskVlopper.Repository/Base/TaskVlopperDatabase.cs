@@ -24,8 +24,8 @@
         public static string GetConnectionStringName()
         {
             if (!databaseForTests)
-                return "TaskVlopperDatabase23";
-            else return "TaskVlopperDatabaseForTests23";
+                return "TaskVlopperDatabase";
+            else return "TaskVlopperDatabaseForTests";
         }
     }
 

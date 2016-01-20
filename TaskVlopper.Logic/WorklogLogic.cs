@@ -61,10 +61,13 @@ namespace TaskVlopper.Logic
             if (!WorklogRepository.GetAll().Any())
                 return 0;
 
-            return WorklogRepository
+            var sum = WorklogRepository
                 .GetAll()
                 .Where(x => x.TaskID == taskId)
-                .Sum(x => x.Hours);
+                .Sum(x => (int?)x.Hours);
+            if (sum == null)
+                return 0;
+            else return (int) sum;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace TaskVlopper.Controllers
         // GET: Project/GetAllWithStats
         [HttpGet]
         public ActionResult GetAllWithStats()
+
         {
             try
             {
