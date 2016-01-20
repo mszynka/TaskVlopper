@@ -86,7 +86,7 @@ namespace TaskVlopper.Logic
         public void UnassignUserFromProject(int id, string userId)
         {
             var model = UserProjectAssignmentRepository.GetAll()
-                .Where(x => x.ID == id && x.UserID == userId);
+                .Where(x => x.ProjectID == id && x.UserID == userId);
             if (model.Any())
             {
                 UserProjectAssignmentRepository.Remove(model.Single());
