@@ -1,5 +1,5 @@
-﻿<div>
-    <table class="table table-striped" ng-show="(meetings | filter: controller.meetingSearchInput).length > 0">
+﻿<div class="form-horizontal" ng-hide="(meetings | filter: controller.meetingSearchInput).length == 0">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>#</th>

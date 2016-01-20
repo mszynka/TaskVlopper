@@ -33,7 +33,6 @@ app.controller('MeetingController', function ($scope, $rootScope, $filter, $stat
     };
 
     $scope.meetingHandler.createMeeting = function () {
-        console.log($scope.model.TaskID);
         MeetingService.create($scope.model, $scope.currentProjectId, $scope.model.TaskID)
             .then(function (meeting) {
                 $scope.currentMeetingId = meeting.data.ID;

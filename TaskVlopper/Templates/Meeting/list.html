@@ -17,14 +17,8 @@
     </div>
 </div>
 
-<div class="alert alert-info animation" ng-hide="meetings.length > 0">
-    Currently no meetings available. Arrange a meeting.
-</div>
+<tv-meeting-model-table-viewer></tv-meeting-model-table-viewer>
 
-<div class="form-horizontal" ng-hide="(meetings | filter: controller.meetingSearchInput).length == 0">
-    <tv-meeting-model-table-viewer></tv-meeting-model-table-viewer>
-</div>
-
-<div class="alert alert-warning animation" ng-show="(meetings | filter: controller.meetingSearchInput).length == 0 && meetings.length > 0">
+<div class="alert alert-warning" ng-show="(meetings | filter: controller.meetingSearchInput).length == 0 && meetings.length > 0">
     No meeting satisfying the current query.
 </div>
