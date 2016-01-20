@@ -1,6 +1,6 @@
 ﻿/// <reference path="services/task.service.js" />
 
-app.controller('TaskController', function ($scope, $rootScope, $state, $stateParams, TaskService, UserService) {
+app.controller('TaskController', function ($scope, $rootScope, $filter, $state, $stateParams, ProjectService, TaskService, UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -29,7 +29,7 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
             $scope.taskStatus = response.Statuses;
         })
     };
-    
+
     $scope.taskHandler.getTask = function (taskId) {
         TaskService.get(taskId, $scope.currentProjectId).then(function (response) {
             $scope.model = response;
@@ -80,6 +80,16 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
                         }
                     });
                 });
+                ProjectService.getUsers($scope.currentProjectId).then(function (projectUsers) {
+                    angular.forEach($scope.users, function (user) {
+                        angular.forEach(projectUsers.Users, function (projectUser) {
+                            if (projectUser.Email === user.Email) {
+                                user.isProjectUser = true;
+                            }
+                        })
+                    });
+                    $scope.users = $filter('filter')($scope.users, { isProjectUser: 'true' });
+                })
             })
         })
     };
@@ -107,6 +117,16 @@ app.controller('TaskController', function ($scope, $rootScope, $state, $statePar
         $scope.taskHandler.getStatuses();
         UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
+            ProjectService.getUsers($scope.currentProjectId).then(function (projectUsers) {
+                angular.forEach($scope.users, function (user) {
+                    angular.forEach(projectUsers.Users, function (projectUser) {
+                        if (projectUser.Email === user.Email) {
+                            user.isProjectUser = true;
+                        }
+                    })
+                });
+                $scope.users = $filter('filter')($scope.users, { isProjectUser: 'true' });
+            })
         })
     }
 

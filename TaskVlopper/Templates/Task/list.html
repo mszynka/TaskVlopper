@@ -17,13 +17,7 @@
     </div>
 </div>
 
-<div class="alert alert-info animation" ng-hide="tasks.length > 0">
-    Currently no tasks available. Add a task.
-</div>
-
-<div class="form-horizontal" ng-hide="(tasks | filter: controller.taskSearchInput ).length == 0">
-    <tv-task-model-table-viewer></tv-task-model-table-viewer>
-</div>
+<tv-task-model-table-viewer></tv-task-model-table-viewer>
 
 <div class="alert alert-warning animation" ng-show="(tasks | filter: controller.taskSearchInput ).length == 0 && tasks.length > 0">
     No task satisfying the current query.
