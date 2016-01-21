@@ -88,7 +88,7 @@ app.controller('MeetingController', function ($scope, $rootScope, $filter, $stat
         TaskService.getAll(projectId).then(function (response) {
             $scope.tasks = response.Tasks;
             if ($scope.model == undefined)
-                $scope.model = [];
+                $scope.model = {};
             if ($scope.model.TaskID == undefined)
                 $scope.model.TaskID = null;
         })
