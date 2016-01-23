@@ -1,5 +1,5 @@
 # TaskVlopper
-[C#, Entity Framework, Patterns] End-term project assignment
+[C#, Entity Framework, Patterns, Angular] End-term project assignment
 
 ### Projects
 
