@@ -244,7 +244,6 @@
     <Content Include="Scripts\angular-app\controllers\alert.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\dashboard.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\meeting.ctrl.js" />
-    <Content Include="Scripts\angular-app\controllers\menu.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\project.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\task.ctrl.js" />
     <Content Include="Scripts\angular-app\controllers\user.ctrl.js" />
@@ -258,7 +257,6 @@
     <Content Include="Scripts\angular-app\router.js" />
     <Content Include="Scripts\angular-app\services\alert.service.js" />
     <Content Include="Scripts\angular-app\services\meeting.service.js" />
-    <Content Include="Scripts\angular-app\services\menu.service.js" />
     <Content Include="Scripts\angular-app\services\project.service.js" />
     <Content Include="Scripts\angular-app\services\task.service.js" />
     <Content Include="Scripts\angular-app\services\user.service.js" />
@@ -316,10 +314,13 @@
     <Content Include="Scripts\respond\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Templates\Meeting\modeltableviewer.html" />
     <Content Include="Templates\Meeting\viewer.html" />
     <Content Include="Templates\Project\create.html" />
     <Content Include="Templates\Project\delete.html" />
     <Content Include="Templates\Project\edit.html" />
+    <Content Include="Templates\Project\modelviewer.html" />
+    <Content Include="Templates\Task\modeltableviewer.html" />
     <Content Include="Templates\User\list-selector.html" />
     <Content Include="Templates\User\list-viewer.html" />
     <Content Include="Web.config">

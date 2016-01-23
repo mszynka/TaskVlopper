@@ -120,5 +120,19 @@ namespace TaskVlopper.Logic
         {
             return WorklogRepository.GetAll().Where(x => x.TaskID == taskId).Sum(x => x.Hours);
         }
+
+        public int GetTaskProgress(int projectId)
+        {
+            if (!TaskRepository.GetTasksForGivenProjectId(projectId).Any())
+                return 0;
+
+            var allTasks = TaskRepository.GetTasksForGivenProjectId(projectId);
+            var finishedTasks = allTasks.Where(y => y.Status == Base.Enums.TaskStatusEnum.Closed
+                                        || y.Status == Base.Enums.TaskStatusEnum.Resolved
+                                        || y.Status == Base.Enums.TaskStatusEnum.Removed)
+                                    .Count();
+
+            return finishedTasks / allTasks.Count() * 100;
+        }
     }
 }

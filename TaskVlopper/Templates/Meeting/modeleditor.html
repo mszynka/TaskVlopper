@@ -13,6 +13,21 @@
         </div>
 
         <div class="form-group">
+            <label class="col-xs-2 control-label" for="TaskPicker">Task: </label>
+            <div class="col-xs-10">
+                <select type="number" id="TaskPicker" placeholder="Task" class="form-control"
+                        ng-model="model.TaskID" convert-to-number>
+                    <option value="null" ng-selected="model.TaskID == null">--- Unbound</option>
+                    <option ng-repeat="option in tasks"
+                            value="{{option.Task.ID}}"
+                            ng-selected="option.Task.ID == model.TaskID">
+                        #{{option.Task.ID}} {{option.Task.Name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-xs-6">
                 <uib-timepicker ng-model="model.DateAndTime" hour-step="1" minute-step="1" show-meridian="false" style="margin-left: auto; margin-right: auto;"></uib-timepicker>
             </div>

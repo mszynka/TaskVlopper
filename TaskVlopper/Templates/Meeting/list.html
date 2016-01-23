@@ -17,39 +17,8 @@
     </div>
 </div>
 
-<div class="alert alert-info animation" ng-hide="meetings.length > 0">
-    Currently no meetings available. Arrange a meeting.
-</div>
+<tv-meeting-model-table-viewer></tv-meeting-model-table-viewer>
 
-<div class="form-horizontal" ng-hide="(meetings | filter: controller.meetingSearchInput).length == 0">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Date and time</th>
-                <th>Participants</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="meeting in (meetings | filter: controller.meetingSearchInput) | orderBy: sortByDate : false" class="animation">
-                <th scope="row">{{meeting.Meeting.ID}}</th>
-                <td>{{meeting.Meeting.Title}}</td>
-                <td>{{meeting.Meeting.DateAndTime | aspDate | date: "HH:mm - MM/dd/yyyy"}}</td>
-                <td>{{meeting.Stats.ParticipantsCount}}</td>
-                <td>
-                    <div class="btn-group-xs">
-                        <button class="btn btn-default glyphicon glyphicon-align-justify" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/view({ meetingId: meeting.Meeting.ID, taskId: currentTaskId, projectId: currentProjectId })"></button>
-                        <button class="btn btn-default glyphicon glyphicon-pencil" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/edit({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.Meeting.ID })"></button>
-                        <button class="btn btn-danger glyphicon glyphicon-trash" style="font-size: .8em; margin-top: -5px" ui-sref="meeting/delete({ taskId: currentTaskId, projectId: currentProjectId, meetingId: meeting.Meeting.ID })"></button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="alert alert-warning animation" ng-show="(meetings | filter: controller.meetingSearchInput).length == 0 && meetings.length > 0">
+<div class="alert alert-warning" ng-show="(meetings | filter: controller.meetingSearchInput).length == 0 && meetings.length > 0">
     No meeting satisfying the current query.
 </div>

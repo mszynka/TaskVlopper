@@ -24,6 +24,7 @@ namespace TaskVlopper.Base.Logic
 
         int CountAllTasksForGivenProjectAndCurrentUser(int projectId, string userId);
         int GetHoursWorkedOnTask(int projectId, int taskId);
+        int GetTaskProgress(int projectId);
 
         #endregion
 

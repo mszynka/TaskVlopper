@@ -6,6 +6,13 @@
             templateUrl: "static/templates/task/modeleditor.html"
         }
     })
+    .directive('tvTaskModelTableViewer', function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: "static/templates/task/modeltableviewer.html"
+        }
+    })
 
     .directive('convertToNumber', function () {
         return {

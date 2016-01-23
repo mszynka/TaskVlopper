@@ -12,10 +12,14 @@
     $scope.open = function ($event, element) {
         $event.preventDefault();
         $event.stopPropagation();
-        if (element == 1)
+        if (element == 1) {
             $scope.status.opened1 = true;
-        if (element == 2)
+            $scope.status.opened2 = false;
+        }
+        if (element == 2) {
+            $scope.status.opened1 = false;
             $scope.status.opened2 = true;
+        }
     };
 
     $scope.dateOptions = {

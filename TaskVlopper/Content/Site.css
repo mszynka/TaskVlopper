@@ -61,7 +61,7 @@ textarea {
         margin-bottom: 0;
         position: relative;
         border-radius: 0;
-        height: 1px;
+        height: 2px;
     }
 
     .project-panel .panel-body {
@@ -171,4 +171,13 @@ a[ui-sref] {
 /* Item-pointer navigation feature */
 .item-pointer {
     cursor: pointer !important;
+}
+
+/* Some colored text */
+.red {
+    color: #ea1216;
+}
+
+.green {
+    color: #13b21b;
 }

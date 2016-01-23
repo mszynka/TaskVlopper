@@ -1,7 +1,11 @@
 ﻿/// <reference path="services/meeting.service.js" />
 /// <reference path="services/user.service.js" />
 
-app.controller('MeetingController', function ($scope, $rootScope, $timeout, $state, $stateParams, MeetingService, UserService) {
+app.controller('MeetingController', function ($scope, $rootScope, $filter, $state, $stateParams,
+    MeetingService,
+    TaskService,
+    ProjectService,
+    UserService) {
 
     $scope.currentTaskId = $stateParams.taskId;
     $scope.currentProjectId = $stateParams.projectId;
@@ -21,10 +25,6 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
         })
     };
 
-    if ($state.current.name == "meeting/list") {
-        $scope.meetingHandler.getMeetings();
-    }
-
     $scope.meetingHandler.getMeeting = function (meetingId) {
         MeetingService.get(meetingId, $scope.currentProjectId, $scope.currentTaskId).then(function (response) {
             $scope.model = response;
@@ -33,7 +33,7 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
     };
 
     $scope.meetingHandler.createMeeting = function () {
-        MeetingService.create($scope.model, $scope.currentProjectId, $scope.currentTaskId)
+        MeetingService.create($scope.model, $scope.currentProjectId, $scope.model.TaskID)
             .then(function (meeting) {
                 $scope.currentMeetingId = meeting.data.ID;
                 $scope.meetingHandler.bindUsersToMeeting();
@@ -70,7 +70,27 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
                         }
                     });
                 });
+                ProjectService.getUsers($scope.currentProjectId).then(function (projectUsers) {
+                    angular.forEach($scope.users, function (user) {
+                        angular.forEach(projectUsers.Users, function (projectUser) {
+                            if (projectUser.Email === user.Email) {
+                                user.isProjectUser = true;
+                            }
+                        })
+                    });
+                    $scope.users = $filter('filter')($scope.users, { isProjectUser: 'true' });
+                })
             })
+        })
+    };
+
+    $scope.meetingHandler.getTasks = function (projectId) {
+        TaskService.getAll(projectId).then(function (response) {
+            $scope.tasks = response.Tasks;
+            if ($scope.model == undefined)
+                $scope.model = {};
+            if ($scope.model.TaskID == undefined)
+                $scope.model.TaskID = null;
         })
     };
 
@@ -89,14 +109,29 @@ app.controller('MeetingController', function ($scope, $rootScope, $timeout, $sta
         return new Date(parseInt(element.Meeting.DateAndTime.substr(6)));
     }
 
-    if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+    if ($state.current.name == "meeting/list") {
+        $scope.meetingHandler.getMeetings();
+    }
+    else if ($state.current.name == "meeting/edit" || $state.current.name == "meeting/view") {
+        $scope.tasks = [];
         $scope.meetingHandler.getMeeting($scope.currentMeetingId);
         $scope.meetingHandler.getUsers($scope.currentMeetingId);
+        $scope.meetingHandler.getTasks($scope.currentProjectId);
     }
-
-    if ($state.current.name == "meeting/create") {
+    else if ($state.current.name == "meeting/create") {
+        $scope.meetingHandler.getTasks($scope.currentProjectId);
         UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
+            ProjectService.getUsers($scope.currentProjectId).then(function (projectUsers) {
+                angular.forEach($scope.users, function (user) {
+                    angular.forEach(projectUsers.Users, function (projectUser) {
+                        if (projectUser.Email === user.Email) {
+                            user.isProjectUser = true;
+                        }
+                    })
+                });
+                $scope.users = $filter('filter')($scope.users, { isProjectUser: 'true' });
+            })
         })
     }
 });

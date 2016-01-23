@@ -28,7 +28,8 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
 
     $scope.projectHandler.getProject = function (projectId) {
         ProjectService.get(projectId).then(function (response) {
-            $scope.model = response;
+            $scope.model = response.Project;
+            $scope.stats = response.Stats;
             if ($scope.model.StartDate != undefined)
                 $scope.model.StartDate = new Date(parseInt($scope.model.StartDate.split("(")[1]));
             if ($scope.model.Deadline != undefined)
@@ -66,26 +67,45 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
     $scope.projectHandler.getUsers = function (projectId) {
         UserService.getAllUsersWithSelectors().then(function (allUsers) {
             $scope.users = allUsers;
-            ProjectService.getUsers(projectId).then(function (projectUsers) {
-                angular.forEach(projectUsers.Users, function (projectUser) {
-                    angular.forEach($scope.users, function (user) {
-                        if (projectUser.Email === user.Email) {
-                            user.isSelected = true;
-                        }
+            if (projectId !== null) {
+                ProjectService.getUsers(projectId).then(function (projectUsers) {
+                    angular.forEach(projectUsers.Users, function (projectUser) {
+                        angular.forEach($scope.users, function (user) {
+                            if (projectUser.Email === user.Email) {
+                                user.isSelected = true;
+                            }
+                        });
                     });
-                });
-            })
+                })
+            }
         })
     };
 
     $scope.projectHandler.bindUsersToProject = function () {
         angular.forEach($scope.users, function (user) {
             if (user.isDirty && user.isSelectable) {
+                console.log(user.isSelected);
                 if (user.isSelected)
                     ProjectService.bindUser($scope.currentProjectId, user.Email);
                 else if (!user.isSelected)
                     ProjectService.unbindUser($scope.currentProjectId, user.Email);
             }
+        })
+    };
+
+    $scope.projectHandler.getTasks = function (projectId) {
+        TaskService.getAllWithStats($scope.currentProjectId).then(function (response) {
+            $scope.tasks = response.Tasks;
+            $scope.taskStatus = response.Statuses;
+            angular.forEach($scope.tasks, function (task) {
+                task.Task.statusName = $scope.taskStatus[task.Task.Status];
+            })
+        })
+    };
+
+    $scope.projectHandler.getMeetings = function (projectId) {
+        MeetingService.getAllWithStats($scope.currentProjectId, $scope.currentTaskId).then(function (response) {
+            $scope.meetings = response;
         })
     };
 
@@ -96,8 +116,17 @@ app.controller('ProjectController', function ($scope, $rootScope, $timeout, $fil
         $scope.projectHandler.getProject($scope.currentProjectId);
         $scope.projectHandler.getUsers($scope.currentProjectId);
     }
-    else if ($state.current.name == "project/create") {
+    else if ($state.current.name == "project/view") {
+        $scope.tasks = [];
+        $scope.meetings = [];
+
+        $scope.projectHandler.getProject($scope.currentProjectId);
         $scope.projectHandler.getUsers($scope.currentProjectId);
+        $scope.projectHandler.getTasks($scope.currentProjectId);
+        $scope.projectHandler.getMeetings($scope.currentProjectId);
+    }
+    else if ($state.current.name == "project/create") {
+        $scope.projectHandler.getUsers(null);
     }
 
 });

@@ -50,7 +50,6 @@ namespace TaskVlopper.Controllers
                 {
                     ITaskLogic taskLogic = container.Resolve<ITaskLogic>();
                     IWorklogLogic worklogLogic = container.Resolve<IWorklogLogic>();
-                    
 
                     var model = taskLogic.GetAllTasksForGivenProjectAndCurrentUser(projectId, User.Identity.Name)
                         .Select(task => new TaskViewModel(task,

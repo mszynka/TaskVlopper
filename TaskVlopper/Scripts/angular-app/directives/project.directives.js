@@ -3,7 +3,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: "static/templates/project/viewer.html"
+            templateUrl: "static/templates/project/modelviewer.html"
         }
     })
     .directive('tvProjectModeleditor', function () {

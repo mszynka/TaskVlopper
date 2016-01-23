@@ -46,15 +46,17 @@ namespace TaskVlopper.Models
 
     public class ProjectStatisticsViewModel
     {
-        public ProjectStatisticsViewModel(int? taskCount, int? futureMeetingCount, int? boundUsers)
+        public ProjectStatisticsViewModel(int? taskCount, int? futureMeetingCount, int? boundUsers, int? progress)
         {
             TaskCount = taskCount;
             FutureMeetingCount = futureMeetingCount;
             BoundUsers = boundUsers;
+            Progress = progress;
         }
 
         public int? TaskCount { get; private set; }
         public int? FutureMeetingCount { get; private set; }
         public int? BoundUsers { get; private set; }
+        public int? Progress { get; private set; }
     }
 }
